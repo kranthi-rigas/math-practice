@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Math Practice</title>
-  <meta name="description" content="Fun 2nd grade math practice that works offline." />
+  <meta name="description" content="Fun Kindergarten to 3rd grade math practice that works offline." />
   <meta name="theme-color" content="#6c5ce7" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,8 +169,55 @@
     .m-place { background: linear-gradient(135deg, #0984e3, #74b9ff); }
     .m-compare { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
     .m-word { background: linear-gradient(135deg, #e84393, #fd79a8); }
+    .m-c5 { background: linear-gradient(135deg, #e67e22, #fab1a0); }
+    .m-c6 { background: linear-gradient(135deg, #d4a017, #fdcb6e); }
+    .m-c7 { background: linear-gradient(135deg, #00a8a8, #81ecec); }
+    .m-c8 { background: linear-gradient(135deg, #3742fa, #70a1ff); }
 
     .hidden { display: none !important; }
+
+    /* ===== v4: grade picker + visual questions ===== */
+    .grade-chip { min-width: 52px; }
+    .em { display: inline-block; font-size: 1.7rem; line-height: 1.2; padding: 0 2px; }
+    .em.gone { opacity: 0.35; position: relative; }
+    .em.gone::after { content: "✖"; position: absolute; left: 0; right: 0; top: 0; text-align: center; color: #d63031; font-size: 1.5rem; }
+    .emoji-grid { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .emoji-row:nth-child(2n) { margin-bottom: 6px; }
+    .emoji-scatter { position: relative; width: 100%; max-width: 300px; height: 170px; }
+    .emoji-scatter .em { position: absolute; }
+    .groups { display: flex; gap: 12px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+    .group { background: #fff; border-radius: 14px; padding: 8px 10px; border: 2px dashed #a29bfe; min-width: 110px; }
+    .pic-eq { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .pic-eq .op { font-size: 2rem; font-weight: 900; color: var(--accent); }
+    .ten-frame { display: grid; grid-template-columns: repeat(5, 34px); gap: 4px; background: #fff; padding: 6px; border: 3px solid #2d3436; border-radius: 6px; }
+    .ten-frame .tf { width: 34px; height: 34px; border: 2px solid #b2bec3; border-radius: 50%; }
+    .ten-frame .tf.filled { background: #e17055; border-color: #e17055; }
+    .num-train { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .num-train .car { min-width: 58px; padding: 10px 8px; border-radius: 12px; background: #fff; border: 3px solid #6c5ce7; font-size: 1.6rem; font-weight: 900; }
+    .num-train .car.blank { border-style: dashed; color: #e84393; }
+    .big-choice { font-size: 1.9rem; font-weight: 900; }
+    .big-emoji { font-size: 4rem; line-height: 1.1; }
+    .shape-row { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+    .coins { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+    .coin { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 800; color: #2d3436;
+      border: 3px solid rgba(0,0,0,0.25); box-shadow: inset 0 -3px 0 rgba(0,0,0,0.15); text-align: center; line-height: 1; }
+    .coin.c-p { width: 54px; height: 54px; background: #e59866; font-size: 0.72rem; }
+    .coin.c-n { width: 60px; height: 60px; background: #d5d8dc; font-size: 0.72rem; }
+    .coin.c-d { width: 50px; height: 50px; background: #ecf0f1; font-size: 0.7rem; }
+    .coin.c-q { width: 66px; height: 66px; background: #cacfd2; font-size: 0.75rem; }
+    .bill { display: inline-flex; align-items: center; justify-content: center; width: 96px; height: 46px; border-radius: 6px; background: #a9dfbf;
+      border: 3px solid #1e8449; color: #145a32; font-weight: 900; font-size: 1.2rem; }
+    .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.05; font-weight: 900; margin: 0 4px; }
+    .frac .fn { border-bottom: 3px solid currentColor; padding: 0 4px; }
+    .frac-pics { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .clock-pair { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .question-box svg { max-width: 100%; height: auto; }
+    .tap-choices.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .tap-choices.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .tap-btn svg { max-width: 100%; height: auto; display: block; margin: 0 auto; pointer-events: none; }
+    .tap-btn .frac { font-size: 1.4rem; }
+    .tap-btn.correct-ans { border-color: var(--green); background: #d1f7ea; }
+    .choice-btn.correct-ans { border-color: var(--green); background: #d1f7ea; }
 
     .top-bar {
       display: flex;
@@ -570,46 +617,22 @@
   <div class="app">
     <div id="home-screen">
       <h1>⭐ Math Practice</h1>
-      <p class="subtitle">2nd Grade · Level up and beat your best score!</p>
+      <p class="subtitle" id="subtitle">2nd Grade · Level up and beat your best score!</p>
+
+      <div class="settings-row" id="grade-settings" role="group" aria-label="Grade">
+        <label>🎒 Grade:</label>
+      </div>
 
       <div class="settings-row" id="time-settings" role="group" aria-label="Seconds per question">
         <label>⏱ Time:</label>
         <button type="button" class="time-chip" data-seconds="15">15s</button>
         <button type="button" class="time-chip active" data-seconds="25">25s</button>
         <button type="button" class="time-chip" data-seconds="30">30s</button>
+        <button type="button" class="time-chip" data-seconds="45">45s</button>
       </div>
 
       <div class="card">
-        <div class="mode-grid">
-          <button class="mode-btn m-add" data-mode="addsub" type="button">
-            <span class="icon">➕</span>
-            <span class="label">Addition &amp; Subtraction
-              <span class="hint">From 5 + 3 up to 3-digit numbers</span>
-              <span class="best-line" data-best-for="addsub"></span>
-            </span>
-          </button>
-          <button class="mode-btn m-place" data-mode="place" type="button">
-            <span class="icon">🔢</span>
-            <span class="label">Place Value
-              <span class="hint">Tens &amp; ones up to thousands</span>
-              <span class="best-line" data-best-for="place"></span>
-            </span>
-          </button>
-          <button class="mode-btn m-compare" data-mode="compare" type="button">
-            <span class="icon">⚖️</span>
-            <span class="label">Number Comparison
-              <span class="hint">Less, greater, or equal</span>
-              <span class="best-line" data-best-for="compare"></span>
-            </span>
-          </button>
-          <button class="mode-btn m-word" data-mode="word" type="button">
-            <span class="icon">📖</span>
-            <span class="label">Word Problems
-              <span class="hint">One-step up to two-step stories</span>
-              <span class="best-line" data-best-for="word"></span>
-            </span>
-          </button>
-        </div>
+        <div class="mode-grid" id="mode-grid"><!-- tiles are built from the GRADES registry --></div>
       </div>
       <p class="footer-note">10 questions per round · Fast answers earn bonus points!</p>
     </div>
@@ -686,14 +709,7 @@
   var BASE_POINTS = 10;       // points = BASE_POINTS * level (+ speed bonus) * streak multiplier
   var MAX_SPEED_BONUS = 20;   // full bonus when answered instantly, scaled by time left
   var MAX_TRIES = 2;          // first try + one retry
-  var APP_VERSION = "math-practice-v3-focus";
-
-  var MODE_TITLES = {
-    addsub: "➕ Addition & Subtraction",
-    place: "🔢 Place Value",
-    compare: "⚖️ Number Comparison",
-    word: "📖 Word Problems"
-  };
+  var APP_VERSION = "math-practice-v4-grades";
 
   /* ================= Pure game rules (exposed for testing) ================= */
   function clampLevel(n) {
@@ -747,10 +763,26 @@
   function save(key, value) {
     try { window.localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* private mode */ }
   }
-  function getBest(mode) { return load("mp_best_" + mode, 0) || 0; }
-  function setBest(mode, v) { save("mp_best_" + mode, v); }
-  function getSavedLevel(mode) { return clampLevel(load("mp_level_" + mode, 1) || 1); }
-  function setSavedLevel(mode, lv) { save("mp_level_" + mode, lv); }
+  // Progress is keyed by grade + mode, e.g. mp_best_2_addsub, mp_level_K_count
+  function getBest(grade, mode) { return load("mp_best_" + grade + "_" + mode, 0) || 0; }
+  function setBest(grade, mode, v) { save("mp_best_" + grade + "_" + mode, v); }
+  function getSavedLevel(grade, mode) { return clampLevel(load("mp_level_" + grade + "_" + mode, 1) || 1); }
+  function setSavedLevel(grade, mode, lv) { save("mp_level_" + grade + "_" + mode, lv); }
+
+  // v1-v3 stored 2nd-grade progress as mp_best_<mode> / mp_level_<mode>. Copy it to the 2nd-grade keys once
+  // (old keys are left in place so an older cached version still sees them).
+  function migrateLegacyProgress() {
+    try {
+      if (load("mp_migrated_v4", false)) return;
+      ["addsub", "place", "compare", "word"].forEach(function (m) {
+        ["mp_best_", "mp_level_"].forEach(function (prefix) {
+          var oldV = window.localStorage.getItem(prefix + m);
+          if (oldV != null && window.localStorage.getItem(prefix + "2_" + m) == null) window.localStorage.setItem(prefix + "2_" + m, oldV);
+        });
+      });
+      save("mp_migrated_v4", true);
+    } catch (e) { /* storage unavailable */ }
+  }
 
   /* ================= Random helpers ================= */
   function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
@@ -1180,7 +1212,1003 @@
     };
   }
 
-  var GENERATORS = { addsub: genAddSub, place: genPlace, compare: genCompare, word: genWord };
+  var GENERATORS = { addsub: genAddSub, place: genPlace, compare: genCompare, word: genWord };  // 2nd grade (v1-v3 modes)
+
+  /* ================= Shared helpers for all grades ================= */
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function range(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
+  function fill(n, v) { var a = []; for (var i = 0; i < n; i++) a.push(v); return a; }
+  function opt(v, label) { return { v: String(v), label: label == null ? esc(v) : label }; }
+  function qText(s, style) { return '<div class="question-text"' + (style ? ' style="' + style + '"' : "") + ">" + s + "</div>"; }
+  function qSub(s) { return '<div class="question-sub">' + s + "</div>"; }
+  function bigNum(s) { return '<div class="big-number">' + s + "</div>"; }
+
+  // 4 unique number choices near the answer, within [min, max]
+  function numChoices(correct, min, max, deltas) {
+    deltas = deltas || [1, -1, 2, -2, 10, -10, 3, -3, 5, -5];
+    var seen = {}, list = [correct], ds = shuffle(deltas);
+    seen[correct] = true;
+    for (var i = 0; i < ds.length && list.length < 4; i++) {
+      var v = correct + ds[i];
+      if (v >= min && v <= max && !seen[v]) { seen[v] = true; list.push(v); }
+    }
+    for (var g = 0; list.length < 4 && g < 300; g++) {
+      var r = randInt(min, max);
+      if (!seen[r]) { seen[r] = true; list.push(r); }
+    }
+    return shuffle(list);
+  }
+
+  // Typed number answer (optional tap choices shown above the box)
+  function numQ(html, answer, key, choices, placeholder) {
+    var q = { html: html, answer: String(answer), displayAnswer: String(answer), inputType: "number", key: key };
+    if (choices) q.choices = choices;
+    if (placeholder) q.placeholder = placeholder;
+    return q;
+  }
+
+  // Tap-only answer. options: [{v, label(html)}]
+  function choiceQ(html, answer, options, display, key, cols) {
+    return { html: html, answer: String(answer), displayAnswer: display == null ? String(answer) : display,
+      inputType: "choice", choices: options, key: key, cols: cols || 2 };
+  }
+
+  // "<  >  =" question; lh/rh are HTML, lt/rt plain text for the feedback line
+  function compareQ(lh, rh, l, r, lt, rt, key, extra) {
+    var answer = l < r ? "<" : (l > r ? ">" : "=");
+    var small = (lt.length + rt.length) > 12;
+    return {
+      html: qSub("Which sign fits?") + '<div class="big-number cmp-row"' + (small ? ' style="font-size:1.6rem"' : "") + ">" +
+        lh + ' <span class="cmp-box">□</span> ' + rh + "</div>" + (extra || "") + qSub("Tap &lt; &nbsp; &gt; &nbsp; or &nbsp; ="),
+      answer: answer, displayAnswer: lt + " " + answer + " " + rt, inputType: "compare", key: key
+    };
+  }
+
+  /* ---------- emoji pictures ---------- */
+  var OBJECTS = [["🍎", "apples"], ["⭐", "stars"], ["🐶", "dogs"], ["🐱", "cats"], ["🦆", "ducks"], ["🌸", "flowers"],
+    ["🍪", "cookies"], ["🚗", "cars"], ["🐟", "fish"], ["🎈", "balloons"], ["🐞", "ladybugs"], ["🍓", "strawberries"],
+    ["🐸", "frogs"], ["🦋", "butterflies"]];
+  function twoObjects() { var a = pick(OBJECTS), b = pick(OBJECTS); while (b === a) b = pick(OBJECTS); return [a, b]; }
+
+  // n emoji in rows of perRow; the last `gone` are crossed out (take away)
+  function emojiRows(n, e, perRow, gone) {
+    perRow = perRow || 5;
+    var html = '<div class="emoji-grid">';
+    for (var i = 0; i < n; i++) {
+      if (i % perRow === 0) html += (i ? "</div>" : "") + '<div class="emoji-row">';
+      html += '<span class="em' + (gone && i >= n - gone ? " gone" : "") + '">' + e + "</span>";
+    }
+    if (n > 0) html += "</div>";
+    return html + "</div>";
+  }
+
+  // Emoji placed in random cells of a 6x4 area (max 24)
+  function emojiScatter(items) {
+    var cells = shuffle(range(24)).slice(0, items.length), html = '<div class="emoji-scatter">';
+    items.forEach(function (e, i) {
+      var c = cells[i], col = c % 6, row = Math.floor(c / 6);
+      html += '<span class="em" style="left:' + (col * 16 + randInt(0, 4)) + "%;top:" + (row * 24 + randInt(0, 5)) + '%">' + e + "</span>";
+    });
+    return html + "</div>";
+  }
+
+  function tenFrame(filled) {
+    var html = '<div class="ten-frame">';
+    for (var i = 0; i < 10; i++) html += '<span class="tf' + (i < filled ? " filled" : "") + '"></span>';
+    return html + "</div>";
+  }
+
+  /* ---------- analog clock (SVG) ---------- */
+  function clockSVG(h, m, size) {
+    size = size || 150;
+    var s = '<svg class="clock" viewBox="0 0 200 200" width="' + size + '" height="' + size + '" role="img" aria-label="clock">' +
+      '<circle cx="100" cy="100" r="94" fill="#fff" stroke="#6c5ce7" stroke-width="6"/>';
+    for (var i = 0; i < 60; i++) {
+      var a = i * Math.PI / 30, r1 = i % 5 === 0 ? 80 : 86;
+      s += '<line x1="' + (100 + r1 * Math.sin(a)).toFixed(1) + '" y1="' + (100 - r1 * Math.cos(a)).toFixed(1) + '" x2="' +
+        (100 + 90 * Math.sin(a)).toFixed(1) + '" y2="' + (100 - 90 * Math.cos(a)).toFixed(1) + '" stroke="#636e72" stroke-width="' + (i % 5 === 0 ? 3 : 1) + '"/>';
+    }
+    for (var k = 1; k <= 12; k++) {
+      var b = k * Math.PI / 6;
+      s += '<text x="' + (100 + 66 * Math.sin(b)).toFixed(1) + '" y="' + (100 - 66 * Math.cos(b)).toFixed(1) +
+        '" font-size="20" font-weight="800" text-anchor="middle" dominant-baseline="central" fill="#2d3436">' + k + "</text>";
+    }
+    var ha = ((h % 12) + m / 60) * Math.PI / 6, ma = m * Math.PI / 30;
+    s += '<line class="hh" x1="100" y1="100" x2="' + (100 + 46 * Math.sin(ha)).toFixed(2) + '" y2="' + (100 - 46 * Math.cos(ha)).toFixed(2) +
+      '" stroke="#2d3436" stroke-width="8" stroke-linecap="round"/>';
+    s += '<line class="mh" x1="100" y1="100" x2="' + (100 + 72 * Math.sin(ma)).toFixed(2) + '" y2="' + (100 - 72 * Math.cos(ma)).toFixed(2) +
+      '" stroke="#0984e3" stroke-width="5" stroke-linecap="round"/>';
+    return s + '<circle cx="100" cy="100" r="6" fill="#e17055"/></svg>';
+  }
+  function timeStr(h, m) { return h + ":" + pad2(m); }
+  function addMin(h, m, d) {
+    var t = ((h % 12) * 60 + m + d) % 720;
+    if (t < 0) t += 720;
+    var hh = Math.floor(t / 60);
+    return [hh === 0 ? 12 : hh, t % 60];
+  }
+  function nextHour(h) { return h % 12 + 1; }
+  // 4 unique time choices (strings). Common mix-ups first: swapped hands, off-by-one hour.
+  function timeChoices(h, m, step) {
+    var cands = [];
+    if (m % 5 === 0 && m > 0 && m / 5 !== h) cands.push([m / 5, (h % 12) * 5]);   // read hands backwards
+    if (m >= 30) cands.push([nextHour(h), m]);                                     // hour hand is close to the next number
+    cands = cands.concat(shuffle([addMin(h, m, 60), addMin(h, m, -60), addMin(h, m, step), addMin(h, m, -step),
+      addMin(h, m, 2 * step), addMin(h, m, 30), addMin(h, m, -30)]));
+    var seen = {}, list = [timeStr(h, m)];
+    seen[list[0]] = true;
+    for (var i = 0; i < cands.length && list.length < 4; i++) {
+      var t = timeStr(cands[i][0], cands[i][1]);
+      if (!seen[t]) { seen[t] = true; list.push(t); }
+    }
+    return shuffle(list);
+  }
+  function randTime(step) { return [randInt(1, 12), randInt(0, 60 / step - 1) * step]; }
+
+  /* ---------- 2D shapes & 3D solids (SVG) ---------- */
+  var SHAPE_INFO = { circle: 0, triangle: 3, square: 4, rectangle: 4, hexagon: 6 };
+  var SHAPE_COLORS = ["#e17055", "#0984e3", "#00b894", "#6c5ce7", "#fdcb6e", "#e84393"];
+  function polyPoints(n, r) {
+    var p = [];
+    for (var i = 0; i < n; i++) { var a = (i / n) * 2 * Math.PI; p.push((50 + r * Math.cos(a)).toFixed(1) + "," + (50 + r * Math.sin(a)).toFixed(1)); }
+    return p.join(" ");
+  }
+  function shapeSVG(name, size, rot, color) {
+    var body;
+    if (name === "circle") body = '<circle cx="50" cy="50" r="38"/>';
+    else if (name === "square") body = '<rect x="17" y="17" width="66" height="66"/>';
+    else if (name === "rectangle") body = '<rect x="5" y="29" width="90" height="42"/>';
+    else if (name === "triangle") body = '<polygon points="50,10 92,86 8,86"/>';
+    else body = '<polygon points="' + polyPoints(6, 42) + '"/>';
+    return '<svg class="shape" data-shape="' + name + '" viewBox="0 0 100 100" width="' + (size || 80) + '" height="' + (size || 80) + '">' +
+      '<g fill="' + (color || pick(SHAPE_COLORS)) + '" stroke="#2d3436" stroke-width="3" stroke-linejoin="round" transform="rotate(' + (rot || 0) + ' 50 50)">' + body + "</g></svg>";
+  }
+  var SOLIDS = ["sphere", "cube", "cylinder", "cone"];
+  var SOLID_OBJECTS = { sphere: [["⚽", "soccer ball"], ["🌍", "globe"], ["🍊", "orange"], ["🏀", "basketball"]],
+    cube: [["🎲", "number cube (die)"], ["🧊", "ice cube"]], cylinder: [["🥫", "soup can"], ["🔋", "battery"]], cone: [["🍦", "ice cream cone"]] };
+  function solidSVG(name, size, color) {
+    color = color || pick(SHAPE_COLORS);
+    var b;
+    if (name === "sphere") b = '<circle cx="50" cy="50" r="38" fill="' + color + '"/><ellipse cx="50" cy="50" rx="38" ry="11" fill="none" stroke="#2d3436" stroke-width="2" stroke-dasharray="4 3"/><circle cx="36" cy="36" r="8" fill="#fff" opacity="0.5" stroke="none"/>';
+    else if (name === "cube") b = '<polygon points="20,35 62,35 62,85 20,85" fill="' + color + '"/><polygon points="20,35 38,17 80,17 62,35" fill="#fff" opacity="0.85"/><polygon points="62,35 80,17 80,67 62,85" fill="' + color + '" opacity="0.7"/>';
+    else if (name === "cylinder") b = '<rect x="22" y="22" width="56" height="58" fill="' + color + '" stroke="none"/><line x1="22" y1="22" x2="22" y2="80"/><line x1="78" y1="22" x2="78" y2="80"/><ellipse cx="50" cy="80" rx="28" ry="9" fill="' + color + '"/><ellipse cx="50" cy="22" rx="28" ry="9" fill="#fff" opacity="0.9"/>';
+    else b = '<polygon points="50,10 78,80 22,80" fill="' + color + '" stroke="none"/><line x1="50" y1="10" x2="78" y2="80"/><line x1="50" y1="10" x2="22" y2="80"/><ellipse cx="50" cy="80" rx="28" ry="9" fill="' + color + '"/>';
+    return '<svg class="shape solid" data-solid="' + name + '" viewBox="0 0 100 100" width="' + (size || 80) + '" height="' + (size || 80) + '"><g stroke="#2d3436" stroke-width="3" stroke-linejoin="round">' + b + "</g></svg>";
+  }
+
+  /* ---------- base-ten blocks (SVG) ---------- */
+  function baseTenSVG(tens, ones) {
+    var onesCols = Math.ceil(ones / 5), w = 10 + tens * 22 + (ones ? 10 + onesCols * 20 : 0), s = "";
+    for (var i = 0; i < tens; i++) {
+      var x = 10 + i * 22;
+      s += '<rect class="rod" x="' + x + '" y="10" width="16" height="150" fill="#74b9ff" stroke="#0984e3" stroke-width="2"/>';
+      for (var j = 1; j < 10; j++) s += '<line x1="' + x + '" y1="' + (10 + j * 15) + '" x2="' + (x + 16) + '" y2="' + (10 + j * 15) + '" stroke="#0984e3" stroke-width="1"/>';
+    }
+    var x0 = 20 + tens * 22;
+    for (var k = 0; k < ones; k++) {
+      s += '<rect class="unit" x="' + (x0 + Math.floor(k / 5) * 20) + '" y="' + (145 - (k % 5) * 20) + '" width="15" height="15" fill="#fdcb6e" stroke="#e17055" stroke-width="2"/>';
+    }
+    return '<svg class="blocks" viewBox="0 0 ' + w + ' 170" width="' + Math.min(300, w * 1.1) + '" height="' + Math.round(Math.min(300, w * 1.1) * 170 / w) + '">' + s + "</svg>";
+  }
+
+  /* ---------- coins & bills ---------- */
+  var COIN = { p: { v: 1, name: "penny" }, n: { v: 5, name: "nickel" }, d: { v: 10, name: "dime" }, q: { v: 25, name: "quarter" } };
+  function moneyValue(list) { return list.reduce(function (s, c) { return s + (c.charAt(0) === "B" ? Number(c.slice(1)) * 100 : COIN[c].v); }, 0); }
+  function coinsHTML(list, showValue) {
+    return '<div class="coins">' + list.map(function (c) {
+      if (c.charAt(0) === "B") return '<span class="bill" data-v="' + Number(c.slice(1)) * 100 + '">$' + c.slice(1) + "</span>";
+      return '<span class="coin c-' + c + '" data-v="' + COIN[c].v + '">' + (showValue ? COIN[c].v + "¢" : COIN[c].name) + "</span>";
+    }).join("") + "</div>";
+  }
+  var COIN_ORDER = { B10: 0, B5: 1, B1: 2, q: 3, d: 4, n: 5, p: 6 };
+  function makeCoins(kinds, maxCents, minCount, maxCount, sorted) {
+    for (var t = 0; t < 400; t++) {
+      var n = randInt(minCount, maxCount), list = [];
+      for (var i = 0; i < n; i++) list.push(pick(kinds));
+      var v = moneyValue(list);
+      if (v > 0 && v <= maxCents) {
+        if (sorted) list.sort(function (a, b) { return COIN_ORDER[a] - COIN_ORDER[b]; });
+        return list;
+      }
+    }
+    return [kinds[kinds.length - 1]];
+  }
+
+  /* ---------- fractions (SVG) ---------- */
+  function fracHTML(n, d) { return '<span class="frac"><span class="fn">' + n + '</span><span class="fd">' + d + "</span></span>"; }
+  function fracBarSVG(n, d, w) {
+    w = w || 200;
+    var s = "", cw = w / d;
+    for (var i = 0; i < d; i++) s += '<rect class="' + (i < n ? "on" : "off") + '" x="' + (2 + i * cw).toFixed(2) + '" y="2" width="' + cw.toFixed(2) + '" height="40" fill="' + (i < n ? "#6c5ce7" : "#fff") + '" stroke="#2d3436" stroke-width="2"/>';
+    return '<svg class="fraction" viewBox="0 0 ' + (w + 4) + ' 44" width="' + Math.min(220, w + 4) + '" height="' + Math.round(44 * Math.min(220, w + 4) / (w + 4)) + '">' + s + "</svg>";
+  }
+  function fracCircleSVG(n, d, size) {
+    var s = "";
+    for (var i = 0; i < d; i++) {
+      var a0 = (i / d) * 2 * Math.PI - Math.PI / 2, a1 = ((i + 1) / d) * 2 * Math.PI - Math.PI / 2;
+      s += '<path class="' + (i < n ? "on" : "off") + '" d="M50,50 L' + (50 + 44 * Math.cos(a0)).toFixed(2) + "," + (50 + 44 * Math.sin(a0)).toFixed(2) +
+        " A44,44 0 " + (d === 1 ? 1 : 0) + ",1 " + (50 + 44 * Math.cos(a1)).toFixed(2) + "," + (50 + 44 * Math.sin(a1)).toFixed(2) + ' Z" fill="' + (i < n ? "#6c5ce7" : "#fff") + '" stroke="#2d3436" stroke-width="2"/>';
+    }
+    return '<svg class="fraction" viewBox="0 0 100 100" width="' + (size || 110) + '" height="' + (size || 110) + '">' + s + "</svg>";
+  }
+  function fracPic(n, d, kind) { return (kind || (chance(0.5) ? "bar" : "circle")) === "bar" ? fracBarSVG(n, d) : fracCircleSVG(n, d); }
+  // Number line from 0 to max wholes, ticks every 1/d, dot at k/d
+  function numberLineSVG(max, d, k) {
+    var x0 = 20, len = 280, step = len / (max * d), s = '<line x1="' + x0 + '" y1="30" x2="' + (x0 + len) + '" y2="30" stroke="#2d3436" stroke-width="3"/>';
+    for (var i = 0; i <= max * d; i++) {
+      var x = x0 + i * step, whole = i % d === 0;
+      s += '<line x1="' + x.toFixed(2) + '" y1="' + (whole ? 18 : 22) + '" x2="' + x.toFixed(2) + '" y2="' + (whole ? 42 : 38) + '" stroke="#2d3436" stroke-width="' + (whole ? 3 : 2) + '"/>';
+      if (whole) s += '<text x="' + x.toFixed(2) + '" y="60" font-size="16" font-weight="800" text-anchor="middle" fill="#2d3436">' + (i / d) + "</text>";
+    }
+    s += '<circle class="dot" cx="' + (x0 + k * step).toFixed(2) + '" cy="30" r="8" fill="#e84393" stroke="#fff" stroke-width="2"/>';
+    return '<svg class="numline" data-x0="' + x0 + '" data-len="' + len + '" data-max="' + max + '" viewBox="0 0 320 70" width="300" height="66">' + s + "</svg>";
+  }
+  function fracKey(n, d) { return n + "/" + d; }
+
+  /* ---------- rectangles, L-shapes, rulers (SVG) ---------- */
+  function rectSVG(w, h, grid, labels, unit) {
+    var cell = Math.min(30, Math.floor(230 / w), Math.floor(140 / h)), W = w * cell, H = h * cell, ox = 46, oy = 12, s = "";
+    s += '<rect x="' + ox + '" y="' + oy + '" width="' + W + '" height="' + H + '" fill="#dff9fb" stroke="#0984e3" stroke-width="3"/>';
+    if (grid) {
+      for (var i = 1; i < w; i++) s += '<line class="gx" x1="' + (ox + i * cell) + '" y1="' + oy + '" x2="' + (ox + i * cell) + '" y2="' + (oy + H) + '" stroke="#74b9ff" stroke-width="1.5"/>';
+      for (var j = 1; j < h; j++) s += '<line class="gy" x1="' + ox + '" y1="' + (oy + j * cell) + '" x2="' + (ox + W) + '" y2="' + (oy + j * cell) + '" stroke="#74b9ff" stroke-width="1.5"/>';
+    }
+    if (labels) {
+      s += '<text class="lw" x="' + (ox + W / 2) + '" y="' + (oy + H + 22) + '" font-size="16" font-weight="800" text-anchor="middle" fill="#2d3436">' + w + " " + unit + "</text>";
+      s += '<text class="lh" x="' + (ox - 6) + '" y="' + (oy + H / 2) + '" font-size="16" font-weight="800" text-anchor="end" dominant-baseline="central" fill="#2d3436">' + h + " " + unit + "</text>";
+    }
+    return '<svg class="rect-fig" data-w="' + w + '" data-h="' + h + '" viewBox="0 0 ' + (W + ox + 20) + " " + (H + oy + 32) + '" width="' + Math.min(300, W + ox + 20) + '">' + s + "</svg>";
+  }
+  // L-shape: W x H rectangle with a w2 x h2 notch cut from the top-right corner
+  function lShapeSVG(W, H, w2, h2, unit) {
+    var cell = Math.min(26, Math.floor(220 / W), Math.floor(140 / H)), ox = 50, oy = 28, s = "";
+    var pts = [[0, 0], [W - w2, 0], [W - w2, h2], [W, h2], [W, H], [0, H]].map(function (p) { return (ox + p[0] * cell) + "," + (oy + p[1] * cell); }).join(" ");
+    for (var i = 1; i < W; i++) { var top = i >= W - w2 ? h2 : 0; s += '<line x1="' + (ox + i * cell) + '" y1="' + (oy + top * cell) + '" x2="' + (ox + i * cell) + '" y2="' + (oy + H * cell) + '" stroke="#74b9ff" stroke-width="1.2"/>'; }
+    for (var j = 1; j < H; j++) { var right = j >= h2 ? W : W - w2; s += '<line x1="' + ox + '" y1="' + (oy + j * cell) + '" x2="' + (ox + right * cell) + '" y2="' + (oy + j * cell) + '" stroke="#74b9ff" stroke-width="1.2"/>'; }
+    s = '<polygon points="' + pts + '" fill="#dff9fb" stroke="none"/>' + s + '<polygon points="' + pts + '" fill="none" stroke="#0984e3" stroke-width="3"/>';
+    var t = function (x, y, txt, anchor) { return '<text x="' + x + '" y="' + y + '" font-size="15" font-weight="800" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central" fill="#2d3436">' + txt + "</text>"; };
+    s += t(ox + W * cell / 2, oy + H * cell + 16, W + " " + unit);
+    s += t(ox - 6, oy + H * cell / 2, H + " " + unit, "end");
+    s += t(ox + (W - w2) * cell / 2, oy - 12, (W - w2) + " " + unit);
+    s += t(ox + W * cell + 6, oy + (h2 + (H - h2) / 2) * cell, (H - h2) + " " + unit, "start");
+    return '<svg class="rect-fig" viewBox="0 0 ' + (W * cell + ox + 70) + " " + (H * cell + oy + 32) + '" width="' + Math.min(310, W * cell + ox + 70) + '">' + s + "</svg>";
+  }
+  // Ruler 0..units with bars [{s, e, color}]
+  function rulerSVG(units, bars) {
+    var W = 340, pad = 16, u = (W - 2 * pad) / units, y0 = 12 + bars.length * 30, s = "";
+    bars.forEach(function (b, i) {
+      var y = 10 + i * 30;
+      s += '<rect class="bar" x="' + (pad + b.s * u).toFixed(2) + '" y="' + y + '" width="' + ((b.e - b.s) * u).toFixed(2) + '" height="20" rx="6" fill="' + b.color + '" stroke="#2d3436" stroke-width="2"/>';
+      if (b.label) s += '<text x="' + (pad + b.e * u + 4).toFixed(2) + '" y="' + (y + 11) + '" font-size="14" dominant-baseline="central">' + b.label + "</text>";
+      s += '<line x1="' + (pad + b.s * u).toFixed(2) + '" y1="' + (y + 20) + '" x2="' + (pad + b.s * u).toFixed(2) + '" y2="' + y0 + '" stroke="#b2bec3" stroke-dasharray="3 3"/>';
+      s += '<line x1="' + (pad + b.e * u).toFixed(2) + '" y1="' + (y + 20) + '" x2="' + (pad + b.e * u).toFixed(2) + '" y2="' + y0 + '" stroke="#b2bec3" stroke-dasharray="3 3"/>';
+    });
+    s += '<rect x="' + (pad - 8) + '" y="' + y0 + '" width="' + (W - 2 * pad + 16) + '" height="40" rx="4" fill="#ffeaa7" stroke="#e17055" stroke-width="2"/>';
+    for (var i = 0; i <= units; i++) {
+      var x = pad + i * u;
+      s += '<line x1="' + x.toFixed(2) + '" y1="' + y0 + '" x2="' + x.toFixed(2) + '" y2="' + (y0 + 16) + '" stroke="#2d3436" stroke-width="2"/>';
+      s += '<text x="' + x.toFixed(2) + '" y="' + (y0 + 30) + '" font-size="12" font-weight="700" text-anchor="middle" fill="#2d3436">' + i + "</text>";
+      if (i < units) s += '<line x1="' + (x + u / 2).toFixed(2) + '" y1="' + y0 + '" x2="' + (x + u / 2).toFixed(2) + '" y2="' + (y0 + 8) + '" stroke="#2d3436" stroke-width="1"/>';
+    }
+    return '<svg class="ruler" data-pad="' + pad + '" data-u="' + u.toFixed(4) + '" viewBox="0 0 ' + W + " " + (y0 + 44) + '" width="320">' + s + "</svg>";
+  }
+  /* ================= Kindergarten ================= */
+  var K_COUNT = [null,
+    { min: 1, max: 5, lay: "rows", ch: true }, { min: 3, max: 8, lay: "rows", ch: true },
+    { min: 5, max: 10, lay: "frame", ch: true }, { min: 5, max: 10, lay: "scatter", ch: true },
+    { min: 10, max: 15, lay: "frame", ch: true }, { min: 11, max: 20, lay: "frame", ch: false },
+    { min: 8, max: 15, lay: "scatter", ch: false }, { min: 11, max: 20, lay: "scatter", ch: false },
+    { min: 4, max: 12, lay: "mixed", ch: false }, { min: 8, max: 18, lay: "mixed", ch: false }];
+  function genKCount(level) {
+    var c = K_COUNT[level], n = randInt(c.min, c.max), o = pick(OBJECTS), q = "How many " + o[1] + "?", vis;
+    if (c.lay === "rows") vis = emojiRows(n, o[0], n <= 5 ? 5 : 4);
+    else if (c.lay === "frame") vis = emojiRows(n, o[0], 5);
+    else if (c.lay === "scatter") vis = emojiScatter(fill(n, o[0]));
+    else {
+      var o2 = twoObjects()[0]; while (o2 === o) o2 = pick(OBJECTS);
+      var other = randInt(3, Math.min(8, 24 - n));
+      vis = emojiScatter(shuffle(fill(n, o[0]).concat(fill(other, o2[0]))));
+      q = "How many " + o[0] + " " + o[1] + "?<br><small>(Don't count the " + o2[1] + ")</small>";
+    }
+    return numQ(qText(q) + vis, n, "kc:" + n + ":" + o[1] + ":" + c.lay, c.ch ? numChoices(n, 1, 24, [1, -1, 2, -2, 3]) : null);
+  }
+
+  var K_BA = [null, { t: ["after"], max: 5 }, { t: ["after"], max: 10 }, { t: ["before"], max: 10 }, { t: ["before", "after"], max: 20 },
+    { t: ["between"], max: 20 }, { t: ["before", "after", "between"], max: 30 }, { t: ["before", "after"], max: 50 },
+    { t: ["after", "between"], max: 100 }, { t: ["before", "between"], max: 100 }, { t: ["before", "after", "between", "tens"], max: 100 }];
+  function trainHTML(cells) {
+    return '<div class="num-train">' + cells.map(function (c) { return '<span class="car' + (c === "?" ? " blank" : "") + '">' + c + "</span>"; }).join("") + "</div>";
+  }
+  function genKBeforeAfter(level) {
+    var c = K_BA[level], t = pick(c.t), n = 0, ans, q, cells;
+    if (t === "after") { n = randInt(level <= 2 ? 0 : 1, c.max - 1); ans = n + 1; q = "What number comes <u>after</u> " + n + "?"; cells = [n, "?"]; }
+    else if (t === "before") { n = randInt(2, c.max); ans = n - 1; q = "What number comes <u>before</u> " + n + "?"; cells = ["?", n]; }
+    else if (t === "between") { n = randInt(1, c.max - 2); ans = n + 1; q = "What number goes in the middle?"; cells = [n, "?", n + 2]; }
+    else { n = randInt(1, 6) * 10; ans = n + 30; q = "Count by tens. What comes next?"; cells = [n, n + 10, n + 20, "?"]; }
+    return numQ(qText(q) + trainHTML(cells), ans, "kba:" + t + ":" + n, level <= 4 ? numChoices(ans, 0, c.max, [1, -1, 2, -2]) : null);
+  }
+
+  function genKCompare(level) {
+    var L = level === 10 ? pick([7, 8, 9]) : level, a, b, ans, opts;
+    if (L === 5 || L === 6 || L === 8) {
+      a = randInt(1, 10); b = randInt(1, 10);
+      if (L === 8 && chance(0.2)) b = a; else while (b === a) b = randInt(1, 10);
+      var big = L === 5 ? true : (L === 6 ? false : chance(0.5));
+      ans = a === b ? "same" : String(big ? Math.max(a, b) : Math.min(a, b));
+      opts = [opt(a, '<span class="big-choice">' + a + "</span>"), opt(b, '<span class="big-choice">' + b + "</span>")];
+      if (a === b) opts = [opt(a, '<span class="big-choice">' + a + "</span>"), opt(a === 10 ? 9 : a + 1, '<span class="big-choice">' + (a === 10 ? 9 : a + 1) + "</span>")];
+      if (L === 8) opts.push(opt("same", "🟰 Same"));
+      return choiceQ(qText("Which number is <u>" + (big ? "bigger" : "smaller") + "</u>?" + (L === 8 ? "<br><small>or are they the same?</small>" : "")) +
+        '<div class="big-number">' + a + " &nbsp; and &nbsp; " + b + "</div>", ans, opts, ans === "same" ? "They are the same (" + a + ")" : ans,
+        "kcn:" + a + ":" + b + ":" + big, L === 8 ? 3 : 2);
+    }
+    if (L === 9) {
+      var nums = shuffle(range(10).map(function (i) { return i + 1; })).slice(0, 3);
+      var big3 = level === 9 ? true : chance(0.5);
+      ans = String(big3 ? Math.max.apply(null, nums) : Math.min.apply(null, nums));
+      return choiceQ(qText("Which number is the <u>" + (big3 ? "biggest" : "smallest") + "</u>?"), ans,
+        nums.map(function (x) { return opt(x, '<span class="big-choice">' + x + "</span>"); }), ans, "kc3:" + nums.join(",") + big3, 3);
+    }
+    var cfg = { 1: { max: 5, d: 3, ask: ["more"] }, 2: { max: 10, d: 2, ask: ["more"] }, 3: { max: 10, d: 2, ask: ["fewer"] },
+      4: { max: 10, d: 1, ask: ["more", "fewer"], same: true }, 7: { max: 10, d: 1, ask: ["more", "fewer"], same: true, messy: true } }[L];
+    var o = twoObjects(), x, y;
+    for (var t = 0; t < 200; t++) {
+      x = randInt(1, cfg.max); y = cfg.same && chance(0.2) ? x : randInt(1, cfg.max);
+      if (x === y ? cfg.same : Math.abs(x - y) >= cfg.d) break;
+    }
+    if (x === y && !cfg.same) y = x === 1 ? x + cfg.d : 1;
+    var ask = pick(cfg.ask);
+    ans = x === y ? "same" : ((ask === "more") === (x > y) ? "a" : "b");
+    opts = [opt("a", o[0][0] + " " + o[0][1]), opt("b", o[1][0] + " " + o[1][1])];
+    if (cfg.same) opts.push(opt("same", "🟰 Same"));
+    var per1 = cfg.messy ? randInt(2, 4) : 5, per2 = cfg.messy ? randInt(2, 4) : 5;
+    return choiceQ(qText("Which group has <u>" + ask.toUpperCase() + "</u>?" + (cfg.same ? "<br><small>or are they the same?</small>" : "")) +
+      '<div class="groups"><div class="group">' + emojiRows(x, o[0][0], per1) + '</div><div class="group">' + emojiRows(y, o[1][0], per2) + "</div></div>",
+      ans, opts, (ans === "same" ? "Same! " : (ans === "a" ? o[0][1] : o[1][1])) + " (" + x + " " + o[0][1] + ", " + y + " " + o[1][1] + ")",
+      "kcg:" + x + ":" + y + ":" + ask, cfg.same ? 3 : 2);
+  }
+
+  function genKAddSub(level) {
+    var L = level === 10 ? pick([6, 7, 8, 9]) : level, o = pick(OBJECTS), a, b, c, ans, html, key;
+    var max = (L === 1 || L === 2 || L === 5) ? 5 : 10;
+    if (L === 1 || L === 3) {
+      a = randInt(1, max - 1); b = randInt(1, max - a); ans = a + b;
+      html = qSub("How many in all?") + '<div class="pic-eq">' + emojiRows(a, o[0], 5) + '<span class="op">+</span>' + emojiRows(b, o[0], 5) + "</div>" + bigNum(a + " + " + b + " = ?");
+      key = "ka:" + a + "+" + b;
+    } else if (L === 2 || L === 4) {
+      a = randInt(2, max); b = randInt(1, a - 1); ans = a - b;
+      html = qSub(b + " " + o[1] + " go away. How many are left?") + emojiRows(a, o[0], 5, b) + bigNum(a + " " + MINUS + " " + b + " = ?");
+      key = "ka:" + a + "-" + b;
+    } else if (L === 5 || L === 6) {
+      if (chance(0.5)) { a = randInt(0, max - 1); b = randInt(1, max - a); ans = a + b; html = bigNum(a + " + " + b + " = ?"); key = "ka:" + a + "+" + b; }
+      else { a = randInt(1, max); b = randInt(0, a); ans = a - b; html = bigNum(a + " " + MINUS + " " + b + " = ?"); key = "ka:" + a + "-" + b; }
+    } else if (L === 7) {
+      a = randInt(1, 9); ans = 10 - a;
+      html = qText("Make 10!") + tenFrame(a) + bigNum(a + " + ? = 10"); key = "ka:m10:" + a;
+    } else if (L === 8) {
+      c = randInt(3, 10); a = randInt(1, c - 1); ans = c - a;
+      if (chance(0.5)) { html = qSub("What number is missing?") + bigNum(a + " + ? = " + c); key = "ka:m:" + a + "+" + c; }
+      else { html = qSub("What number is missing?") + bigNum(c + " " + MINUS + " ? = " + a); key = "ka:m:" + c + "-" + a; }
+    } else {
+      var nm = pick(NAMES);
+      if (chance(0.5)) { a = randInt(1, 8); b = randInt(1, 10 - a); ans = a + b; html = qText(nm + " has " + a + " " + o[0] + ". " + nm + " gets " + b + " more. How many now?", "font-size:1.3rem"); key = "ka:w+" + a + ":" + b; }
+      else { a = randInt(3, 10); b = randInt(1, a - 1); ans = a - b; html = qText("There are " + a + " " + o[0] + ". " + b + " go away. How many are left?", "font-size:1.3rem"); key = "ka:w-" + a + ":" + b; }
+    }
+    return numQ(html, ans, key, level <= 4 ? numChoices(ans, 0, 10, [1, -1, 2, -2]) : null);
+  }
+
+  function genKShapes(level) {
+    var L = level === 10 ? pick([2, 4, 5, 6, 8, 9]) : level, target, names, opts, n;
+    var ALL = ["circle", "triangle", "square", "rectangle", "hexagon"];
+    if (L === 1) {
+      names = shuffle(["circle", "square", "triangle", "rectangle"]); target = pick(names);
+      return choiceQ(qText("Tap the <u>" + target + "</u>"), target, names.map(function (s) { return opt(s, shapeSVG(s, 72)); }), "the " + target, "ks1:" + target + ":" + names.join(""), 2);
+    }
+    if (L === 2) {
+      target = pick(ALL);
+      names = shuffle([target].concat(shuffle(ALL.filter(function (s) { return s !== target; })).slice(0, 3)));
+      return choiceQ(qText("What shape is this?") + shapeSVG(target, 120), target, names.map(function (s) { return opt(s); }), target, "ks2:" + target + ":" + names.join(""), 2);
+    }
+    if (L === 3 || L === 4) {
+      var pool = L === 3 ? ["triangle", "square", "rectangle", "hexagon"] : ALL;
+      target = pick(pool); n = SHAPE_INFO[target];
+      var nums = L === 3 ? [3, 4, 5, 6] : [0, 3, 4, 6];
+      return choiceQ(qText("How many <u>" + (L === 3 ? "sides" : "corners") + "</u> does this " + target + " have?") + shapeSVG(target, 120), n,
+        nums.map(function (x) { return opt(x, '<span class="big-choice">' + x + "</span>"); }), String(n), "ks" + L + ":" + target, 4);
+    }
+    if (L === 5) {
+      target = pick(SOLIDS);
+      if (chance(0.5)) {
+        return choiceQ(qText("Tap the <u>" + target + "</u>"), target, shuffle(SOLIDS).map(function (s) { return opt(s, solidSVG(s, 72)); }), "the " + target, "ks5a:" + target, 2);
+      }
+      var ob = pick(SOLID_OBJECTS[target]);
+      return choiceQ(qText("A " + ob[1] + " is shaped like a…") + '<div class="big-emoji">' + ob[0] + "</div>", target,
+        shuffle(SOLIDS).map(function (s) { return opt(s); }), target, "ks5b:" + ob[1], 2);
+    }
+    if (L === 6) {
+      var solid = chance(0.5);
+      target = solid ? pick(SOLIDS) : pick(ALL);
+      return choiceQ(qText("Is this shape <u>flat</u> or <u>solid</u>?") + (solid ? solidSVG(target, 120) : shapeSVG(target, 120)), solid ? "solid" : "flat",
+        [opt("flat", "📄 Flat (2D)"), opt("solid", "🧊 Solid (3D)")], solid ? "solid (a " + target + ")" : "flat (a " + target + ")", "ks6:" + target, 2);
+    }
+    if (L === 7) {
+      target = pick(["triangle", "square", "rectangle", "hexagon"]);
+      var others = shuffle(ALL.filter(function (s) { return s !== target && !(target === "square" && s === "rectangle") && !(target === "rectangle" && s === "square"); })).slice(0, 3);
+      names = shuffle([target].concat(others));
+      return choiceQ(qText("Which one is a <u>" + target + "</u>?"), target,
+        names.map(function (s) { return opt(s, shapeSVG(s, randInt(56, 80), s === "circle" ? 0 : randInt(0, 7) * 15)); }), "the " + target, "ks7:" + target + ":" + names.join(""), 2);
+    }
+    if (L === 8) {
+      target = pick(["circle", "triangle", "square", "hexagon"]);
+      var row = [];
+      var cnt = randInt(1, 5), len = randInt(Math.max(6, cnt + 1), 9);
+      for (var i = 0; i < len; i++) row.push(i < cnt ? target : pick(ALL.filter(function (s) { return s !== target && !(target === "square" && s === "rectangle"); })));
+      row = shuffle(row);
+      return numQ(qText("How many <u>" + target + "s</u>?") + '<div class="shape-row">' + row.map(function (s) { return shapeSVG(s, 44); }).join("") + "</div>",
+        cnt, "ks8:" + row.join(","), numChoices(cnt, 0, 9, [1, -1, 2, -2]));
+    }
+    var sides = pick([0, 3, 4, 6]);
+    var set = shuffle(["circle", "triangle", pick(["square", "rectangle"]), "hexagon"]);
+    target = set.filter(function (s) { return SHAPE_INFO[s] === sides; })[0];
+    return choiceQ(qText(sides === 0 ? "Which shape has <u>no</u> sides or corners?" : "Which shape has <u>" + sides + "</u> sides?"), target,
+      set.map(function (s) { return opt(s, shapeSVG(s, 64)); }), "the " + target, "ks9:" + sides + ":" + target, 2);
+  }
+
+  /* ================= 1st grade ================= */
+  function genG1AddSub(level) {
+    var L = level === 10 ? pick([5, 6, 7, 8, 9]) : level, a, b, c, d, ans, expr;
+    switch (L) {
+      case 1: a = randInt(1, 9); b = randInt(1, 10 - a); ans = a + b; expr = a + " + " + b; break;
+      case 2: a = randInt(2, 10); b = randInt(1, a - 1); ans = a - b; expr = a + " " + MINUS + " " + b; break;
+      case 3: a = randInt(11, 18); b = randInt(1, 9 - a % 10); ans = a + b; expr = chance(0.5) ? a + " + " + b : b + " + " + a; break;
+      case 4: a = randInt(12, 19); b = randInt(1, a % 10); ans = a - b; expr = a + " " + MINUS + " " + b; break;
+      case 5: a = randInt(2, 9); b = randInt(Math.max(2, 11 - a), 9); ans = a + b; expr = a + " + " + b; break;
+      case 6: c = randInt(11, 18); b = randInt(c % 10 + 1, 9); ans = c - b; expr = c + " " + MINUS + " " + b; break;
+      case 7:
+        c = randInt(11, 20); a = randInt(Math.max(1, c - 10), Math.min(10, c - 1)); ans = c - a;
+        if (chance(0.5)) return numQ(qSub("What number is missing?") + bigNum(a + " + ? = " + c), ans, "g1as:m+" + a + ":" + c);
+        return numQ(qSub("What number is missing?") + bigNum(c + " " + MINUS + " ? = " + a), ans, "g1as:m-" + a + ":" + c);
+      case 8:
+        for (var t = 0; t < 100; t++) {
+          a = randInt(1, 9); b = randInt(1, 9); d = randInt(1, 9);
+          if (chance(0.5)) b = 10 - a;
+          if (b >= 1 && a + b + d <= 20) break;
+        }
+        if (!(b >= 1 && a + b + d <= 20)) { a = 4; b = 6; d = 3; }
+        ans = a + b + d; expr = a + " + " + b + " + " + d; break;
+      default:
+        var kind = pick(["ones", "tens", "subtens"]);
+        if (kind === "ones") { a = randInt(11, 89); b = randInt(1, Math.min(9, 99 - a)); ans = a + b; expr = a + " + " + b; }
+        else if (kind === "tens") { a = randInt(11, 79); b = 10 * randInt(1, Math.floor((99 - a) / 10)); ans = a + b; expr = a + " + " + b; }
+        else { a = 10 * randInt(2, 9); b = 10 * randInt(1, a / 10 - 1); ans = a - b; expr = a + " " + MINUS + " " + b; }
+    }
+    return numQ(bigNum(expr + " = ?"), ans, "g1as:" + expr);
+  }
+
+  function genG1TensOnes(level) {
+    var L = level === 10 ? 10 : level, n, t, o, ans, html, key;
+    if (L <= 3) {
+      n = L === 1 ? randInt(11, 19) : (L === 2 ? randInt(20, 50) : randInt(51, 99));
+      t = Math.floor(n / 10); o = n % 10;
+      return numQ(qText("How many blocks?") + qSub("Each tall bar is 10.") + baseTenSVG(t, o), n, "g1to:v" + n, L === 1 ? numChoices(n, 10, 20, [1, -1, 10, -10]) : null);
+    }
+    n = randInt(21, 99); t = Math.floor(n / 10); o = n % 10;
+    switch (L) {
+      case 4: ans = t; html = qText("How many <u>tens</u> are in " + n + "?") + baseTenSVG(t, o); key = "g1to:t" + n; break;
+      case 5: ans = o; html = qText("How many <u>ones</u> are in " + n + "?"); key = "g1to:o" + n; break;
+      case 6: ans = n; html = qText(t + " tens and " + o + " ones") + qSub("What number is that?"); key = "g1to:b" + n; break;
+      case 7: n = randInt(10, 89); ans = n + 10; html = qText("What is <u>10 more</u> than " + n + "?"); key = "g1to:+" + n; break;
+      case 8: n = randInt(20, 99); ans = n - 10; html = qText("What is <u>10 less</u> than " + n + "?"); key = "g1to:-" + n; break;
+      case 9:
+        if (chance(0.3)) o = 0;
+        n = t * 10 + o; ans = n; html = qText(o + " ones and " + t + " tens") + qSub("What number is that?"); key = "g1to:s" + n; break;
+      default:
+        var kind = pick(["after", "before", "more"]);
+        if (kind === "after") { n = randInt(99, 119); ans = n + 1; html = qText("What number comes <u>after</u> " + n + "?"); }
+        else if (kind === "before") { n = randInt(101, 120); ans = n - 1; html = qText("What number comes <u>before</u> " + n + "?"); }
+        else { n = randInt(90, 110); ans = n + 10; html = qText("What is <u>10 more</u> than " + n + "?"); }
+        key = "g1to:" + kind + n;
+    }
+    return numQ(html, ans, key);
+  }
+
+  function genG1Compare(level) {
+    var L = level === 10 ? pick([5, 6, 7, 8, 9]) : level, a, b, lt, rt, eq = chance(0.15);
+    var R = { 1: [0, 10], 2: [0, 20], 3: [10, 99], 4: [10, 99], 5: [12, 98], 7: [60, 120], 8: [100, 120] }[L];
+    if (L === 6) {
+      a = randInt(11, 99); b = eq ? a : (chance(0.5) ? Number(String(a).split("").reverse().join("")) : a + randInt(-9, 9));
+      if (b < 10 || b > 99 || b === a && !eq) b = a + (a < 90 ? 1 : -1);
+      lt = Math.floor(a / 10) + " tens " + (a % 10) + " ones";
+      return compareQ('<span style="font-size:1.3rem">' + lt + "</span>", String(b), a, b, lt, String(b), "g1c:to" + a + ":" + b);
+    }
+    if (L === 9) {
+      var x = randInt(1, 9) * 10, y = randInt(1, 9), sum = x + y;
+      b = eq ? sum : sum + pick([-10, -2, -1, 1, 2, 10]);
+      if (b < 1) b = sum + 1;
+      lt = x + " + " + y;
+      if (chance(0.5)) return compareQ(lt, String(b), sum, b, lt, String(b), "g1c:e" + lt + ":" + b);
+      return compareQ(String(b), lt, b, sum, String(b), lt, "g1c:e" + b + ":" + lt);
+    }
+    a = randInt(R[0], R[1]);
+    if (eq) b = a;
+    else if (L === 3) { do { b = randInt(10, 99); } while (Math.floor(b / 10) === Math.floor(a / 10)); }
+    else if (L === 4 || L === 8) { b = Math.max(R[0], Math.min(R[1], a + pick([-9, -5, -3, -2, -1, 1, 2, 3, 5, 9]))); if (b === a) b = a === R[1] ? a - 1 : a + 1; }
+    else if (L === 5) { a = randInt(12, 98); b = chance(0.5) ? Math.floor(a / 10) * 10 + randInt(0, 9) : Number(String(a).split("").reverse().join("")); if (b < 10) b = a + 1; }
+    else if (L === 7) { b = chance(0.5) ? randInt(60, 120) : (a >= 100 ? randInt(60, 99) : randInt(100, 120)); }
+    else { do { b = randInt(R[0], R[1]); } while (b === a && R[1] - R[0] > 1); }
+    return compareQ(String(a), String(b), a, b, String(a), String(b), "g1c:" + a + ":" + b);
+  }
+
+  function genG1Word(level) {
+    var L = level === 10 ? pick([5, 6, 7, 8, 9]) : level, w, n2 = twoNames(), item = pick(ITEMS), a, b, c;
+    switch (L) {
+      case 1: w = wpAdd(null, 10, "any"); break;
+      case 2: w = wpSub(null, 10, "any"); break;
+      case 3: w = wpAdd(null, 20, "any"); break;
+      case 4: w = wpSub(null, 20, "any"); break;
+      case 5:
+        a = randInt(6, 20); b = randInt(1, a - 1);
+        w = { text: n2[0] + " has " + a + " " + item + ". " + n2[1] + " has " + b + ". How many more " + item + " does " + n2[0] + " have than " + n2[1] + "?", answer: a - b, key: "w1:cmp" + a + ":" + b };
+        break;
+      case 6:
+        a = randInt(2, 15); c = randInt(a + 1, 20);
+        w = { text: n2[0] + " had " + a + " " + item + ". Then " + n2[0] + " got some more. Now " + n2[0] + " has " + c + ". How many did " + n2[0] + " get?", answer: c - a, key: "w1:chg" + a + ":" + c };
+        break;
+      case 7:
+        b = randInt(2, 10); c = randInt(b + 1, 20);
+        w = { text: n2[0] + " had some " + item + ". Then " + n2[0] + " got " + b + " more. Now " + n2[0] + " has " + c + ". How many " + item + " did " + n2[0] + " have at first?", answer: c - b, key: "w1:st" + b + ":" + c };
+        break;
+      case 8:
+        do { a = randInt(1, 9); b = randInt(1, 9); c = randInt(1, 9); } while (a + b + c > 20);
+        w = { text: "There are " + a + " red " + item + ", " + b + " blue " + item + ", and " + c + " green " + item + ". How many " + item + " in all?", answer: a + b + c, key: "w1:3" + a + ":" + b + ":" + c };
+        break;
+      default:
+        a = randInt(6, 20); b = randInt(1, a - 1);
+        w = chance(0.5)
+          ? { text: n2[0] + " has " + a + " " + item + ". " + n2[1] + " has " + b + ". How many fewer " + item + " does " + n2[1] + " have?", answer: a - b, key: "w1:few" + a + ":" + b }
+          : { text: n2[0] + " has " + b + " " + item + ". How many more does " + n2[0] + " need to have " + a + "?", answer: a - b, key: "w1:need" + a + ":" + b };
+    }
+    return numQ(qText(w.text, "font-size:1.25rem"), w.answer, w.key);
+  }
+
+  function hourChoicesClock(list) { return list.map(function (t) { var p = t.split(":"); return opt(t, clockSVG(Number(p[0]), Number(p[1]), 96)); }); }
+  function genG1Time(level) {
+    var L = level === 10 ? pick([3, 5, 6, 7, 8, 9]) : level, h = randInt(1, 12), m, t, list, html;
+    m = (L === 1 || L === 2 || L === 4 || L === 7) ? 0 : ((L === 3 || L === 5 || L === 6) ? 30 : pick([0, 30]));
+    t = timeStr(h, m);
+    var halfWords = function (hh, mm) { return mm === 0 ? hh + " o'clock" : "half past " + hh; };
+    if (L === 1 || L === 3) {
+      list = timeChoices(h, m, 30);
+      return choiceQ(qText("What time is it?") + clockSVG(h, m), t, list.map(function (x) { return opt(x); }), t, "g1t:r" + t, 2);
+    }
+    if (L === 2) {
+      list = shuffle([h, nextHour(h), nextHour(nextHour(h)), (h + 9) % 12 + 1]).map(function (x) { return x + " o'clock"; });
+      return choiceQ(qText("What time is it?") + clockSVG(h, 0), h + " o'clock", list.map(function (x) { return opt(x); }), h + " o'clock", "g1t:w" + h, 2);
+    }
+    if (L === 4 || L === 5) {
+      list = timeChoices(h, m, 30);
+      return choiceQ(qText("Which clock shows <u>" + t + "</u>?"), t, hourChoicesClock(list), "the clock showing " + t, "g1t:p" + t, 2);
+    }
+    if (L === 6) {
+      list = timeChoices(h, m, 30);
+      return choiceQ(qText("<u>" + halfWords(h, m) + "</u> is the same as…"), t, list.map(function (x) { return opt(x); }), t, "g1t:hw" + t, 2);
+    }
+    if (L === 7 || L === 8) {
+      var add = L === 7 ? 60 : 30, e = addMin(h, m, add), et = timeStr(e[0], e[1]);
+      list = timeChoices(e[0], e[1], 30);
+      html = qText("It is " + t + " now. What time will it be in <u>" + (add === 60 ? "1 hour" : "half an hour") + "</u>?") + clockSVG(h, m, 120);
+      return choiceQ(html, et, list.map(function (x) { return opt(x); }), et, "g1t:l" + t + ":" + add, 2);
+    }
+    var ev = pick([["Lunch", "recess"], ["Soccer practice", "dinner"], ["The movie", "bath time"], ["Art class", "music class"]]);
+    var add2 = pick([30, 60]), e2 = addMin(h, m, add2), et2 = timeStr(e2[0], e2[1]);
+    list = timeChoices(e2[0], e2[1], 30);
+    return choiceQ(qText(ev[0] + " starts at " + t + ". " + ev[1].charAt(0).toUpperCase() + ev[1].slice(1) + " starts " + (add2 === 60 ? "1 hour" : "half an hour") + " later. When does " + ev[1] + " start?", "font-size:1.25rem"),
+      et2, list.map(function (x) { return opt(x); }), et2, "g1t:s" + t + ":" + add2 + ev[1], 2);
+  }
+  /* ================= 2nd grade (new modes) ================= */
+  function genG2Money(level) {
+    var L = level === 10 ? pick([6, 8, 9, 11]) : level, list, v, a, b, html;
+    var cfg = { 1: [["p", "n"], 20, 2, 6, true, true], 2: [["d", "p"], 50, 2, 7, true, true], 3: [["d", "n", "p"], 60, 3, 7, true, true],
+      4: [["q", "d", "n", "p"], 99, 3, 7, true, true], 5: [["q", "d", "n", "p"], 75, 3, 6, false, true], 6: [["q", "d", "n", "p"], 99, 4, 8, false, false] }[L];
+    if (cfg) {
+      list = makeCoins(cfg[0], cfg[1], cfg[2], cfg[3], cfg[5]); v = moneyValue(list);
+      return numQ(qText("How many cents?") + coinsHTML(list, cfg[4]), v, "g2m:" + list.join(""), null, "¢");
+    }
+    if (L === 7) {
+      list = makeCoins(["B1", "B5", "B10"], 3000, 2, 5, true); v = moneyValue(list) / 100;
+      return numQ(qText("How many dollars?") + coinsHTML(list, true), v, "g2m:b" + list.join(""), null, "$");
+    }
+    if (L === 8) {
+      var toy = pick([["🍭", "lollipop"], ["🧸", "teddy bear"], ["🪀", "yo-yo"], ["✏️", "pencil"], ["🎈", "balloon"], ["🍪", "cookie"]]);
+      a = chance(0.5) ? randInt(4, 19) * 5 : randInt(20, 99); b = chance(0.5) ? randInt(1, Math.floor((a - 1) / 5)) * 5 : randInt(1, a - 1);
+      if (b >= a || b < 1) b = a - 1;
+      return numQ(qText("You have " + a + "¢. You buy a " + toy[0] + " " + toy[1] + " for " + b + "¢. How much money is left?", "font-size:1.25rem"), a - b, "g2m:s" + a + ":" + b, null, "¢");
+    }
+    if (L === 9) {
+      list = makeCoins(["q", "d", "n", "p"], 95, 2, 6, false); v = moneyValue(list);
+      return numQ(qText("How many more cents to make <u>$1</u> (100¢)?") + coinsHTML(list, false), 100 - v, "g2m:d" + list.join(""), null, "¢");
+    }
+    var cq = randInt(0, 3), cd = randInt(0, 5), cn = randInt(0, 4), cp = randInt(0, 4);
+    if (cq + cd + cn + cp < 2) cd += 2;
+    v = cq * 25 + cd * 10 + cn * 5 + cp;
+    if (v > 150) { cq = 1; v = cq * 25 + cd * 10 + cn * 5 + cp; }
+    var parts = [];
+    if (cq) parts.push(cq + (cq === 1 ? " quarter" : " quarters"));
+    if (cd) parts.push(cd + (cd === 1 ? " dime" : " dimes"));
+    if (cn) parts.push(cn + (cn === 1 ? " nickel" : " nickels"));
+    if (cp) parts.push(cp + (cp === 1 ? " penny" : " pennies"));
+    html = qText(parts.join(", ").replace(/, ([^,]*)$/, " and $1") + "." , "font-size:1.3rem") + qSub("How many cents is that?");
+    return numQ(html, v, "g2m:w" + cq + cd + cn + cp, null, "¢");
+  }
+
+  function genG2Time(level) {
+    var L = level === 10 ? pick([4, 5, 6, 7, 9]) : level, hm, h, m, t, list;
+    if (L === 1) { h = randInt(1, 12); m = pick([0, 30]); }
+    else if (L === 2) { h = randInt(1, 12); m = pick([15, 45]); }
+    else if (L === 4) { h = randInt(1, 12); m = pick([35, 40, 45, 50, 55]); }
+    else { hm = randTime(5); h = hm[0]; m = hm[1]; }
+    t = timeStr(h, m);
+    if (L <= 4) {
+      list = timeChoices(h, m, 5);
+      return choiceQ(qText("What time is it?") + clockSVG(h, m), t, list.map(function (x) { return opt(x); }), t, "g2t:r" + t, 2);
+    }
+    if (L === 5) return choiceQ(qText("Which clock shows <u>" + t + "</u>?"), t, hourChoicesClock(timeChoices(h, m, 5)), "the clock showing " + t, "g2t:p" + t, 2);
+    if (L === 6 || L === 9) {
+      var add = L === 6 ? pick([5, 10, 15, 20]) : 30;
+      if (L === 9) m = pick([35, 40, 45, 50, 55]);
+      t = timeStr(h, m);
+      var e = addMin(h, m, add), et = timeStr(e[0], e[1]);
+      return choiceQ(qText("What time will it be in <u>" + add + " minutes</u>?") + clockSVG(h, m, 130), et,
+        timeChoices(e[0], e[1], 5).map(function (x) { return opt(x); }), et, "g2t:l" + t + ":" + add, 2);
+    }
+    if (L === 7) {
+      if (m === 0) m = 5 * randInt(1, 11);
+      return numQ(qText("How many minutes after " + h + " o'clock is it?") + clockSVG(h, m, 130), m, "g2t:m" + timeStr(h, m));
+    }
+    var acts = [["eat breakfast", "a.m."], ["go to school", "a.m."], ["wake up", "a.m."], ["eat dinner", "p.m."], ["go to bed", "p.m."],
+      ["watch the sunset", "p.m."], ["have an afternoon snack", "p.m."], ["see the sunrise", "a.m."]];
+    var act = pick(acts), hh = act[1] === "a.m." ? randInt(6, 9) : randInt(3, 8);
+    t = timeStr(hh, 5 * randInt(0, 11));
+    return choiceQ(qText("You " + act[0] + " at " + t + ". Is that <u>a.m.</u> or <u>p.m.</u>?"), act[1],
+      [opt("a.m.", "🌅 a.m."), opt("p.m.", "🌙 p.m.")], t + " " + act[1], "g2t:ap" + act[0], 2);
+  }
+
+  function seqQ(start, step, len, blank, key) {
+    var cells = [], ans;
+    for (var i = 0; i < len; i++) { var v = start + i * step; if (i === blank) { ans = v; cells.push("?"); } else cells.push(v); }
+    return numQ(qText("What number is missing?") + qSub("Count by " + Math.abs(step) + "s" + (step < 0 ? " backward" : "")) + trainHTML(cells), ans, key);
+  }
+  function genG2Skip(level) {
+    var L = level === 10 ? pick([6, 7, 9, 11, 12]) : level, s, st, len = 5, blank;
+    blank = level <= 3 ? randInt(2, 4) : randInt(0, 4);
+    switch (L) {
+      case 1: st = 10; s = 10 * randInt(0, 5); break;
+      case 2: st = 5; s = 5 * randInt(0, 16); break;
+      case 3: st = 2; s = 2 * randInt(0, 15); break;
+      case 4: st = 10; s = randInt(11, 159); if (s % 10 === 0) s += 3; break;
+      case 5: st = 100; s = 100 * randInt(0, 5); break;
+      case 6: if (chance(0.5)) { st = 5; s = 5 * randInt(10, 90); } else { st = 2; s = 2 * randInt(0, 45) + 1; } break;
+      case 7: st = pick([10, 100]); s = st === 10 ? randInt(100, 950) : randInt(101, 599); break;
+      case 11: st = -pick([2, 5, 10, 100]); s = st === -100 ? 100 * randInt(4, 10) : (-st) * randInt(8, 20); break;
+      case 8: case 9: case 12:
+        var units = L === 8 ? 10 : 15, unit = L === 8 ? "inches" : "centimeters";
+        if (L === 12) {
+          var l1 = randInt(3, 10), l2 = randInt(1, l1 - 1);
+          return numQ(qText("How much longer is the blue bar than the pink bar?") + qSub("(in inches)") +
+            rulerSVG(10, [{ s: 0, e: l1, color: "#74b9ff" }, { s: 0, e: l2, color: "#fd79a8" }]), l1 - l2, "g2s:d" + l1 + ":" + l2);
+        }
+        var a = L === 8 ? 0 : randInt(1, 6), b = L === 8 ? randInt(2, 10) : randInt(a + 2, Math.min(15, a + 9));
+        return numQ(qText("How long is the " + (L === 8 ? "✏️ pencil" : "🖍️ crayon") + "?") + qSub("(in " + unit + ")") +
+          rulerSVG(units, [{ s: a, e: b, color: L === 8 ? "#fdcb6e" : "#55efc4" }]), b - a, "g2s:r" + L + ":" + a + ":" + b);
+    }
+    return seqQ(s, st, len, blank, "g2s:" + s + ":" + st + ":" + blank);
+  }
+
+  function pairsHTML(n, e) {
+    var html = '<div class="pairs">';
+    for (var i = 0; i < n; i += 2) html += '<span class="pair' + (i + 1 < n ? "" : " single") + '">' + e + (i + 1 < n ? e : "") + "</span>";
+    return html + "</div>";
+  }
+  var EVEN_ODD = [opt("even", "Even"), opt("odd", "Odd")];
+  function evenOddQ(n, html, key) { var a = n % 2 === 0 ? "even" : "odd"; return choiceQ(html, a, EVEN_ODD, n + " is " + a, key, 2); }
+  function genG2EvenOdd(level) {
+    var L = level === 10 ? pick([5, 6, 7, 8, 9]) : level, n, o = pick(OBJECTS), r, c;
+    if (L === 1 || L === 4) {
+      n = L === 1 ? randInt(2, 10) : randInt(10, 20);
+      return evenOddQ(n, qText("Even or odd?") + qSub("Can every " + o[0] + " have a partner?") + pairsHTML(n, o[0]) + qSub(n + " " + o[1]), "g2e:p" + n);
+    }
+    if (L === 2 || L === 3 || L === 6 || L === 9) {
+      n = L === 2 ? randInt(1, 10) : L === 3 ? randInt(11, 20) : L === 6 ? randInt(21, 99) : randInt(100, 999);
+      return evenOddQ(n, qText("Is this number even or odd?") + bigNum(n), "g2e:n" + n);
+    }
+    if (L === 5) {
+      n = 2 * randInt(2, 10);
+      return numQ(qText("Make two equal groups.") + bigNum("? + ? = " + n) + qSub("Both numbers are the same."), n / 2, "g2e:d" + n);
+    }
+    r = randInt(2, 5); c = randInt(2, 5);
+    if (L === 7) return numQ(qText(r + " rows of " + c + ". How many in all?") + emojiRows(r * c, o[0], c), r * c, "g2e:a" + r + "x" + c);
+    return numQ(qText("Add to find how many in all.") + emojiRows(r * c, o[0], c) + bigNum(fill(r, c).join(" + ") + " = ?"), r * c, "g2e:r" + r + "x" + c);
+  }
+
+  /* ================= 3rd grade ================= */
+  var TIMES = "×", DIV = "÷";
+  function genG3Mult(level) {
+    var L = level === 10 ? pick([8, 9, 11]) : level, a, b, o;
+    var facs = { 1: [0, 1, 2], 2: [2, 5, 10], 3: [3], 4: [4], 6: [6, 7], 7: [8, 9], 8: [2, 3, 4, 5, 6, 7, 8, 9, 10] }[L];
+    if (L === 5) {
+      a = randInt(2, 5); b = randInt(2, 6); o = pick(OBJECTS);
+      return numQ(qText(a + " rows of " + b + " " + o[1] + ". How many in all?") + emojiRows(a * b, o[0], b) + bigNum(a + " " + TIMES + " " + b + " = ?"), a * b, "g3x:a" + a + "x" + b);
+    }
+    if (L === 9) {
+      a = randInt(2, 10); b = randInt(2, 10);
+      return numQ(qSub("What number is missing?") + bigNum(a + " " + TIMES + " ? = " + a * b), b, "g3x:m" + a + "x" + b);
+    }
+    if (L === 11) {
+      a = randInt(2, 9); b = 10 * randInt(2, 9);
+      return numQ(bigNum((chance(0.5) ? a + " " + TIMES + " " + b : b + " " + TIMES + " " + a) + " = ?"), a * b, "g3x:t" + a + "x" + b);
+    }
+    a = pick(facs); b = randInt(L === 1 ? 0 : 1, 10);
+    var ex = chance(0.5) ? a + " " + TIMES + " " + b : b + " " + TIMES + " " + a;
+    return numQ(bigNum(ex + " = ?"), a * b, "g3x:" + ex);
+  }
+
+  function genG3Div(level) {
+    var L = level === 10 ? pick([7, 8, 9, 11]) : level, d, q, o;
+    var divs = { 1: [1, 2], 2: [5, 10], 3: [3, 4], 5: [6, 7], 6: [8, 9], 7: [2, 3, 4, 5, 6, 7, 8, 9, 10], 8: [2, 3, 4, 5, 6, 7, 8, 9], 9: [2, 3, 4, 5, 6, 7, 8, 9] }[L];
+    if (L === 4) {
+      d = randInt(2, 5); q = randInt(2, 6); o = pick([["🍪", "cookies"], ["🍓", "strawberries"], ["⭐", "stickers"], ["🍎", "apples"], ["🎈", "balloons"]]);
+      return numQ(qText("Share " + d * q + " " + o[1] + " equally with " + d + " friends. How many does each friend get?", "font-size:1.25rem") +
+        emojiRows(d * q, o[0], Math.min(10, d * q)) + bigNum(d * q + " " + DIV + " " + d + " = ?"), q, "g3d:s" + d * q + ":" + d);
+    }
+    if (L === 11) {
+      var k = pick(["zero", "one", "same"]); d = randInt(2, 10);
+      if (k === "zero") return numQ(bigNum("0 " + DIV + " " + d + " = ?"), 0, "g3d:z" + d);
+      if (k === "one") { q = randInt(2, 10); return numQ(bigNum(q + " " + DIV + " 1 = ?"), q, "g3d:o" + q); }
+      return numQ(bigNum(d + " " + DIV + " " + d + " = ?"), 1, "g3d:s" + d);
+    }
+    d = pick(divs); q = randInt(1, 10);
+    if (L === 8) return numQ(qSub("What number is missing?") + bigNum("? " + DIV + " " + d + " = " + q), d * q, "g3d:m" + d + ":" + q);
+    if (L === 9) return numQ(qSub("What number is missing?") + bigNum(d * q + " " + DIV + " ? = " + q), d, "g3d:v" + d + ":" + q);
+    return numQ(bigNum(d * q + " " + DIV + " " + d + " = ?"), q, "g3d:" + d * q + ":" + d);
+  }
+
+  function roundTo(n, p) { return Math.floor((n + p / 2) / p) * p; }
+  function genG3Big(level) {
+    var L = level === 10 ? pick([3, 6, 7, 8, 9]) : level, n, p, a, b, ans, ex;
+    if (L <= 3) {
+      p = L === 3 ? 100 : 10; n = L === 1 ? randInt(11, 99) : randInt(101, 999);
+      if (n % p === 0) n += p === 10 ? randInt(1, 9) : randInt(1, 99);
+      if (chance(level >= 8 ? 0.35 : 0.15)) n = p === 10 ? Math.floor(n / 10) * 10 + 5 : randInt(1, 9) * 100 + 50;  // halfway: round up
+      if (n > 999) n = 995;
+      return numQ(qText("Round " + n + " to the nearest <u>" + (p === 10 ? "ten" : "hundred") + "</u>."), roundTo(n, p), "g3b:r" + n + ":" + p);
+    }
+    var cfg = { 4: [ADDSUB_LEVELS[8], "+", "no"], 5: [ADDSUB_LEVELS[8], "-", "no"], 6: [ADDSUB_LEVELS[10], "+", "yes"], 7: [ADDSUB_LEVELS[10], "-", "yes"], 9: [ADDSUB_LEVELS[10], pick(["+", "-"]), "any"] }[L];
+    if (L === 8) {
+      a = randInt(120, 849); b = randInt(110, Math.min(849, 999 - a)); var plus = chance(0.5);
+      if (!plus && b > a) { var tmp = a; a = b; b = tmp; }
+      if (a % 100 === 50) a += 1;
+      if (b % 100 === 50) b += 1;
+      ans = plus ? roundTo(a, 100) + roundTo(b, 100) : roundTo(a, 100) - roundTo(b, 100);
+      return numQ(qText("Estimate by rounding each number to the nearest hundred:") + bigNum(a + " " + (plus ? "+" : MINUS) + " " + b + " ≈ ?"), ans, "g3b:e" + a + (plus ? "+" : "-") + b);
+    }
+    var c = { a: cfg[0].a, b: L === 4 || L === 5 ? [100, 899] : cfg[0].b, max: 999, rg: cfg[2] };
+    var pr = samplePair(c, cfg[1]); a = pr.a; b = pr.b;
+    if (L === 7 && chance(0.35)) { a = randInt(2, 9) * 100 + randInt(0, 9); b = randInt(101, a - 1); if (a % 10 === 0 || a - b <= 0) a += 1; }
+    ans = cfg[1] === "+" ? a + b : a - b;
+    if (L === 9) {
+      if (cfg[1] === "+") return numQ(qSub("What number is missing?") + bigNum("? + " + b + " = " + ans), a, "g3b:m" + a + "+" + b);
+      return numQ(qSub("What number is missing?") + bigNum(a + " " + MINUS + " ? = " + ans), b, "g3b:m" + a + "-" + b);
+    }
+    ex = a + " " + (cfg[1] === "+" ? "+" : MINUS) + " " + b;
+    return numQ(bigNum(ex + " = ?"), ans, "g3b:" + ex);
+  }
+
+  function fracVal(f) { return f[0] / f[1]; }
+  function fracOpts(list) { return list.map(function (f) { return opt(fracKey(f[0], f[1]), fracHTML(f[0], f[1])); }); }
+  // correct fraction + 3 distractors with different values, drawn from candidates
+  function fracDistinct(correct, cands, pool) {
+    var out = [correct], vals = [fracVal(correct)];
+    shuffle(cands).concat(shuffle(pool || FRAC_POOL)).forEach(function (f) {
+      if (out.length >= 4 || f[0] < 0 || f[1] < 1) return;
+      var v = fracVal(f);
+      if (vals.some(function (x) { return Math.abs(x - v) < 1e-9; })) return;
+      out.push(f); vals.push(v);
+    });
+    return shuffle(out);
+  }
+  var FRAC_POOL = [[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [1, 6], [5, 6], [1, 8], [3, 8], [5, 8], [7, 8]];
+  function genG3Frac(level) {
+    var L = level === 10 ? pick([3, 5, 6, 7, 8]) : level, d, n, list, cands = [], i, j;
+    var DENS = [2, 3, 4, 6, 8];
+    if (L === 1) {
+      d = pick([2, 3, 4, 6, 8]);
+      var ukind = chance(0.5) ? "bar" : "circle";
+      list = fracDistinct([1, d], [[1, 2], [1, 3], [1, 4], [1, 6], [1, 8]]);
+      return choiceQ(qText("What fraction is shaded?") + fracPic(1, d, ukind), fracKey(1, d), fracOpts(list), "1/" + d, "g3f:u" + d + ukind, 2);
+    }
+    if (L === 2 || L === 3) {
+      d = pick(DENS); n = randInt(1, d - 1);
+      cands = [[d - n, d], [n, d === 8 ? 6 : d + 1]];
+      for (i = 1; i < d; i++) cands.push([i, d]);
+      list = fracDistinct([n, d], cands);
+      if (L === 2) return choiceQ(qText("What fraction is shaded?") + fracPic(n, d), fracKey(n, d), fracOpts(list), n + "/" + d, "g3f:s" + n + "/" + d, 2);
+      var kind = chance(0.5) ? "bar" : "circle";
+      return choiceQ(qText("Which picture shows " + fracHTML(n, d) + "?"), fracKey(n, d),
+        list.map(function (f) { return opt(fracKey(f[0], f[1]), fracPic(f[0], f[1], kind)); }), "the picture showing " + n + "/" + d, "g3f:p" + n + "/" + d, 2);
+    }
+    if (L === 4 || L === 5) {
+      d = L === 4 ? pick([2, 3, 4]) : pick([3, 4, 6, 8]); n = randInt(1, d - 1);
+      for (i = 1; i < d; i++) cands.push([i, d]);
+      cands.push([n, d + 1]);
+      list = fracDistinct([n, d], cands);
+      return choiceQ(qText("What fraction is at the dot?") + numberLineSVG(1, d, n), fracKey(n, d), fracOpts(list), n + "/" + d, "g3f:l" + n + "/" + d, 2);
+    }
+    if (L === 6) {
+      d = pick([3, 4, 6, 8]); n = randInt(1, d - 1); j = chance(0.15) ? n : randInt(1, d - 1);
+      if (j === n && level !== 10 && chance(0.5)) j = n === 1 ? 2 : n - 1;
+      return compareQ(fracHTML(n, d), fracHTML(j, d), n, j, n + "/" + d, j + "/" + d, "g3f:c" + n + ":" + j + ":" + d,
+        '<div class="frac-pics">' + fracBarSVG(n, d, 150) + fracBarSVG(j, d, 150) + "</div>");
+    }
+    if (L === 7) {
+      n = randInt(1, 3); d = pick(DENS.filter(function (x) { return x > n; })); j = pick(DENS.filter(function (x) { return x > n; }));
+      return compareQ(fracHTML(n, d), fracHTML(n, j), n / d, n / j, n + "/" + d, n + "/" + j, "g3f:cn" + n + ":" + d + ":" + j);
+    }
+    if (L === 8) {
+      var base = pick([[1, 2, [2, 3, 4]], [1, 3, [2]], [2, 3, [2]], [1, 4, [2]], [3, 4, [2]]]), k = pick(base[2]);
+      n = base[0]; d = base[1];
+      var eqv = [n * k, d * k];
+      for (i = 1; i < eqv[1]; i++) cands.push([i, eqv[1]]);
+      [2, 3, 4, 6, 8].forEach(function (dd) { cands.push([Math.max(1, Math.round(dd / 3)), dd]); });
+      list = fracDistinct(eqv, cands);
+      return choiceQ(qText("Which fraction is equal to " + fracHTML(n, d) + "?") + fracBarSVG(n, d), fracKey(eqv[0], eqv[1]), fracOpts(list),
+        n + "/" + d + " = " + eqv[0] + "/" + eqv[1], "g3f:e" + n + "/" + d + ":" + k, 2);
+    }
+    if (chance(0.5)) {
+      d = pick([2, 3, 4, 6, 8]);
+      list = fracDistinct([d, d], [[1, d], [d, 1], [d - 1, d], [d + 1, d], [2, d]]);
+      return choiceQ(qText("Which fraction is equal to <u>1 whole</u>?"), fracKey(d, d), fracOpts(list), d + "/" + d + " = 1", "g3f:w" + d, 2);
+    }
+    d = pick([2, 3, 4]); n = randInt(d + 1, 2 * d - 1);
+    for (i = 1; i < 2 * d; i++) cands.push([i, d]);
+    list = fracDistinct([n, d], cands.concat([[5, 4], [4, 3], [5, 3], [3, 2]]));
+    return choiceQ(qText("What fraction is at the dot?") + numberLineSVG(2, d, n), fracKey(n, d), fracOpts(list), n + "/" + d, "g3f:l2" + n + "/" + d, 2);
+  }
+
+  function genG3Time(level) {
+    var L = level === 10 ? pick([6, 7, 8, 9, 11]) : level, hm, h, m, t, a, e, et, dur;
+    if (L === 1) hm = randTime(5);
+    else if (L <= 4) { hm = randTime(1); if (hm[1] % 5 === 0) hm[1] += randInt(1, 4); }
+    else hm = randTime(5);
+    h = hm[0]; m = hm[1]; t = timeStr(h, m);
+    if (L <= 3) return choiceQ(qText("What time is it?") + clockSVG(h, m, 160), t, timeChoices(h, m, L === 1 ? 5 : 1).map(function (x) { return opt(x); }), t, "g3t:r" + t, 2);
+    if (L === 4) return choiceQ(qText("Which clock shows <u>" + t + "</u>?"), t, hourChoicesClock(timeChoices(h, m, 1)), "the clock showing " + t, "g3t:p" + t, 2);
+    if (L === 5) {
+      a = 5 * randInt(0, 8); var b = 5 * randInt(a / 5 + 2, 11);
+      return numQ(qText("Reading starts at " + timeStr(h, a) + " and ends at " + timeStr(h, b) + ". How many minutes is that?", "font-size:1.25rem"), b - a, "g3t:e" + h + ":" + a + ":" + b, null, "minutes");
+    }
+    if (L === 6 || L === 8) {
+      dur = 5 * randInt(3, 11);
+      if (L === 6) {
+        e = addMin(h, m, dur); et = timeStr(e[0], e[1]);
+        return choiceQ(qText("A show starts at " + t + " and lasts " + dur + " minutes. When does it end?", "font-size:1.25rem"), et,
+          timeChoices(e[0], e[1], 5).map(function (x) { return opt(x); }), et, "g3t:f" + t + ":" + dur, 2);
+      }
+      e = addMin(h, m, -dur); et = timeStr(e[0], e[1]);
+      return choiceQ(qText("Soccer practice ended at " + t + ". It lasted " + dur + " minutes. When did it start?", "font-size:1.25rem"), et,
+        timeChoices(e[0], e[1], 5).map(function (x) { return opt(x); }), et, "g3t:b" + t + ":" + dur, 2);
+    }
+    if (L === 7) {
+      m = 5 * randInt(7, 11); var m2 = 5 * randInt(0, 6); dur = 60 - m + m2;
+      return numQ(qText("The bus leaves at " + timeStr(h, m) + " and arrives at " + timeStr(nextHour(h), m2) + ". How many minutes is the ride?", "font-size:1.25rem"), dur, "g3t:x" + h + ":" + m + ":" + m2, null, "minutes");
+    }
+    if (L === 9) {
+      dur = randInt(3, 11) * 5; e = addMin(h, m, dur);
+      return numQ(qText("How many minutes passed from the first clock to the second?") +
+        '<div class="clock-pair"><div>' + qSub("Start") + clockSVG(h, m, 120) + "</div><div>" + qSub("End") + clockSVG(e[0], e[1], 120) + "</div></div>", dur, "g3t:c" + t + ":" + dur, null, "minutes");
+    }
+    dur = 60 + 5 * randInt(1, 11); e = addMin(h, m, dur);
+    return numQ(qText("A trip starts at " + t + " and ends at " + timeStr(e[0], e[1]) + ". How many minutes long is it?", "font-size:1.25rem"), dur, "g3t:h" + t + ":" + dur, null, "minutes");
+  }
+
+  function genG3Area(level) {
+    var L = level === 10 ? pick([5, 6, 7, 8, 9]) : level, w, h, unit = pick(["cm", "m", "in", "ft"]), ans, A, P;
+    if (L === 1 || L === 2) {
+      w = L === 1 ? randInt(2, 5) : randInt(3, 8); h = L === 1 ? randInt(2, 4) : randInt(3, 6);
+      return numQ(qText("What is the <u>area</u>?") + qSub("Count the square units.") + rectSVG(w, h, true, false, ""), w * h, "g3a:g" + w + "x" + h, null, "square units");
+    }
+    if (L === 4) {
+      w = randInt(2, 6); h = randInt(2, 5);
+      return numQ(qText("What is the <u>perimeter</u>?") + qSub("Each little side is 1 unit.") + rectSVG(w, h, true, false, ""), 2 * (w + h), "g3a:pg" + w + "x" + h, null, "units");
+    }
+    w = randInt(2, L === 3 ? 10 : 12); h = randInt(2, 10);
+    if (chance(0.15)) h = w;
+    A = w * h; P = 2 * (w + h);
+    if (L === 3) return numQ(qText("What is the <u>area</u>?") + rectSVG(w, h, false, true, unit), A, "g3a:a" + w + "x" + h, null, "square " + unit);
+    if (L === 5) return numQ(qText("What is the <u>perimeter</u>?") + rectSVG(w, h, false, true, unit), P, "g3a:p" + w + "x" + h, null, unit);
+    if (L === 6) {
+      var askA = chance(0.5);
+      return numQ(qText("Find the <u>" + (askA ? "area" : "perimeter") + "</u>.") + rectSVG(w, h, false, true, unit), askA ? A : P, "g3a:m" + askA + w + "x" + h, null, askA ? "square " + unit : unit);
+    }
+    w = randInt(2, 10); h = randInt(2, 10);
+    if (L === 7) return numQ(qText("A rectangle has an area of " + w * h + " square " + unit + ". One side is " + w + " " + unit + ". How long is the other side?", "font-size:1.25rem"), h, "g3a:ma" + w + "x" + h, null, unit);
+    if (L === 8) return numQ(qText("A rectangle has a perimeter of " + 2 * (w + h) + " " + unit + ". One side is " + w + " " + unit + ". How long is the other side?", "font-size:1.25rem"), h, "g3a:mp" + w + "x" + h, null, unit);
+    var W = randInt(4, 9), H = randInt(4, 8), w2 = randInt(1, W - 2), h2 = randInt(1, H - 2);
+    ans = W * H - w2 * h2;
+    return numQ(qText("What is the <u>area</u> of this shape?") + qSub("Tip: split it into two rectangles.") + lShapeSVG(W, H, w2, h2, unit), ans, "g3a:L" + W + ":" + H + ":" + w2 + ":" + h2, null, "square " + unit);
+  }
+
+  function genG3Word(level) {
+    var L = level === 10 ? pick([6, 7, 8, 9]) : level, n = pick(NAMES), item = pick(ITEMS), a, b, c, text, ans;
+    var box = pick(["bags", "boxes", "packs", "jars"]);
+    switch (L) {
+      case 1: a = randInt(2, 6); b = randInt(2, 10); text = n + " has " + a + " " + box + ". Each has " + b + " " + item + ". How many " + item + " in all?"; ans = a * b; break;
+      case 2: a = randInt(2, 6); b = randInt(2, 10); text = n + " shares " + a * b + " " + item + " equally among " + a + " friends. How many does each friend get?"; ans = b; break;
+      case 3: a = randInt(2, 10); b = randInt(2, 10); text = "A classroom has " + a + " rows of desks with " + b + " desks in each row. How many desks are there?"; ans = a * b; break;
+      case 4: a = randInt(2, 10); b = randInt(2, 10); text = "There are " + a * b + " kids. They make teams of " + b + ". How many teams are there?"; ans = a; break;
+      case 5:
+        var w = wpBig();
+        return numQ(qText(w.text, "font-size:1.2rem"), w.answer, "g3w:" + w.key);
+      case 6:
+        a = randInt(2, 9); b = randInt(2, 9);
+        if (chance(0.5)) { text = "One " + pick(["notebook", "toy car", "book", "puzzle"]) + " costs $" + b + ". How much do " + a + " cost?"; ans = a * b; }
+        else { text = n + " spent $" + a * b + " on " + a + " tickets. Each ticket cost the same. How much was one ticket?"; ans = b; }
+        break;
+      case 7: a = randInt(2, 6); b = randInt(3, 10); c = randInt(1, a * b - 1); text = n + " buys " + a + " " + box + " of " + b + " " + item + " and gives away " + c + ". How many " + item + " are left?"; ans = a * b - c; break;
+      case 8: a = randInt(2, 6); b = randInt(2, 9); c = randInt(1, 9); text = a * b + " " + item + " are shared equally by " + a + " kids. Then each kid gets " + c + " more. How many does each kid have now?"; ans = b + c; break;
+      default:
+        a = randInt(200, 700); b = randInt(50, 250); c = randInt(20, Math.min(a + b - 1, 300));
+        text = "A library had " + a + " books. It got " + b + " new books, then lent out " + c + ". How many books are in the library now?"; ans = a + b - c;
+    }
+    return numQ(qText(text, "font-size:1.2rem"), ans, "g3w:" + L + ":" + a + ":" + b + ":" + c);
+  }
+
+  /* ================= Grades & modes registry =================
+     To add a grade (e.g. 4th): write generators (level 1-10 -> problem object), add an entry here
+     and its key to GRADE_ORDER. Progress is stored per grade+mode (mp_best_<grade>_<mode>, mp_level_<grade>_<mode>). */
+  var GRADE_ORDER = ["K", "1", "2", "3"];
+  var DEFAULT_GRADE = "2";
+  var GRADES = {
+    K: { label: "Kindergarten", chip: "K", modes: [
+      { id: "count", icon: "🔢", title: "Counting", hint: "Count pictures up to 20", color: "m-add", gen: genKCount },
+      { id: "beforeafter", icon: "🚂", title: "Before & After", hint: "Number neighbors up to 100", color: "m-place", gen: genKBeforeAfter },
+      { id: "compare", icon: "⚖️", title: "More or Fewer", hint: "Compare groups and numbers to 10", color: "m-compare", gen: genKCompare },
+      { id: "addsub", icon: "➕", title: "Add & Subtract", hint: "Within 10, with pictures", color: "m-word", gen: genKAddSub },
+      { id: "shapes", icon: "🔷", title: "Shapes", hint: "Flat and solid shapes", color: "m-c5", gen: genKShapes }
+    ] },
+    "1": { label: "1st Grade", chip: "1st", modes: [
+      { id: "addsub", icon: "➕", title: "Add & Subtract", hint: "Within 20, then tens", color: "m-add", gen: genG1AddSub },
+      { id: "tensones", icon: "🧱", title: "Tens & Ones", hint: "Blocks, 10 more/less, to 120", color: "m-place", gen: genG1TensOnes },
+      { id: "compare", icon: "⚖️", title: "Compare Numbers", hint: "Less, greater, or equal to 120", color: "m-compare", gen: genG1Compare },
+      { id: "word", icon: "📖", title: "Word Problems", hint: "Stories within 20", color: "m-word", gen: genG1Word },
+      { id: "time", icon: "🕐", title: "Telling Time", hint: "Hour and half hour", color: "m-c7", gen: genG1Time }
+    ] },
+    "2": { label: "2nd Grade", chip: "2nd", modes: [
+      { id: "addsub", icon: "➕", title: "Addition & Subtraction", hint: "From 5 + 3 up to 3-digit numbers", color: "m-add", gen: genAddSub },
+      { id: "place", icon: "🔢", title: "Place Value", hint: "Tens & ones up to thousands", color: "m-place", gen: genPlace },
+      { id: "compare", icon: "⚖️", title: "Number Comparison", hint: "Less, greater, or equal", color: "m-compare", gen: genCompare },
+      { id: "word", icon: "📖", title: "Word Problems", hint: "One-step up to two-step stories", color: "m-word", gen: genWord },
+      { id: "money", icon: "🪙", title: "Money", hint: "Coins, bills, and cents", color: "m-c6", gen: genG2Money },
+      { id: "time", icon: "🕐", title: "Telling Time", hint: "To 5 minutes, a.m. and p.m.", color: "m-c7", gen: genG2Time },
+      { id: "skip", icon: "📏", title: "Skip Counting & Rulers", hint: "By 2s, 5s, 10s, 100s; measure", color: "m-c5", gen: genG2Skip },
+      { id: "evenodd", icon: "🧦", title: "Even, Odd & Arrays", hint: "Pairs, doubles, rows of objects", color: "m-c8", gen: genG2EvenOdd }
+    ] },
+    "3": { label: "3rd Grade", chip: "3rd", modes: [
+      { id: "mult", icon: "✖️", title: "Multiplication", hint: "Facts to 10 × 10, arrays", color: "m-add", gen: genG3Mult },
+      { id: "div", icon: "➗", title: "Division", hint: "Sharing and division facts", color: "m-place", gen: genG3Div },
+      { id: "big", icon: "💯", title: "Add, Subtract & Round", hint: "Within 1000, round to 10/100", color: "m-compare", gen: genG3Big },
+      { id: "frac", icon: "🍕", title: "Fractions", hint: "Pictures, number lines, compare", color: "m-c5", gen: genG3Frac },
+      { id: "time", icon: "⏰", title: "Time & Elapsed Time", hint: "To the minute, how long?", color: "m-c7", gen: genG3Time },
+      { id: "area", icon: "📐", title: "Area & Perimeter", hint: "Rectangles and L-shapes", color: "m-c6", gen: genG3Area },
+      { id: "word", icon: "📖", title: "Word Problems", hint: "× ÷ stories, two-step", color: "m-word", gen: genG3Word }
+    ] }
+  };
+  function findMode(grade, id) {
+    var g = GRADES[grade];
+    if (!g) return null;
+    for (var i = 0; i < g.modes.length; i++) if (g.modes[i].id === id) return g.modes[i];
+    return null;
+  }
 
   // Expose pure rules + generators for testing / debugging (harmless in production)
   if (typeof window !== "undefined") {
@@ -1190,7 +2218,9 @@
       classifyCorrect: classifyCorrect,
       pointsFor: pointsFor,
       streakMultiplier: streakMultiplier,
-      generators: GENERATORS
+      generators: GENERATORS,
+      grades: GRADES,
+      gradeOrder: GRADE_ORDER
     };
   }
 
@@ -1200,7 +2230,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var homeScreen = $("home-screen"), practiceScreen = $("practice-screen"), summaryScreen = $("summary-screen");
   var questionBox = $("question-box"), answerArea = $("answer-area"), feedbackEl = $("feedback");
-  var scorePill = $("score-pill"), modeTitle = $("mode-title"), levelBadge = $("level-badge");
+  var scorePill = $("score-pill"), modeTitleEl = $("mode-title"), levelBadge = $("level-badge");
   var qCounter = $("q-counter"), streakChip = $("streak-chip");
   var checkBtn = $("check-btn"), nextBtn = $("next-btn"), backBtn = $("back-btn");
   var timerDigits = $("timer-digits"), timerFill = $("timer-fill");
@@ -1213,7 +2243,10 @@
   var WRONG_MSGS = ["That one was tricky! 💡", "Good effort! Let us keep going 💪", "No worries, you will get the next one! 🌈"];
   var TIMEUP_MSGS = ["⏰ Time is up!", "⏱ The clock ran out!", "🔔 Out of time!"];
 
+  migrateLegacyProgress();
+  var savedGrade = load("mp_grade", DEFAULT_GRADE);
   var state = {
+    grade: GRADES[savedGrade] ? savedGrade : DEFAULT_GRADE, def: null,
     mode: null, level: 1, secondsPerQ: load("mp_time", 25) || 25,
     qIndex: 0, points: 0, correct: 0, streak: 0, bestStreak: 0, maxLevel: 1,
     current: null, tries: 0, locked: true, selectedChoice: null,
@@ -1258,8 +2291,27 @@
     var spans = document.querySelectorAll("[data-best-for]");
     for (var i = 0; i < spans.length; i++) {
       var m = spans[i].getAttribute("data-best-for");
-      spans[i].textContent = "🏆 Best " + getBest(m) + " · Level " + getSavedLevel(m);
+      spans[i].textContent = "🏆 Best " + getBest(state.grade, m) + " · Level " + getSavedLevel(state.grade, m);
     }
+  }
+
+  function modeTitle(def) { return def.icon + " " + def.title; }
+
+  // Home tiles for the selected grade
+  function renderModeTiles() {
+    var grid = $("mode-grid"), g = GRADES[state.grade], html = "";
+    g.modes.forEach(function (d) {
+      html += '<button class="mode-btn ' + d.color + '" data-mode="' + d.id + '" type="button">' +
+        '<span class="icon">' + d.icon + '</span><span class="label">' + esc(d.title) +
+        '<span class="hint">' + esc(d.hint) + '</span><span class="best-line" data-best-for="' + d.id + '"></span></span></button>';
+    });
+    grid.innerHTML = html;
+    var btns = grid.querySelectorAll(".mode-btn");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].onclick = (function (btn) { return function () { startFromTile(btn.getAttribute("data-mode")); }; })(btns[i]);
+    }
+    $("subtitle").textContent = g.label + " · Level up and beat your best score!";
+    renderHomeBests();
   }
 
   function showScreen(which) {
@@ -1300,7 +2352,7 @@
 
   /* ---------- problem generation with anti-repeat ---------- */
   function generateFresh() {
-    var gen = GENERATORS[state.mode], p = null;
+    var gen = state.def.gen, p = null;
     for (var i = 0; i < 20; i++) {
       p = gen(state.level);
       if (state.recentKeys.indexOf(p.key) === -1) break;
@@ -1372,6 +2424,30 @@
     choiceHost.innerHTML = "";
     state.selectedChoice = null;
 
+    if (problem.inputType === "choice") {
+      // Tap-only answers (pictures, clocks, fractions, words); no text box
+      answerInput.value = "";
+      answerInput.classList.add("hidden");
+      if (document.activeElement === answerInput) { try { answerInput.blur(); } catch (e0) { /* ignore */ } }
+      var cgrid = document.createElement("div");
+      cgrid.className = "tap-choices cols-" + (problem.cols || 2);
+      problem.choices.forEach(function (c) {
+        var btn = document.createElement("button");
+        btn.type = "button"; btn.className = "tap-btn";
+        btn.innerHTML = c.label;
+        btn.setAttribute("data-choice", c.v);
+        cgrid.appendChild(btn);
+      });
+      cgrid.addEventListener("click", function (e) {
+        var btn = e.target.closest ? e.target.closest(".tap-btn") : e.target;
+        if (!btn || state.locked || btn.disabled) return;
+        selectIn(cgrid, "tap-btn", btn);
+        state.selectedChoice = btn.getAttribute("data-choice");
+      });
+      choiceHost.appendChild(cgrid);
+      return;
+    }
+
     if (problem.inputType === "compare") {
       // < > = buttons only; no text box needed
       answerInput.value = "";
@@ -1416,11 +2492,11 @@
       return;
     }
 
-    configureAnswerInput(problem, problem.inputType === "number" ? "?" : (problem.placeholder || "Type your answer"));
+    configureAnswerInput(problem, problem.placeholder || (problem.inputType === "number" ? "?" : "Type your answer"));
   }
 
   function getUserAnswer(problem) {
-    if (problem.inputType === "compare") return state.selectedChoice;
+    if (problem.inputType === "compare" || problem.inputType === "choice") return state.selectedChoice;
     if (state.selectedChoice != null) return state.selectedChoice;
     return answerInput.classList.contains("hidden") ? null : answerInput.value.trim();
   }
@@ -1445,14 +2521,16 @@
 
   /* ---------- round flow ---------- */
   function startMode(mode) {
-    if (!GENERATORS[mode]) return;
+    var def = findMode(state.grade, mode);
+    if (!def) return;
     stopTimer(); clearAutoNext();
     state.mode = mode;
-    state.level = getSavedLevel(mode);
+    state.def = def;
+    state.level = getSavedLevel(state.grade, mode);
     state.maxLevel = state.level;
     state.qIndex = 0; state.points = 0; state.correct = 0; state.streak = 0; state.bestStreak = 0;
     state.recentKeys = [];
-    modeTitle.textContent = MODE_TITLES[mode];
+    modeTitleEl.textContent = modeTitle(def);
     showScreen("practice");
     renderLevel(0);
     nextProblem();
@@ -1518,7 +2596,7 @@
 
     state.level = nextLevel(askedLevel, outcome);
     state.maxLevel = Math.max(state.maxLevel, state.level);
-    setSavedLevel(state.mode, state.level);
+    setSavedLevel(state.grade, state.mode, state.level);
     var dir = state.level - askedLevel;
 
     var levelMsg = dir >= 2 ? "Up 2 levels to Level " + state.level + "! 🚀"
@@ -1530,6 +2608,11 @@
     lockInputs();
     renderStats();
     renderLevel(dir);
+    // Show which button was right (tap answers)
+    var right = choiceHost.querySelectorAll("[data-choice]");
+    for (var ri = 0; ri < right.length; ri++) {
+      if (right[ri].getAttribute("data-choice") === String(state.current.answer)) right[ri].classList.add("correct-ans");
+    }
 
     if (isCorrect) {
       var head = outcome === "fast" ? pick(FAST_PRAISE) : (outcome === "retry" ? pick(RETRY_PRAISE) : pick(PRAISE));
@@ -1580,14 +2663,14 @@
     stopTimer(); clearAutoNext();
     state.locked = true;
     blurAnswer();
-    var prevBest = getBest(state.mode);
+    var prevBest = getBest(state.grade, state.mode);
     var isNewBest = state.points > prevBest;
-    if (isNewBest) setBest(state.mode, state.points);
+    if (isNewBest) setBest(state.grade, state.mode, state.points);
     var best = Math.max(prevBest, state.points);
     var acc = Math.round((state.correct / ROUND_LENGTH) * 100);
 
     $("summary-title").textContent = acc >= 90 ? "🏆 Amazing round!" : acc >= 70 ? "🌟 Great round!" : acc >= 50 ? "👍 Nice work!" : "💪 Good practice!";
-    $("summary-sub").textContent = MODE_TITLES[state.mode] + " · next round starts at Level " + state.level;
+    $("summary-sub").textContent = GRADES[state.grade].label + " · " + modeTitle(state.def) + " · next round starts at Level " + state.level;
     $("sum-score").textContent = String(state.points);
     $("sum-accuracy").textContent = acc + "%";
     $("sum-correct").textContent = state.correct + " of " + ROUND_LENGTH + " correct";
@@ -1638,7 +2721,7 @@
   $("play-again-btn").addEventListener("click", function () { startMode(state.mode); });
 
   // Home tiles: delegation on the grid (clicks on child spans still work) + direct backup handlers
-  var modeGrid = document.querySelector(".mode-grid");
+  var modeGrid = $("mode-grid");
   function modeFromEvent(e) {
     var el = e.target;
     while (el && el !== modeGrid) {
@@ -1660,12 +2743,27 @@
       if (mode) startFromTile(mode);
     });
   }
-  var modeButtons = document.querySelectorAll(".mode-btn");
-  for (var m = 0; m < modeButtons.length; m++) {
-    modeButtons[m].onclick = (function (btn) {
-      return function () { startFromTile(btn.getAttribute("data-mode")); };
-    })(modeButtons[m]);
+
+  // Grade chips (built from GRADE_ORDER, remembered on this device)
+  var gradeSettings = $("grade-settings");
+  GRADE_ORDER.forEach(function (g) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "time-chip grade-chip"; b.setAttribute("data-grade", g);
+    b.textContent = GRADES[g].chip; b.setAttribute("aria-label", GRADES[g].label);
+    gradeSettings.appendChild(b);
+  });
+  function paintGradeChips() {
+    var chips = gradeSettings.querySelectorAll(".grade-chip");
+    for (var i = 0; i < chips.length; i++) chips[i].classList.toggle("active", chips[i].getAttribute("data-grade") === state.grade);
   }
+  gradeSettings.addEventListener("click", function (e) {
+    var el = e.target.closest ? e.target.closest(".grade-chip") : null;
+    if (!el) return;
+    var g = el.getAttribute("data-grade");
+    if (!GRADES[g] || g === state.grade) return;
+    state.grade = g; save("mp_grade", g);
+    paintGradeChips(); renderModeTiles();
+  });
 
   // Time setting chips (remembered on this device)
   var timeSettings = $("time-settings");
@@ -1687,12 +2785,15 @@
   window.MathPractice.debug = function () {
     return { mode: state.mode, level: state.level, qIndex: state.qIndex, points: state.points,
       streak: state.streak, locked: state.locked, answer: state.current ? state.current.answer : null,
-      inputType: state.current ? state.current.inputType : null };
+      inputType: state.current ? state.current.inputType : null, grade: state.grade,
+      choices: state.current && state.current.inputType === "compare" ? ["<", ">", "="] :
+        state.current && state.current.choices ? state.current.choices.map(function (c) { return typeof c === "object" ? c.v : String(c); }) : null };
   };
 
-  if ([15, 25, 30].indexOf(state.secondsPerQ) === -1) state.secondsPerQ = 25;
+  if ([15, 25, 30, 45].indexOf(state.secondsPerQ) === -1) state.secondsPerQ = 25;
   paintChips();
-  renderHomeBests();
+  paintGradeChips();
+  renderModeTiles();
 })();
   </script>
   <script>

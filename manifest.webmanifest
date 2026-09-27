@@ -1,7 +1,7 @@
 {
   "name": "Math Practice",
   "short_name": "Math",
-  "description": "Fun 2nd grade math practice: addition & subtraction, place value, comparing numbers, and word problems. Works offline.",
+  "description": "Fun K-3rd grade math practice: counting, adding & subtracting, place value, money, time, multiplication, fractions, and more. Works offline.",
   "start_url": "./",
   "scope": "./",
   "id": "./",
