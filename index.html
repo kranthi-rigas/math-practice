@@ -310,6 +310,10 @@
       align-items: stretch;
     }
 
+    /* Inputs must be >= 16px or iOS Safari zooms the page on focus */
+    input, textarea, select { font-size: 16px; }
+    #choice-host:empty { display: none; }
+
     .answer-input {
       width: 100%;
       font-size: 1.8rem;
@@ -323,6 +327,7 @@
     }
 
     .answer-input:focus { border-color: var(--accent); }
+    .answer-input[readonly] { background: #f5f6fa; color: var(--muted); }
 
     .choice-row {
       display: grid;
@@ -634,7 +639,14 @@
       <div class="card">
         <div class="mode-title" id="mode-title">Practice</div>
         <div class="question-box" id="question-box"></div>
-        <div class="answer-area" id="answer-area"></div>
+        <div class="answer-area" id="answer-area">
+          <div id="choice-host"></div>
+          <!-- One persistent answer box: it stays in the DOM (and focused) between questions so the
+               on-screen keyboard can stay open. Reconfigured per question (number pad vs text). -->
+          <input class="answer-input" id="answer-input" type="text" inputmode="numeric" pattern="[0-9]*"
+                 enterkeyhint="done" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                 placeholder="?" aria-label="Your answer" autofocus />
+        </div>
         <div class="feedback neutral" id="feedback" aria-live="polite"></div>
         <div class="btn-row">
           <button class="action-btn check-btn" id="check-btn" type="button">Check ✓</button>
@@ -674,7 +686,7 @@
   var BASE_POINTS = 10;       // points = BASE_POINTS * level (+ speed bonus) * streak multiplier
   var MAX_SPEED_BONUS = 20;   // full bonus when answered instantly, scaled by time left
   var MAX_TRIES = 2;          // first try + one retry
-  var APP_VERSION = "math-practice-v2-levels";
+  var APP_VERSION = "math-practice-v3-focus";
 
   var MODE_TITLES = {
     addsub: "➕ Addition & Subtraction",
@@ -1192,6 +1204,7 @@
   var qCounter = $("q-counter"), streakChip = $("streak-chip");
   var checkBtn = $("check-btn"), nextBtn = $("next-btn"), backBtn = $("back-btn");
   var timerDigits = $("timer-digits"), timerFill = $("timer-fill");
+  var choiceHost = $("choice-host"), answerInput = $("answer-input");
 
   var PRAISE = ["🎉 Correct!", "🌟 Awesome!", "👏 You got it!", "💪 Brilliant!", "✨ Fantastic!", "🏆 Great job!"];
   var FAST_PRAISE = ["🚀 Super fast!", "⚡ Lightning quick!", "🏎️ Speedy star!"];
@@ -1204,7 +1217,7 @@
     mode: null, level: 1, secondsPerQ: load("mp_time", 25) || 25,
     qIndex: 0, points: 0, correct: 0, streak: 0, bestStreak: 0, maxLevel: 1,
     current: null, tries: 0, locked: true, selectedChoice: null,
-    qStart: 0, timeLeft: 0, timerId: null, autoNextId: null, recentKeys: []
+    qStart: 0, timeLeft: 0, timerId: null, autoNextId: null, recentKeys: [], resolvedAt: 0
   };
 
   /* ---------- small UI helpers ---------- */
@@ -1304,25 +1317,66 @@
     btn.classList.add("selected");
   }
 
-  function makeNumericInput(placeholder) {
-    var input = document.createElement("input");
-    input.className = "answer-input";
-    input.id = "answer-input";
-    input.type = "text";
-    input.inputMode = "numeric";
-    input.setAttribute("pattern", "[0-9]*");
-    input.setAttribute("enterkeyhint", "done");
-    input.setAttribute("autocomplete", "off");
-    input.placeholder = placeholder;
-    input.addEventListener("keydown", function (e) { if (e.key === "Enter") checkAnswer(); });
-    return input;
+  /* ---------- answer box focus / keyboard ----------
+     iOS Safari only opens the on-screen keyboard when focus() runs inside a user gesture (tap/click/key),
+     so focusAnswer() is called synchronously from those handlers. The rAF/setTimeout retries cover
+     other cases (e.g. timeout auto-advance); there the keyboard opens on Android/desktop, and on iOS it
+     stays open if it was already open, because the same input element stays focused the whole time. */
+  function answerBoxUsable() {
+    return !practiceScreen.classList.contains("hidden") && !answerInput.classList.contains("hidden") &&
+      !answerInput.disabled;
+  }
+
+  function focusNow() {
+    if (!answerBoxUsable()) return false;
+    try { answerInput.focus({ preventScroll: true }); } catch (e) { try { answerInput.focus(); } catch (e2) { /* ignore */ } }
+    if (answerInput.value) { try { answerInput.select(); } catch (e3) { /* ignore */ } }
+    return document.activeElement === answerInput;
+  }
+
+  function focusAnswer() {
+    var qAtCall = state.qIndex;
+    focusNow();
+    var retry = function () {
+      if (state.qIndex !== qAtCall || state.locked) return;
+      if (document.activeElement !== answerInput) focusNow();
+    };
+    if (typeof window.requestAnimationFrame === "function") window.requestAnimationFrame(retry);
+    setTimeout(retry, 60);
+  }
+
+  // Configure the persistent input for this problem (number pad vs text keyboard).
+  function configureAnswerInput(problem, placeholder) {
+    var wasFocused = document.activeElement === answerInput;
+    var numeric = problem.inputType === "number";
+    var oldMode = answerInput.getAttribute("inputmode") || "text";
+    answerInput.classList.remove("hidden");
+    answerInput.disabled = false;
+    answerInput.readOnly = false;
+    answerInput.value = "";
+    answerInput.placeholder = placeholder;
+    if (numeric) {
+      answerInput.setAttribute("inputmode", "numeric");
+      answerInput.setAttribute("pattern", "[0-9]*");
+    } else {
+      answerInput.setAttribute("inputmode", "text");  // expanded form needs "+"
+      answerInput.removeAttribute("pattern");
+    }
+    // Mobile keyboards only switch layout on (re)focus, so bounce focus when the layout changes.
+    if (wasFocused && oldMode !== answerInput.getAttribute("inputmode")) {
+      try { answerInput.blur(); } catch (e) { /* ignore */ }
+    }
   }
 
   function renderAnswerUI(problem) {
-    answerArea.innerHTML = "";
+    choiceHost.innerHTML = "";
     state.selectedChoice = null;
 
     if (problem.inputType === "compare") {
+      // < > = buttons only; no text box needed
+      answerInput.value = "";
+      answerInput.classList.add("hidden");
+      if (document.activeElement === answerInput) { try { answerInput.blur(); } catch (e) { /* ignore */ } }
       var row = document.createElement("div");
       row.className = "choice-row";
       ["<", ">", "="].forEach(function (sym) {
@@ -1337,7 +1391,7 @@
         selectIn(row, "choice-btn", btn);
         state.selectedChoice = btn.getAttribute("data-choice");
       });
-      answerArea.appendChild(row);
+      choiceHost.appendChild(row);
       return;
     }
 
@@ -1350,43 +1404,25 @@
         btn.setAttribute("data-choice", String(c));
         grid.appendChild(btn);
       });
-      var typed = makeNumericInput("or type here");
       grid.addEventListener("click", function (e) {
         var btn = e.target.closest ? e.target.closest(".tap-btn") : e.target;
         if (!btn || state.locked || btn.disabled) return;
         selectIn(grid, "tap-btn", btn);
         state.selectedChoice = btn.getAttribute("data-choice");
-        typed.value = "";
+        answerInput.value = "";
       });
-      typed.addEventListener("input", function () {
-        state.selectedChoice = null;
-        var all = grid.querySelectorAll(".tap-btn");
-        for (var i = 0; i < all.length; i++) all[i].classList.remove("selected");
-      });
-      answerArea.appendChild(grid);
-      answerArea.appendChild(typed);
+      choiceHost.appendChild(grid);
+      configureAnswerInput(problem, "or type here");
       return;
     }
 
-    var input;
-    if (problem.inputType === "number") {
-      input = makeNumericInput("?");
-    } else {
-      input = document.createElement("input");
-      input.className = "answer-input"; input.id = "answer-input"; input.type = "text";
-      input.setAttribute("autocomplete", "off"); input.setAttribute("enterkeyhint", "done");
-      input.placeholder = problem.placeholder || "Type your answer";
-      input.addEventListener("keydown", function (e) { if (e.key === "Enter") checkAnswer(); });
-    }
-    answerArea.appendChild(input);
-    setTimeout(function () { try { input.focus(); } catch (e) { /* ignore */ } }, 40);
+    configureAnswerInput(problem, problem.inputType === "number" ? "?" : (problem.placeholder || "Type your answer"));
   }
 
   function getUserAnswer(problem) {
     if (problem.inputType === "compare") return state.selectedChoice;
     if (state.selectedChoice != null) return state.selectedChoice;
-    var input = document.getElementById("answer-input");
-    return input ? input.value.trim() : null;
+    return answerInput.classList.contains("hidden") ? null : answerInput.value.trim();
   }
 
   function answersMatch(problem, raw) {
@@ -1400,9 +1436,11 @@
     return user === expected;
   }
 
+  // Buttons get disabled; the text box only becomes read-only so it keeps focus (and the keyboard stays open).
   function lockInputs() {
-    var els = answerArea.querySelectorAll("button, input");
+    var els = choiceHost.querySelectorAll("button");
     for (var i = 0; i < els.length; i++) els[i].disabled = true;
+    answerInput.readOnly = true;
   }
 
   /* ---------- round flow ---------- */
@@ -1438,6 +1476,7 @@
     questionBox.innerHTML = state.current.html;
     renderAnswerUI(state.current);
     startTimer();
+    focusAnswer();  // synchronous when called from a tap/click/Enter, plus rAF/timeout fallback
   }
 
   function checkAnswer() {
@@ -1452,8 +1491,7 @@
     }
     if (state.tries < MAX_TRIES) {
       setFeedback("wrong", pick(TRY_AGAIN));
-      var input = document.getElementById("answer-input");
-      if (input && !input.disabled) { try { input.select(); } catch (e) { /* ignore */ } }
+      if (state.selectedChoice == null) focusAnswer();  // refocus + select the wrong answer to retype
       return;
     }
     resolveQuestion("wrong");
@@ -1463,6 +1501,7 @@
   function resolveQuestion(outcome) {
     if (state.locked) return;
     state.locked = true;
+    state.resolvedAt = Date.now();
     stopTimer(); clearAutoNext();
 
     var askedLevel = state.level;
@@ -1533,9 +1572,14 @@
     setTimeout(function () { if (layer.parentNode) layer.parentNode.removeChild(layer); }, 4200);
   }
 
+  function blurAnswer() {
+    if (document.activeElement === answerInput) { try { answerInput.blur(); } catch (e) { /* ignore */ } }
+  }
+
   function showSummary() {
     stopTimer(); clearAutoNext();
     state.locked = true;
+    blurAnswer();
     var prevBest = getBest(state.mode);
     var isNewBest = state.points > prevBest;
     if (isNewBest) setBest(state.mode, state.points);
@@ -1559,12 +1603,35 @@
   function goHome() {
     stopTimer(); clearAutoNext();
     state.locked = true;
+    blurAnswer();
     renderHomeBests();
     showScreen("home");
   }
 
   /* ---------- events ---------- */
   checkBtn.addEventListener("click", checkAnswer);
+
+  // Enter submits; while the answer is showing, Enter goes to the next question (keeps the keyboard up).
+  answerInput.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    if (!state.locked) { checkAnswer(); return; }
+    if (e.repeat || Date.now() - state.resolvedAt < 700) return;  // don't skip the feedback by accident
+    if (!nextBtn.classList.contains("hidden") && !practiceScreen.classList.contains("hidden")) nextProblem();
+  });
+  answerInput.addEventListener("input", function () {
+    if (state.locked) return;
+    state.selectedChoice = null;  // typing overrides a tapped choice
+    var all = choiceHost.querySelectorAll(".tap-btn");
+    for (var i = 0; i < all.length; i++) all[i].classList.remove("selected");
+  });
+  // Mouse clicks on Check / Next / choice buttons shouldn't pull focus out of the answer box.
+  function keepFocus(e) { if (document.activeElement === answerInput) e.preventDefault(); }
+  checkBtn.addEventListener("mousedown", keepFocus);
+  nextBtn.addEventListener("mousedown", keepFocus);
+  choiceHost.addEventListener("mousedown", function (e) {
+    if (e.target.closest && e.target.closest(".tap-btn")) keepFocus(e);
+  });
   nextBtn.addEventListener("click", nextProblem);
   backBtn.addEventListener("click", goHome);
   $("summary-home-btn").addEventListener("click", goHome);

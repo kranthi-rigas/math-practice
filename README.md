@@ -5,6 +5,7 @@ A colorful, kid-friendly **intelligent** math practice app for second grade. No 
 - Every question is **generated randomly** (no fixed quiz list), avoiding recent repeats
 - **Countdown timer** on each question (15 / 25 / 30s, set on the home screen and remembered)
 - 4 modes: Addition & Subtraction · Place Value · Number Comparison · Word Problems
+- **Answer box is focused automatically** on every question (round start, next question, retry, after time-up), with the text selected for easy retyping. Number answers show a **number pad** (`inputmode="numeric"`); expanded-form answers get the normal keyboard (they need `+`). **Enter** checks the answer, and Enter again goes to the next question. The same box stays focused between questions so the on-screen keyboard can stay open.
 
 ## Levels (1–10 per mode)
 
@@ -63,4 +64,7 @@ After the first visit, the app works with no internet.
 
 ## Updating
 
-When you change any file, bump `CACHE_VERSION` in `service-worker.js` (e.g. `math-practice-v2`) so devices pick up the new version (it takes effect on the next launch after an online visit).
+> iOS note: Safari only opens the keyboard when focus comes from a tap. If the keyboard is closed and a question auto-advances after time runs out, tap the answer box (on Android/desktop it focuses and opens automatically).
+
+
+When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v3`) so devices pick up the new version (it takes effect on the next launch after an online visit).
