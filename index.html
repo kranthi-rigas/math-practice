@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Math Practice</title>
-  <meta name="description" content="Fun Kindergarten to 3rd grade math practice that works offline." />
+  <meta name="description" content="Fun kindergarten to 5th grade math practice that works offline." />
   <meta name="theme-color" content="#6c5ce7" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,10 +51,10 @@
       min-height: 100dvh;
       color: var(--text);
       padding: 16px;
-      padding-top: calc(16px + env(safe-area-inset-top));
-      padding-right: calc(16px + env(safe-area-inset-right));
-      padding-bottom: calc(16px + env(safe-area-inset-bottom));
-      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-top: calc(16px + var(--safe-area-inset-top, env(safe-area-inset-top, 0px)));
+      padding-right: calc(16px + var(--safe-area-inset-right, env(safe-area-inset-right, 0px)));
+      padding-bottom: calc(16px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+      padding-left: calc(16px + var(--safe-area-inset-left, env(safe-area-inset-left, 0px)));
       overscroll-behavior-y: none;
       display: flex;
       justify-content: center;
@@ -712,7 +712,7 @@
     .reveal-sticker { font-size: 7rem; line-height: 1.1; display: inline-block; animation: bounceIn 0.9s ease; }
     .reveal-name { font-size: 1.6rem; font-weight: 900; margin: 6px 0; }
     @keyframes eggShake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-14deg); } 75% { transform: rotate(14deg); } }
-    .toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top)); transform: translateX(-50%); background: #2d3436; color: #fff; font-weight: 800; padding: 12px 18px; border-radius: 16px; z-index: 70; box-shadow: var(--shadow); max-width: 90vw; text-align: center; }
+    .toast { position: fixed; left: 50%; top: calc(12px + var(--safe-area-inset-top, env(safe-area-inset-top, 0px))); transform: translateX(-50%); background: #2d3436; color: #fff; font-weight: 800; padding: 12px 18px; border-radius: 16px; z-index: 70; box-shadow: var(--shadow); max-width: 90vw; text-align: center; }
 
     @media (min-width: 700px) {
       .buddy-face { font-size: 3.2rem; }
@@ -802,6 +802,13 @@
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .dash-list { margin-left: 20px; line-height: 1.5; }
     .dash-list small { color: var(--muted); }
+    .policy { text-align: left; line-height: 1.5; }
+    .policy h3 { font-size: 1.05rem; margin: 14px 0 4px; color: var(--accent); }
+    .policy p, .policy li { font-size: .95rem; margin: 4px 0; }
+    .policy ul { padding-left: 20px; margin: 4px 0; }
+    .policy .pol-date { color: var(--muted); }
+    .dash-about p { font-size: .95rem; margin: 6px 0; overflow-wrap: anywhere; }
+    .dash-about .url { -webkit-user-select: all; user-select: all; font-family: ui-monospace, monospace; font-size: .85rem; }
     .dash-empty { color: var(--muted); font-size: .95rem; }
     .table-wrap { overflow-x: auto; }
     .dash-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
@@ -1098,6 +1105,37 @@
       <div id="dash-body"></div>
     </div>
 
+    <div id="privacy-screen" class="hidden">
+      <div class="screen-head">
+        <button class="back-btn" id="privacy-back" type="button">← Back</button>
+        <div class="screen-title">🔒 Privacy policy</div>
+      </div>
+      <div class="card policy" id="privacy-body">
+<p class="pol-date">Effective date: September 27, 2026</p>
+<p><b>Math Practice</b> (also called Math Buddy) is a math practice app for children in kindergarten through 5th grade. It is made by an independent developer (Kranthi Alapati, GitHub: kranthi-rigas). This policy explains what happens to information in the app. The short version: <b>we do not collect any information at all.</b></p>
+<h3>No data collection</h3>
+<ul>
+<li>The app does not collect, send, sell or share any personal information or usage data.</li>
+<li>There are no accounts, no sign-in, and no email or phone number is ever asked for.</li>
+<li>There is no advertising, no analytics, no tracking and no third-party advertising, analytics or tracking SDKs.</li>
+<li>There are no in-app purchases, no chat and no social features.</li>
+<li>The app does not use the camera, microphone, contacts, photos or location.</li>
+</ul>
+<h3>Information stored only on your device</h3>
+<p>To remember progress, the app saves a few things <b>only on your device</b> (in the app's local storage): each child's first name or nickname and avatar, grade, scores, stars, stickers, badges, practice history, questions to review, settings, and the parent PIN. This information never leaves the device and is not sent to us or anyone else. You can delete a child's profile in the parent dashboard at any time, and uninstalling the app (or clearing this website's data in your browser) removes everything.</p>
+<h3>Read-aloud</h3>
+<p>The optional read-aloud feature uses the text-to-speech engine that is built into your device. The app only hands the text of the math question to that system speech engine; the app itself does not record or send anything.</p>
+<h3>Internet</h3>
+<p>The app works fully offline. It does not load ads or other content from the internet and does not contain links to websites or other apps for children. Grown-up information (such as this policy's web address) is only shown inside the PIN-protected parent area.</p>
+<h3>Children's privacy</h3>
+<p>The app is designed for children and is intended to comply with the Children's Online Privacy Protection Act (COPPA), GDPR-K and the Apple App Store Kids Category and Google Play Families policies. Because no personal information is collected from anyone, there is nothing for us to access, share or delete on our side.</p>
+<h3>Changes</h3>
+<p>If this policy ever changes, the new version will be posted at the same address with a new effective date. We will not start collecting data without updating this policy first.</p>
+<h3>Contact</h3>
+<p>Questions? Contact the developer: open an issue at github.com/kranthi-rigas/math-practice/issues</p>
+      </div>
+    </div>
+
     <div id="print-screen" class="hidden">
       <div class="screen-head no-print">
         <button class="back-btn" id="print-back" type="button">← Back</button>
@@ -1132,7 +1170,7 @@
   var BASE_POINTS = 10;       // points = BASE_POINTS * level (+ speed bonus) * streak multiplier
   var MAX_SPEED_BONUS = 20;   // full bonus when answered instantly, scaled by time left
   var MAX_TRIES = 2;          // first try + one retry
-  var APP_VERSION = "math-practice-v6-learn";
+  var APP_VERSION = "math-practice-v7-store";
 
   /* ================= Pure game rules (exposed for testing) ================= */
   function clampLevel(n) {
@@ -4010,7 +4048,7 @@
   if (typeof document === "undefined" || !document.getElementById("home-screen")) return;
 
   var $ = function (id) { return document.getElementById(id); };
-  var SCREENS = ["welcome", "home", "practice", "summary", "stickers", "badges", "profiles", "lesson", "parent", "dash", "print"];
+  var SCREENS = ["welcome", "home", "practice", "summary", "stickers", "badges", "profiles", "lesson", "parent", "dash", "print", "privacy"];
   var practiceScreen = $("practice-screen");
   var questionBox = $("question-box"), feedbackEl = $("feedback");
   var scorePill = $("score-pill"), modeTitleEl = $("mode-title"), levelBadge = $("level-badge");
@@ -4280,6 +4318,7 @@
     qGrade: null, qMode: null, lessonNew: false
   };
 
+  var pickerFrom = null;
   /* ---------- small UI helpers ---------- */
   function setFeedback(type, msg, sub) {
     feedbackEl.className = "feedback " + type;
@@ -5159,6 +5198,7 @@
     paintChips(); paintGradeChips(); paintGameChips(); paintSound(); paintSpeakers(); renderModeTiles();
   }
   function openPicker() {
+    pickerFrom = $("home-screen").classList.contains("hidden") ? null : "home";
     goQuiet();
     var ids = loadProfileIds();
     $("profile-grid").innerHTML = ids.map(function (pid) {
@@ -5548,6 +5588,11 @@
       '<button type="button" class="action-btn next-btn" data-act="print">🖨️ Weekly summary</button>' +
       '<button type="button" class="action-btn back-btn" data-act="pin">🔑 Change PIN</button>' +
       '<button type="button" class="action-btn danger-btn" data-act="delete">' + (dash.confirmDelete ? "⚠️ Tap again to delete " + esc(D.prof.name) + " forever" : "🗑️ Delete " + esc(D.prof.name) + "'s profile") + "</button></div>";
+    h += '<div class="card dash-card dash-about"><h3>ℹ️ About &amp; privacy</h3>' +
+      '<p>Math Practice ' + esc(APP_VERSION.replace("math-practice-", "")) + '. No data is collected: no accounts, ads, analytics or tracking. Everything stays on this device.</p>' +
+      '<button type="button" class="action-btn back-btn" data-act="privacy">🔒 Privacy policy</button>' +
+      '<p>Privacy policy online:<br><span class="url">https://kranthi-rigas.github.io/math-practice/privacy.html</span></p>' +
+      '<p>Support:<br><span class="url">https://github.com/kranthi-rigas/math-practice</span></p></div>';
     $("dash-body").innerHTML = h;
   }
   function openDashboard(pid) { goQuiet(); dash.pid = pid || activePid; dash.confirmDelete = false; renderDashboard(); showScreen("dash"); }
@@ -5569,6 +5614,7 @@
   function dashAction(act, el) {
     if (act === "tab") { dash.pid = el.getAttribute("data-pid"); dash.confirmDelete = false; renderDashboard(); }
     else if (act === "print") openPrint(dash.pid);
+    else if (act === "privacy") showScreen("privacy");
     else if (act === "pin") { pinState = { mode: "set1", entry: "", first: "", then: function () { openDashboard(dash.pid); }, back: "dash", msg: "", resetQ: null }; renderPin(); showScreen("parent"); }
     else if (act === "delete") {
       if (!dash.confirmDelete) { dash.confirmDelete = true; renderDashboard(); return; }
@@ -5703,6 +5749,26 @@
   });
   $("dash-close").addEventListener("click", function () { if (!fun.profile) { openProfile(false); return; } if (loadProfileIds().length > 1) openPicker(); else goHome(); });
   $("print-back").addEventListener("click", function () { openDashboard(dash.pid); });
+  $("privacy-back").addEventListener("click", function () { openDashboard(dash.pid); });
+  // v7: hardware/system back (Android). Returns true when handled inside the app, false at the root (exit).
+  function handleBack() {
+    var click = function (id) { var b = $(id); if (b && !b.classList.contains("hidden")) { b.click(); return true; } return false; };
+    if (!$("reveal").classList.contains("hidden")) { if (!$("reveal-result").classList.contains("hidden")) closeReveal(); return true; }
+    switch (state.screen) {
+      case "home": return false;
+      case "practice": return click("back-btn") || (goHome(), true);
+      case "summary": goHome(); return true;
+      case "stickers": case "badges": case "lesson": goHome(); return true;
+      case "parent": return click("pin-back");
+      case "dash": return click("dash-close");
+      case "print": return click("print-back");
+      case "privacy": return click("privacy-back");
+      case "welcome": return click("welcome-cancel");
+      case "profiles": if (pickerFrom === "home" && fun.profile) { goHome(); return true; } return false;
+      default: goHome(); return true;
+    }
+  }
+  window.MathPractice.back = handleBack;
   $("print-go").addEventListener("click", doPrint);
   $("name-input").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); try { e.target.blur(); } catch (x) { /* ignore */ } } });
   $("avatar-grid").addEventListener("click", function (e) {
@@ -5834,7 +5900,7 @@
   </script>
   <script>
     // PWA: register service worker (relative path so it works under any subpath)
-    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+    if ("serviceWorker" in navigator && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
       window.addEventListener("load", function () {
         navigator.serviceWorker.register("./service-worker.js", { scope: "./" }).catch(function (err) {
           console.warn("Service worker registration failed:", err);

@@ -197,4 +197,10 @@ After the first visit, the app works with no internet.
 > iOS note: Safari only opens the keyboard when focus comes from a tap. If the keyboard is closed and a question auto-advances after time runs out, tap the answer box (on Android/desktop it focuses and opens automatically).
 
 
-When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v6`) so devices pick up the new version (it takes effect on the next launch after an online visit).
+When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v7`) so devices pick up the new version (it takes effect on the next launch after an online visit).
+
+## Privacy (v7)
+
+The app collects no data: no accounts, ads, analytics or tracking, and all progress stays in the device's local storage. The privacy policy is at [privacy.html](privacy.html) (https://kranthi-rigas.github.io/math-practice/privacy.html). It is also shown inside the app from the PIN-protected parent dashboard (**ℹ️ About & privacy**). The app itself contains no external links, so it meets the kids-category rules for the App Store and Google Play.
+
+v7 also adds a `MathPractice.back()` hook. The Android app calls it for the system back button: it goes back one screen, and at the home screen it returns `false` so the app exits. The service worker is skipped inside the native (Capacitor) apps, because they already bundle every file. The native wrapper project is kept separately from this repo.

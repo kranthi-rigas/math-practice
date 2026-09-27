@@ -1,5 +1,5 @@
 /* Math Practice service worker — cache-first, versioned. Bump CACHE_VERSION when files change. */
-var CACHE_VERSION = "math-practice-v6";
+var CACHE_VERSION = "math-practice-v7";
 var APP_FILES = [
   "./",
   "./index.html",
@@ -8,7 +8,8 @@ var APP_FILES = [
   "./icons/icon-512.png",
   "./icons/icon-maskable-512.png",
   "./icons/apple-touch-icon.png",
-  "./icons/favicon-32.png"
+  "./icons/favicon-32.png",
+  "./privacy.html"
 ];
 
 self.addEventListener("install", function (event) {
