@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Math Practice</title>
+  <meta name="description" content="Fun 2nd grade math practice that works offline." />
+  <meta name="theme-color" content="#6c5ce7" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Math" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <style>
+    :root {
+      --card: #ffffff;
+      --text: #2d3436;
+      --muted: #636e72;
+      --accent: #6c5ce7;
+      --green: #00b894;
+      --red: #e17055;
+      --shadow: 0 8px 24px rgba(45, 52, 54, 0.12);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    button, input, .mode-btn, .tap-btn, .choice-btn, .time-chip {
+      touch-action: manipulation;          /* no double-tap zoom delay */
+      -webkit-tap-highlight-color: transparent;
+      font-family: inherit;
+    }
+
+    button { -webkit-user-select: none; user-select: none; }
+    button:disabled { opacity: 0.6; cursor: default; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(160deg, #ffeaa7 0%, #fd79a8 40%, #a29bfe 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: var(--text);
+      padding: 16px;
+      padding-top: calc(16px + env(safe-area-inset-top));
+      padding-right: calc(16px + env(safe-area-inset-right));
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
+      padding-left: calc(16px + env(safe-area-inset-left));
+      overscroll-behavior-y: none;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      margin: 12px auto 40px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.9rem;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.95);
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .settings-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      background: rgba(255,255,255,0.35);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    .settings-row label {
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      font-size: 0.95rem;
+    }
+
+    .time-chip {
+      border: 2px solid rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border-radius: 999px;
+      padding: 8px 14px;
+      cursor: pointer;
+      min-height: 40px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .time-chip.active {
+      background: #fff;
+      color: var(--accent);
+      border-color: #fff;
+    }
+
+    .mode-grid { display: grid; gap: 14px; }
+
+    .mode-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 18px 16px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+      transition: transform 0.1s, box-shadow 0.1s;
+      min-height: 72px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mode-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+    }
+
+    .mode-btn .icon { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+    .mode-btn .label { flex: 1; line-height: 1.25; }
+    .mode-btn .hint {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    .m-add { background: linear-gradient(135deg, #00b894, #00cec9); }
+    .m-place { background: linear-gradient(135deg, #0984e3, #74b9ff); }
+    .m-compare { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+    .m-word { background: linear-gradient(135deg, #e84393, #fd79a8); }
+
+    .hidden { display: none !important; }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .back-btn, .action-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 48px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-btn { background: #dfe6e9; color: var(--text); }
+
+    .score-pill {
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      box-shadow: var(--shadow);
+      color: var(--accent);
+    }
+
+    .timer-wrap {
+      background: #fff;
+      border-radius: 16px;
+      padding: 10px 14px 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+    }
+
+    .timer-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .timer-label { color: var(--muted); font-size: 0.9rem; }
+    .timer-digits {
+      font-size: 1.6rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+
+    .timer-digits.warn { color: #e67e22; }
+    .timer-digits.danger { color: var(--red); animation: pulse 0.6s ease infinite; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .timer-bar {
+      height: 12px;
+      background: #dfe6e9;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .timer-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #00b894, #55efc4);
+      border-radius: 999px;
+      transition: width 0.2s linear, background 0.3s;
+    }
+
+    .timer-fill.warn { background: linear-gradient(90deg, #e67e22, #fdcb6e); }
+    .timer-fill.danger { background: linear-gradient(90deg, #d63031, #e17055); }
+
+    .mode-title {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .level-pill {
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .question-box {
+      background: #f8f1ff;
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      margin-bottom: 18px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .question-text {
+      font-size: 1.55rem;
+      font-weight: 800;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .question-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .big-number {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .answer-area {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .answer-input {
+      width: 100%;
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 14px;
+      border: 3px solid #dfe6e9;
+      border-radius: 14px;
+      outline: none;
+      min-height: 64px;
+    }
+
+    .answer-input:focus { border-color: var(--accent); }
+
+    .choice-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .choice-btn {
+      border: 3px solid #dfe6e9;
+      background: #fff;
+      border-radius: 14px;
+      font-size: 2rem;
+      font-weight: 900;
+      padding: 16px;
+      cursor: pointer;
+      min-height: 64px;
+      color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .choice-btn.selected {
+      border-color: var(--accent);
+      background: #f3efff;
+      color: var(--accent);
+    }
+
+    .choice-btn:active { transform: scale(0.97); }
+
+    .tap-choices { display: grid; gap: 10px; }
+    .tap-choices.cols-2 { grid-template-columns: 1fr 1fr; }
+
+    .tap-btn {
+      border: 3px solid #dfe6e9;
+      background: #fff;
+      border-radius: 14px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      padding: 14px 10px;
+      cursor: pointer;
+      min-height: 56px;
+      color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tap-btn.selected {
+      border-color: var(--accent);
+      background: #f3efff;
+      color: var(--accent);
+    }
+
+    .check-btn {
+      background: linear-gradient(135deg, var(--accent), #a29bfe);
+      color: #fff;
+      box-shadow: 0 4px 0 rgba(108, 92, 231, 0.4);
+    }
+
+    .check-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 rgba(108, 92, 231, 0.4);
+    }
+
+    .next-btn {
+      background: linear-gradient(135deg, var(--green), #55efc4);
+      color: #fff;
+      box-shadow: 0 4px 0 rgba(0, 184, 148, 0.4);
+    }
+
+    .btn-row {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-row .action-btn { flex: 1; }
+
+    .feedback {
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 14px;
+      margin-top: 4px;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.3;
+    }
+
+    .feedback.correct { background: #d1f7ea; color: #006b4f; }
+    .feedback.wrong { background: #ffe5de; color: #a33a22; }
+    .feedback.timeout { background: #fff3cd; color: #856404; }
+    .feedback.neutral { background: transparent; color: transparent; }
+
+    .footer-note {
+      text-align: center;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.85rem;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* Tablets (iPad portrait & landscape) */
+    @media (min-width: 700px) {
+      .app { max-width: 680px; }
+      h1 { font-size: 2.6rem; }
+      .subtitle { font-size: 1.3rem; }
+      .mode-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+      .mode-btn { min-height: 130px; font-size: 1.45rem; flex-direction: column; justify-content: center; text-align: center; }
+      .mode-btn .icon { font-size: 2.8rem; }
+      .mode-btn .hint { font-size: 0.95rem; }
+      .time-chip { font-size: 1.1rem; padding: 10px 20px; min-height: 48px; }
+      .question-box { min-height: 180px; padding: 32px 24px; }
+      .question-text { font-size: 1.9rem; }
+      .big-number { font-size: 3.2rem; }
+      .answer-input { font-size: 2.2rem; min-height: 76px; }
+      .choice-btn { font-size: 2.6rem; min-height: 84px; }
+      .tap-btn { font-size: 1.5rem; min-height: 70px; }
+      .back-btn, .action-btn { font-size: 1.25rem; min-height: 60px; }
+      .timer-digits { font-size: 2rem; }
+      .timer-bar { height: 16px; }
+    }
+
+    /* Short landscape screens (phones sideways, iPad landscape w/ keyboard) */
+    @media (orientation: landscape) and (max-height: 600px) {
+      .app { margin-top: 0; }
+      h1 { font-size: 1.5rem; margin-bottom: 2px; }
+      .subtitle { margin-bottom: 10px; }
+      .mode-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .mode-btn { min-height: 64px; padding: 12px; }
+      .question-box { min-height: 90px; padding: 14px; margin-bottom: 10px; }
+    }
+
+    @media (max-width: 400px) {
+      h1 { font-size: 1.55rem; }
+      .question-text { font-size: 1.3rem; }
+      .big-number { font-size: 2rem; }
+      .mode-btn { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div id="home-screen">
+      <h1>⭐ Math Practice</h1>
+      <p class="subtitle">2nd Grade · Fresh questions every time!</p>
+
+      <div class="settings-row" id="time-settings" role="group" aria-label="Seconds per question">
+        <label>⏱ Time:</label>
+        <button type="button" class="time-chip" data-seconds="15">15s</button>
+        <button type="button" class="time-chip active" data-seconds="25">25s</button>
+        <button type="button" class="time-chip" data-seconds="30">30s</button>
+      </div>
+
+      <div class="card">
+        <div class="mode-grid">
+          <button class="mode-btn m-add" data-mode="addsub" type="button">
+            <span class="icon">➕</span>
+            <span class="label">Addition &amp; Subtraction
+              <span class="hint">Numbers within 100 · adapts to you</span>
+            </span>
+          </button>
+          <button class="mode-btn m-place" data-mode="place" type="button">
+            <span class="icon">🔢</span>
+            <span class="label">Place Value
+              <span class="hint">Ones, tens, hundreds…</span>
+            </span>
+          </button>
+          <button class="mode-btn m-compare" data-mode="compare" type="button">
+            <span class="icon">⚖️</span>
+            <span class="label">Number Comparison
+              <span class="hint">Less, greater, or equal</span>
+            </span>
+          </button>
+          <button class="mode-btn m-word" data-mode="word" type="button">
+            <span class="icon">📖</span>
+            <span class="label">Word Problems
+              <span class="hint">New stories each round</span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <p class="footer-note">Every question is randomly generated. Beat the clock!</p>
+    </div>
+
+    <div id="practice-screen" class="hidden">
+      <div class="top-bar">
+        <button class="back-btn" id="back-btn" type="button">← Home</button>
+        <div class="score-pill" id="score-pill">⭐ 0 / 0</div>
+      </div>
+
+      <div class="timer-wrap" aria-live="polite">
+        <div class="timer-meta">
+          <span class="timer-label">Time left</span>
+          <span class="timer-digits" id="timer-digits">25</span>
+        </div>
+        <div class="timer-bar">
+          <div class="timer-fill" id="timer-fill"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="mode-title" id="mode-title">Practice</div>
+        <div class="level-pill" id="level-pill">Level ★</div>
+        <div class="question-box" id="question-box"></div>
+        <div class="answer-area" id="answer-area"></div>
+        <div class="feedback neutral" id="feedback" aria-live="polite"></div>
+        <div class="btn-row">
+          <button class="action-btn check-btn" id="check-btn" type="button">Check ✓</button>
+          <button class="action-btn next-btn hidden" id="next-btn" type="button">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function () {
+  "use strict";
+
+  /* ---- DOM ---- */
+  var homeScreen = document.getElementById("home-screen");
+  var practiceScreen = document.getElementById("practice-screen");
+  var questionBox = document.getElementById("question-box");
+  var answerArea = document.getElementById("answer-area");
+  var feedbackEl = document.getElementById("feedback");
+  var scorePill = document.getElementById("score-pill");
+  var modeTitle = document.getElementById("mode-title");
+  var levelPill = document.getElementById("level-pill");
+  var checkBtn = document.getElementById("check-btn");
+  var nextBtn = document.getElementById("next-btn");
+  var backBtn = document.getElementById("back-btn");
+  var timerDigits = document.getElementById("timer-digits");
+  var timerFill = document.getElementById("timer-fill");
+
+  var MODE_TITLES = {
+    addsub: "➕ Addition & Subtraction",
+    place: "🔢 Place Value",
+    compare: "⚖️ Number Comparison",
+    word: "📖 Word Problems"
+  };
+
+  var LEVEL_LABELS = ["Easy ★", "Getting warmer ★★", "Challenge ★★★"];
+
+  var PRAISE = [
+    "🎉 Correct! Super star!",
+    "🌟 Awesome work!",
+    "👏 You got it!",
+    "💪 Brilliant!",
+    "✨ Fantastic!",
+    "🏆 Yes! Keep going!"
+  ];
+
+  var TRY_AGAIN = [
+    "Not quite — try again! 💪",
+    "Almost! Give it another go 🌟",
+    "Hmm, think again! You can do it 💡",
+    "Close! Check your work ✏️"
+  ];
+
+  var TIME_UP_MSGS = [
+    "⏰ Time's up! The answer was ",
+    "⏱ Oops — time ran out. Answer: ",
+    "🔔 Clock ran out! Correct answer: "
+  ];
+
+  /* ---- State ---- */
+  var state = {
+    mode: null,
+    correct: 0,
+    attempted: 0,
+    streak: 0,
+    level: 0,           // 0 easy, 1 medium, 2 hard
+    current: null,
+    locked: false,
+    selectedChoice: null,
+    secondsPerQ: 25,
+    timeLeft: 25,
+    timerId: null,
+    autoNextId: null,
+    recentKeys: [],     // avoid immediate repeats
+    lastTemplateId: null
+  };
+
+  /* ---- Utils ---- */
+  function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i];
+      a[i] = a[j];
+      a[j] = t;
+    }
+    return a;
+  }
+
+  function rememberKey(key) {
+    state.recentKeys.push(key);
+    if (state.recentKeys.length > 12) state.recentKeys.shift();
+  }
+
+  function wasRecent(key) {
+    return state.recentKeys.indexOf(key) !== -1;
+  }
+
+  function updateScore() {
+    scorePill.textContent = "⭐ " + state.correct + " / " + state.attempted;
+  }
+
+  function updateLevelPill() {
+    levelPill.textContent = "Difficulty: " + LEVEL_LABELS[state.level];
+  }
+
+  function setFeedback(type, msg) {
+    feedbackEl.className = "feedback " + type;
+    feedbackEl.textContent = msg;
+  }
+
+  function clearFeedback() {
+    setFeedback("neutral", "");
+  }
+
+  function bumpDifficulty(success) {
+    if (success) {
+      state.streak += 1;
+      if (state.streak >= 3 && state.level < 2) {
+        state.level += 1;
+        state.streak = 0;
+      }
+    } else {
+      state.streak = 0;
+      if (state.level > 0 && Math.random() < 0.65) {
+        state.level -= 1;
+      }
+    }
+    updateLevelPill();
+  }
+
+  /* ---- Timer ---- */
+  function stopTimer() {
+    if (state.timerId) {
+      clearInterval(state.timerId);
+      state.timerId = null;
+    }
+  }
+
+  function clearAutoNext() {
+    if (state.autoNextId) {
+      clearTimeout(state.autoNextId);
+      state.autoNextId = null;
+    }
+  }
+
+  function paintTimer() {
+    var total = state.secondsPerQ;
+    var left = Math.max(0, state.timeLeft);
+    timerDigits.textContent = String(left);
+    var pct = total > 0 ? (left / total) * 100 : 0;
+    timerFill.style.width = pct + "%";
+
+    timerDigits.classList.remove("warn", "danger");
+    timerFill.classList.remove("warn", "danger");
+    if (left <= 5) {
+      timerDigits.classList.add("danger");
+      timerFill.classList.add("danger");
+    } else if (left <= 10) {
+      timerDigits.classList.add("warn");
+      timerFill.classList.add("warn");
+    }
+  }
+
+  function startTimer() {
+    stopTimer();
+    state.timeLeft = state.secondsPerQ;
+    paintTimer();
+    state.timerId = setInterval(function () {
+      if (state.locked) return;
+      state.timeLeft -= 1;
+      paintTimer();
+      if (state.timeLeft <= 0) {
+        stopTimer();
+        onTimeout();
+      }
+    }, 1000);
+  }
+
+  function onTimeout() {
+    if (state.locked) return;
+    state.locked = true;
+    state.attempted += 1;
+    bumpDifficulty(false);
+    updateScore();
+
+    var ans = state.current ? state.current.displayAnswer : "?";
+    setFeedback("timeout", pick(TIME_UP_MSGS) + ans);
+
+    var els = answerArea.querySelectorAll("button, input");
+    for (var i = 0; i < els.length; i++) els[i].disabled = true;
+
+    checkBtn.classList.add("hidden");
+    nextBtn.classList.remove("hidden");
+
+    clearAutoNext();
+    state.autoNextId = setTimeout(function () {
+      state.autoNextId = null;
+      if (!practiceScreen.classList.contains("hidden")) nextProblem();
+    }, 2200);
+  }
+
+  /* ============================================================
+     PROCEDURAL GENERATORS — all use Math.random every call
+     ============================================================ */
+
+  function genAddSub(level) {
+    var isAdd = Math.random() < 0.5;
+    var a, b, onesA, onesB, tensA, tensB;
+    var forceRegroup = level >= 1 ? Math.random() < (0.35 + level * 0.2) : Math.random() < 0.2;
+    var maxSum = level === 0 ? 50 : (level === 1 ? 80 : 100);
+
+    if (isAdd) {
+      if (forceRegroup) {
+        onesA = randInt(5, 9);
+        onesB = randInt(10 - onesA, 9);
+        tensA = randInt(1, level === 2 ? 8 : 5);
+        tensB = randInt(0, Math.max(0, Math.floor(maxSum / 10) - tensA - 1));
+        a = tensA * 10 + onesA;
+        b = tensB * 10 + onesB;
+        if (a + b > maxSum) {
+          b = Math.max(1, maxSum - a);
+          if ((a % 10) + (b % 10) < 10 && Math.random() < 0.7) {
+            b = Math.min(maxSum - a, (10 - (a % 10)) + randInt(0, 5));
+          }
+        }
+      } else {
+        a = randInt(level === 0 ? 5 : 10, Math.floor(maxSum * 0.7));
+        b = randInt(1, Math.max(1, maxSum - a));
+      }
+      if (a + b > 100) b = 100 - a;
+      return makeMathProblem(a, "+", b, a + b);
+    }
+
+    // subtraction
+    if (forceRegroup) {
+      onesA = randInt(0, 4);
+      onesB = randInt(onesA + 1, 9);
+      tensA = randInt(level === 0 ? 2 : 3, level === 2 ? 9 : 7);
+      a = tensA * 10 + onesA;
+      b = randInt(1, tensA - 1) * 10 + onesB;
+      if (b >= a) b = onesB;
+    } else {
+      a = randInt(level === 0 ? 15 : 20, level === 0 ? 50 : 99);
+      b = randInt(1, a);
+    }
+    return makeMathProblem(a, "−", b, a - b);
+  }
+
+  function makeMathProblem(a, op, b, answer) {
+    var key = "as:" + a + op + b;
+    var prompts = [
+      '<div class="big-number">' + a + " " + op + " " + b + " = ?</div>",
+      '<div class="question-text">What is ' + a + " " + op + " " + b + "?</div>",
+      '<div class="big-number">' + a + '</div><div class="question-sub">' + op + ' ' + b + ' = ?</div>'
+    ];
+    return {
+      html: pick(prompts),
+      answer: String(answer),
+      displayAnswer: String(answer),
+      inputType: "number",
+      key: key
+    };
+  }
+
+  function genPlace(level) {
+    var kinds = level === 0
+      ? ["digitValue", "standard"]
+      : (level === 1 ? ["digitValue", "expanded", "standard"] : ["digitValue", "expanded", "standard", "digitValue"]);
+    var kind = pick(kinds);
+    var useThousands = level >= 2 ? Math.random() < 0.55 : (level === 1 ? Math.random() < 0.25 : false);
+    var n, digits, places, placeNames, idx, dig, value, s, parts, i, place, expanded, h, t, o, th;
+    var key;
+
+    if (kind === "digitValue") {
+      if (useThousands) {
+        n = randInt(1000, 9999);
+        digits = String(n).split("").map(Number);
+        places = [1000, 100, 10, 1];
+        placeNames = ["thousands", "hundreds", "tens", "ones"];
+      } else {
+        n = randInt(level === 0 ? 20 : 100, level === 0 ? 99 : 999);
+        // pad for 2-digit
+        s = String(n);
+        digits = s.split("").map(Number);
+        if (s.length === 2) {
+          places = [10, 1];
+          placeNames = ["tens", "ones"];
+        } else {
+          places = [100, 10, 1];
+          placeNames = ["hundreds", "tens", "ones"];
+        }
+      }
+      idx = randInt(0, digits.length - 1);
+      for (i = 0; i < 6 && digits[idx] === 0; i++) idx = randInt(0, digits.length - 1);
+      dig = digits[idx];
+      value = dig * places[idx];
+      key = "pv:dv:" + n + ":" + idx;
+      return {
+        html:
+          '<div class="question-text">In <span class="big-number" style="font-size:1.8rem">' + n + "</span>,</div>" +
+          '<div class="question-sub">what is the value of the digit <strong>' + dig + "</strong>?</div>" +
+          (level === 0
+            ? '<div class="question-sub" style="font-size:0.9rem;margin-top:6px">(Hint: ' + placeNames[idx] + " place)</div>"
+            : ""),
+        answer: String(value),
+        displayAnswer: String(value),
+        inputType: "number",
+        choices: makeNearbyChoices(value, places),
+        key: key
+      };
+    }
+
+    if (kind === "expanded") {
+      n = useThousands ? randInt(1100, 9999) : randInt(110, 999);
+      s = String(n);
+      parts = [];
+      for (i = 0; i < s.length; i++) {
+        dig = Number(s[i]);
+        if (dig === 0) continue;
+        place = Math.pow(10, s.length - 1 - i);
+        parts.push(String(dig * place));
+      }
+      expanded = parts.join(" + ");
+      key = "pv:exp:" + n + ":" + (Math.random() < 0.5 ? "toExp" : "toStd");
+
+      if (key.indexOf("toExp") !== -1 || Math.random() < 0.5) {
+        return {
+          html:
+            '<div class="question-text">Write in expanded form:</div>' +
+            '<div class="big-number">' + n + "</div>",
+          answer: expanded.replace(/\s/g, ""),
+          displayAnswer: expanded,
+          normalize: function (v) {
+            return String(v).replace(/\s/g, "").replace(/−/g, "-");
+          },
+          inputType: "text",
+          placeholder: "e.g. 300+40+2",
+          key: "pv:exp:" + n + ":toExp"
+        };
+      }
+      return {
+        html:
+          '<div class="question-text">Write in standard form:</div>' +
+          '<div class="question-text" style="font-size:1.3rem;margin-top:8px">' + expanded + "</div>",
+        answer: String(n),
+        displayAnswer: String(n),
+        inputType: "number",
+        key: "pv:exp:" + n + ":toStd"
+      };
+    }
+
+    // standard from place description
+    if (useThousands) {
+      th = randInt(1, 9);
+      h = randInt(0, 9);
+      t = randInt(0, 9);
+      o = randInt(0, 9);
+      n = th * 1000 + h * 100 + t * 10 + o;
+      key = "pv:std:" + n;
+      return {
+        html:
+          '<div class="question-text">' + th + " thousands, " + h + " hundreds, " + t + " tens, and " + o + " ones</div>" +
+          '<div class="question-sub">What number is that?</div>',
+        answer: String(n),
+        displayAnswer: String(n),
+        inputType: "number",
+        key: key
+      };
+    }
+    h = randInt(1, 9);
+    t = randInt(0, 9);
+    o = randInt(0, 9);
+    n = h * 100 + t * 10 + o;
+    key = "pv:std:" + n;
+    return {
+      html:
+        '<div class="question-text">' + h + " hundreds, " + t + " tens, and " + o + " ones</div>" +
+        '<div class="question-sub">What number is that?</div>',
+      answer: String(n),
+      displayAnswer: String(n),
+      inputType: "number",
+      key: key
+    };
+  }
+
+  function makeNearbyChoices(correct, places) {
+    var set = {};
+    set[correct] = true;
+    var list = [correct];
+    var guard = 0;
+    while (list.length < 4 && guard < 50) {
+      guard += 1;
+      var p = places[Math.floor(Math.random() * places.length)];
+      var d = randInt(1, 9);
+      var v = d * p;
+      if (!set[v]) {
+        set[v] = true;
+        list.push(v);
+      }
+    }
+    return shuffle(list);
+  }
+
+  function genCompare(level) {
+    var digits = level === 0 ? 2 : (level === 1 ? (Math.random() < 0.5 ? 2 : 3) : 3);
+    var min = digits === 2 ? 10 : 100;
+    var max = digits === 2 ? 99 : 999;
+    var a = randInt(min, max);
+    var b = randInt(min, max);
+
+    // harder: close numbers
+    if (level >= 1 && Math.random() < 0.4) {
+      var delta = randInt(1, level === 2 ? 15 : 8);
+      b = a + (Math.random() < 0.5 ? delta : -delta);
+      if (b < min) b = min;
+      if (b > max) b = max;
+    }
+    if (Math.random() < (level === 0 ? 0.22 : 0.15)) b = a;
+
+    var answer;
+    if (a < b) answer = "<";
+    else if (a > b) answer = ">";
+    else answer = "=";
+
+    var key = "cmp:" + a + ":" + b;
+    var layouts = [
+      '<div class="question-text">Compare the numbers</div><div class="big-number">' + a + " &nbsp;?&nbsp; " + b + "</div>",
+      '<div class="question-sub">Which sign fits?</div><div class="big-number">' + a + " &nbsp;□&nbsp; " + b + "</div>",
+      '<div class="question-text">' + a + ' &nbsp;___&nbsp; ' + b + '</div><div class="question-sub">Choose &lt; &nbsp; &gt; &nbsp; or &nbsp; =</div>'
+    ];
+    return {
+      html: pick(layouts) + '<div class="question-sub">Choose &lt; &nbsp; &gt; &nbsp; or &nbsp; =</div>',
+      answer: answer,
+      displayAnswer: a + " " + answer + " " + b,
+      inputType: "compare",
+      key: key
+    };
+  }
+
+  /* Word problems: procedural templates — names, items, numbers all random each time */
+  var NAMES = ["Mia", "Sam", "Lila", "Ben", "Zoe", "Omar", "Ava", "Kai", "Nora", "Leo", "Emma", "Jay"];
+  var ITEMS = [
+    "stickers", "apples", "crayons", "balloons", "seashells", "marbles",
+    "books", "pencils", "blocks", "cards", "cookies", "stars"
+  ];
+  var PLACES = ["basket", "box", "jar", "bag", "shelf", "desk"];
+
+  function genWord(level) {
+    var name = pick(NAMES);
+    var name2 = pick(NAMES);
+    if (name2 === name) name2 = pick(NAMES);
+    var item = pick(ITEMS);
+    var place = pick(PLACES);
+    var a, b, answer, text, kind;
+
+    var kinds = level === 0
+      ? ["addGet", "subLeft"]
+      : (level === 1 ? ["addGet", "subLeft", "addTogether", "subTaken"] : ["addGet", "subLeft", "addTogether", "subTaken", "addTwoDays", "subFlew"]);
+
+    // avoid same template id twice in a row
+    kind = pick(kinds);
+    var tries = 0;
+    while (kind === state.lastTemplateId && tries < 5) {
+      kind = pick(kinds);
+      tries += 1;
+    }
+    state.lastTemplateId = kind;
+
+    var maxN = level === 0 ? 40 : (level === 1 ? 70 : 99);
+
+    if (kind === "addGet") {
+      a = randInt(8, Math.floor(maxN * 0.6));
+      b = randInt(3, Math.max(3, maxN - a));
+      answer = a + b;
+      text = name + " has " + a + " " + item + ". " +
+        pick(["She", "He", name]) + " gets " + b + " more. How many " + item + " does " + name + " have now?";
+      // fix pronoun clumsiness — regenerate cleanly
+      text = name + " has " + a + " " + item + ". Then " + name + " gets " + b + " more. How many " + item + " now?";
+    } else if (kind === "subLeft") {
+      a = randInt(15, maxN);
+      b = randInt(3, a - 2);
+      answer = a - b;
+      text = "There are " + a + " " + item + " in a " + place + ". " + b + " are taken away. How many are left?";
+    } else if (kind === "addTogether") {
+      a = randInt(5, Math.floor(maxN * 0.5));
+      b = randInt(5, Math.floor(maxN * 0.5));
+      if (a + b > 100) b = 100 - a;
+      answer = a + b;
+      text = name + " found " + a + " " + item + ". " + name2 + " found " + b + ". How many " + item + " do they have together?";
+    } else if (kind === "subTaken") {
+      a = randInt(20, maxN);
+      b = randInt(4, a - 5);
+      answer = a - b;
+      text = "A store had " + a + " " + item + ". They sold " + b + ". How many " + item + " are left?";
+    } else if (kind === "addTwoDays") {
+      a = randInt(5, Math.floor(maxN * 0.45));
+      b = randInt(5, Math.floor(maxN * 0.45));
+      if (a + b > 100) b = 100 - a;
+      answer = a + b;
+      text = name + " read " + a + " pages on Monday and " + b + " pages on Tuesday. How many pages in all?";
+    } else {
+      // subFlew / remaining
+      a = randInt(18, maxN);
+      b = randInt(3, Math.min(30, a - 3));
+      answer = a - b;
+      text = "There were " + a + " birds on a tree. " + b + " flew away. How many birds are still there?";
+    }
+
+    var key = "wp:" + kind + ":" + a + ":" + b + ":" + item;
+    return {
+      html: '<div class="question-text" style="font-size:1.2rem">' + text + "</div>",
+      answer: String(answer),
+      displayAnswer: String(answer),
+      inputType: "number",
+      key: key
+    };
+  }
+
+  var GENERATORS = {
+    addsub: genAddSub,
+    place: genPlace,
+    compare: genCompare,
+    word: genWord
+  };
+
+  /* ---- Fresh problem with anti-repeat ---- */
+  function generateFresh() {
+    var gen = GENERATORS[state.mode];
+    var problem = null;
+    var attempts = 0;
+    do {
+      problem = gen(state.level);
+      attempts += 1;
+    } while (problem && wasRecent(problem.key) && attempts < 14);
+    if (problem && problem.key) rememberKey(problem.key);
+    return problem;
+  }
+
+  /* ---- Answer UI ---- */
+  function renderAnswerUI(problem) {
+    answerArea.innerHTML = "";
+    state.selectedChoice = null;
+
+    if (problem.inputType === "compare") {
+      var row = document.createElement("div");
+      row.className = "choice-row";
+      ["<", ">", "="].forEach(function (sym) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "choice-btn";
+        btn.textContent = sym;
+        btn.addEventListener("click", function () {
+          if (state.locked) return;
+          var buttons = row.querySelectorAll(".choice-btn");
+          for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
+          btn.classList.add("selected");
+          state.selectedChoice = sym;
+        });
+        row.appendChild(btn);
+      });
+      answerArea.appendChild(row);
+      return;
+    }
+
+    if (problem.choices && problem.choices.length) {
+      var grid = document.createElement("div");
+      grid.className = "tap-choices cols-2";
+      problem.choices.forEach(function (c) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tap-btn";
+        btn.textContent = String(c);
+        btn.addEventListener("click", function () {
+          if (state.locked) return;
+          var buttons = grid.querySelectorAll(".tap-btn");
+          for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
+          btn.classList.add("selected");
+          state.selectedChoice = String(c);
+          var inp = document.getElementById("answer-input");
+          if (inp) inp.value = "";
+        });
+        grid.appendChild(btn);
+      });
+      answerArea.appendChild(grid);
+
+      var input = document.createElement("input");
+      input.className = "answer-input";
+      input.type = "text";
+      input.inputMode = "numeric";
+      input.setAttribute("pattern", "[0-9]*");
+      input.setAttribute("enterkeyhint", "done");
+      input.placeholder = "or type here";
+      input.id = "answer-input";
+      input.setAttribute("autocomplete", "off");
+      input.addEventListener("input", function () {
+        state.selectedChoice = null;
+        var buttons = grid.querySelectorAll(".tap-btn");
+        for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
+      });
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") checkAnswer();
+      });
+      answerArea.appendChild(input);
+      return;
+    }
+
+    var textInput = document.createElement("input");
+    textInput.className = "answer-input";
+    textInput.id = "answer-input";
+    textInput.setAttribute("autocomplete", "off");
+    if (problem.inputType === "number") {
+      textInput.type = "text";
+      textInput.inputMode = "numeric";
+      textInput.setAttribute("pattern", "[0-9]*");
+      textInput.setAttribute("enterkeyhint", "done");
+      textInput.placeholder = "?";
+    } else {
+      textInput.type = "text";
+      textInput.placeholder = problem.placeholder || "Type your answer";
+    }
+    textInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") checkAnswer();
+    });
+    answerArea.appendChild(textInput);
+    setTimeout(function () { textInput.focus(); }, 40);
+  }
+
+  function getUserAnswer(problem) {
+    if (problem.inputType === "compare") return state.selectedChoice;
+    if (state.selectedChoice != null) return state.selectedChoice;
+    var input = document.getElementById("answer-input");
+    if (!input) return null;
+    return input.value.trim();
+  }
+
+  function answersMatch(problem, userRaw) {
+    if (userRaw == null || userRaw === "") return false;
+    var user = String(userRaw).trim();
+    var expected = String(problem.answer).trim();
+
+    if (problem.normalize) {
+      user = problem.normalize(user);
+      expected = problem.normalize(expected);
+    } else if (problem.inputType === "number") {
+      user = user.replace(/,/g, "").replace(/^0+(?=\d)/, "");
+      expected = expected.replace(/^0+(?=\d)/, "");
+    } else if (problem.inputType === "text") {
+      user = user.replace(/\s/g, "").replace(/−/g, "-");
+      expected = expected.replace(/\s/g, "");
+    }
+    return user === expected;
+  }
+
+  /* ---- Flow ---- */
+  function showHome() {
+    stopTimer();
+    clearAutoNext();
+    practiceScreen.classList.add("hidden");
+    homeScreen.classList.remove("hidden");
+    state.mode = null;
+  }
+
+  function startMode(mode) {
+    stopTimer();
+    clearAutoNext();
+    state.mode = mode;
+    state.correct = 0;
+    state.attempted = 0;
+    state.streak = 0;
+    state.level = 0;
+    state.locked = false;
+    state.recentKeys = [];
+    state.lastTemplateId = null;
+    updateScore();
+    updateLevelPill();
+    modeTitle.textContent = MODE_TITLES[mode];
+    homeScreen.classList.add("hidden");
+    practiceScreen.classList.remove("hidden");
+    nextProblem();
+  }
+
+  function nextProblem() {
+    stopTimer();
+    clearAutoNext();
+    state.locked = false;
+    state.selectedChoice = null;
+    clearFeedback();
+    checkBtn.classList.remove("hidden");
+    nextBtn.classList.add("hidden");
+
+    var problem = generateFresh();
+    state.current = problem;
+    questionBox.innerHTML = problem.html;
+    renderAnswerUI(problem);
+    startTimer();
+  }
+
+  function checkAnswer() {
+    if (state.locked) return;
+    var problem = state.current;
+    if (!problem) return;
+
+    var user = getUserAnswer(problem);
+    if (user == null || user === "") {
+      setFeedback("wrong", "Type or tap an answer first!");
+      return;
+    }
+
+    state.attempted += 1;
+
+    if (answersMatch(problem, user)) {
+      state.locked = true;
+      stopTimer();
+      clearAutoNext();
+      state.correct += 1;
+      bumpDifficulty(true);
+      setFeedback("correct", pick(PRAISE));
+      checkBtn.classList.add("hidden");
+      nextBtn.classList.remove("hidden");
+      var els = answerArea.querySelectorAll("button, input");
+      for (var i = 0; i < els.length; i++) els[i].disabled = true;
+    } else {
+      bumpDifficulty(false);
+      setFeedback("wrong", pick(TRY_AGAIN));
+      var input = document.getElementById("answer-input");
+      if (input) input.select();
+    }
+    updateScore();
+  }
+
+  /* ---- Events (delegation for home tiles + chips) ---- */
+  checkBtn.addEventListener("click", checkAnswer);
+  nextBtn.addEventListener("click", nextProblem);
+  backBtn.addEventListener("click", showHome);
+
+  // Robust: click anywhere on a mode tile (including child spans) starts that mode
+  var modeGrid = document.querySelector(".mode-grid");
+  if (modeGrid) {
+    modeGrid.addEventListener("click", function (e) {
+      var btn = e.target.closest ? e.target.closest(".mode-btn") : null;
+      if (!btn && e.target.classList && e.target.classList.contains("mode-btn")) btn = e.target;
+      // fallback walk-up for older engines without closest
+      if (!btn) {
+        var el = e.target;
+        while (el && el !== modeGrid) {
+          if (el.classList && el.classList.contains("mode-btn")) { btn = el; break; }
+          el = el.parentNode;
+        }
+      }
+      if (!btn) return;
+      var mode = btn.getAttribute("data-mode");
+      if (mode && GENERATORS[mode]) startMode(mode);
+    });
+  }
+
+  var timeSettings = document.getElementById("time-settings");
+  if (timeSettings) {
+    timeSettings.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest(".time-chip") : null;
+      if (!chip) {
+        var el = e.target;
+        while (el && el !== timeSettings) {
+          if (el.classList && el.classList.contains("time-chip")) { chip = el; break; }
+          el = el.parentNode;
+        }
+      }
+      if (!chip) return;
+      var chips = timeSettings.querySelectorAll(".time-chip");
+      for (var i = 0; i < chips.length; i++) chips[i].classList.remove("active");
+      chip.classList.add("active");
+      var secs = parseInt(chip.getAttribute("data-seconds"), 10);
+      if (!isNaN(secs) && secs > 0) state.secondsPerQ = secs;
+    });
+  }
+
+  // Also wire inline-safe direct handlers as backup
+  var modeButtons = document.querySelectorAll(".mode-btn");
+  for (var m = 0; m < modeButtons.length; m++) {
+    modeButtons[m].onclick = (function (btn) {
+      return function (ev) {
+        ev.preventDefault();
+        var mode = btn.getAttribute("data-mode");
+        if (mode && GENERATORS[mode]) startMode(mode);
+      };
+    })(modeButtons[m]);
+  }
+
+  state.secondsPerQ = 25;
+})();
+  </script>
+  <script>
+    // PWA: register service worker (relative path so it works under any subpath)
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./service-worker.js", { scope: "./" }).catch(function (err) {
+          console.warn("Service worker registration failed:", err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
