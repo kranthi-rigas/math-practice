@@ -8,6 +8,24 @@ A colorful, kid-friendly **intelligent** math practice app for Kindergarten thro
 - **Pictures where they help**: emoji groups, ten-frames, base-ten blocks, analog clocks (SVG), coins and bills, rulers, fraction bars and circles, number lines, rectangles and L-shapes
 - **Answer box is focused automatically** on every typed question (round start, next question, retry, after time-up), with the text selected for easy retyping. Number answers show a **number pad** (`inputmode="numeric"`); expanded-form answers get the normal keyboard (they need `+`). **Enter** checks the answer, and Enter again goes to the next question. Picture/clock/fraction questions use big **tap buttons** instead.
 
+## Fun stuff (v5)
+
+- **Name & buddy**: on first launch the app asks for her name and a buddy animal (🐶 🐱 🐰 🐼 🦊 🐸 🦄 🐨). The buddy greets her by name on home and summary screens. Change it any time with ⚙️ on the home screen.
+- **Game types** (pick on home; **Practice** is the default each time the app opens):
+  - 🎯 **Practice**: the classic 10-question round.
+  - ⏱️ **Beat the Clock**: 60 seconds, as many as she can. Levels still adapt. It keeps its own best for each grade and mode.
+  - 👾 **Boss Round**: a boss monster with an HP bar (8 HP). Each right answer hits it (a super-fast answer hits 2). A miss or time-up lets the boss attack one of her 3 hearts. There's a win screen and a try-again screen.
+- **Stars**: 1–3 per round.
+  - Practice: 9+ right = 3, 6+ = 2.
+  - Beat the Clock: 15+ = 3, 8+ = 2.
+  - Boss: a win with all hearts = 3, any other win = 2, a loss = 1.
+  - New players get 3 welcome stars.
+- **Sticker book**: 36 emoji animal stickers (20 Common, 10 Rare, 6 Super Rare). Opening a surprise egg costs 3 ⭐. The egg shakes, then reveals a sticker she doesn't have yet. Rare ones come up less often.
+- **Buddy mascot** on the question screen. It sits above the timer, so it never covers the question or the keyboard. It cheers right answers, encourages after misses, gets excited on streaks, and celebrates on the summary.
+- **Sounds**: made with the Web Audio API, so there are no sound files and they work offline. Ding (right), soft buzz (miss), chime (streaks), jingle (level up), fanfare (new best, boss win, new badge), a soft click on taps, plus boss hit/attack and egg sounds. Audio only starts after the first tap, as iOS requires. The 🔊/🔇 button (home and question screens) is remembered on the device.
+- **Badges** (🏅 screen): First Round, Speedy, Streak 5, Streak 10, Perfect Round, Level 10 Hero (one per grade), Explorer (every mode in a grade), Clock Champ, Boss Beater, Boss Master, Daily Goal, 3 and 7 Days in a Row, Star Catcher, Sticker Fan, Super Collector.
+- **Daily goal**: 3 rounds a day, shown with a progress ring. There's also a 🔥 **days-in-a-row** counter. Both use the device's local date.
+
 ## Grades and modes (levels 1–10 each)
 
 **Kindergarten**
@@ -72,6 +90,15 @@ Original 2nd-grade modes:
 Keys: `mp_grade`, `mp_time`, `mp_best_<grade>_<mode>`, `mp_level_<grade>_<mode>` (e.g. `mp_best_2_addsub`, `mp_level_K_count`).
 Versions 1–3 saved 2nd-grade progress as `mp_best_<mode>` / `mp_level_<mode>`; v4 copies those to the 2nd-grade keys once on first launch (never overwriting newer data) and leaves the old keys in place.
 
+v5 adds these keys and never changes the v4 ones:
+- `mp_profile` {name, avatar}
+- `mp_stars`, `mp_stars_total`, `mp_stickers` (array of ids), `mp_badges` {id: date}
+- `mp_daily` {date, rounds, questions, done}, `mp_days` {last, count, best}
+- `mp_btc_best_<grade>_<mode>` (Beat the Clock best)
+- `mp_boss_wins`, `mp_rounds_total`, `mp_played` (modes tried), `mp_muted`
+
+Existing v4 players keep all their levels and bests. They see the name/buddy screen once, get 3 welcome stars, and get any Level 10 Hero badge they already earned.
+
 ## Adding a grade (4th, 5th…)
 
 In `index.html`: write one generator per mode (`function genG4Something(level) { … return problem; }` for levels 1–10), then add an entry to `GRADES` and its key to `GRADE_ORDER`. The grade chip, tiles, saving, levels, and scoring all come from the registry. A problem is an object like
@@ -111,4 +138,4 @@ After the first visit, the app works with no internet.
 > iOS note: Safari only opens the keyboard when focus comes from a tap. If the keyboard is closed and a question auto-advances after time runs out, tap the answer box (on Android/desktop it focuses and opens automatically).
 
 
-When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v4`) so devices pick up the new version (it takes effect on the next launch after an online visit).
+When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v5`) so devices pick up the new version (it takes effect on the next launch after an online visit).

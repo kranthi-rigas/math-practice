@@ -611,13 +611,173 @@
       .big-number { font-size: 2rem; }
       .mode-btn { font-size: 1.1rem; }
     }
+
+    /* ===== v5: fun layer (profile, stars, stickers, mascot, badges, games) ===== */
+    .home-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .hello { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.9); border-radius: 999px; padding: 6px 14px 6px 8px; box-shadow: var(--shadow); min-width: 0; }
+    .hello-avatar { font-size: 2rem; line-height: 1; }
+    .hello-text { font-weight: 900; font-size: 1.15rem; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .top-icons { display: flex; gap: 8px; flex-shrink: 0; }
+    .icon-btn { width: 52px; height: 52px; border-radius: 50%; border: none; background: #fff; font-size: 1.5rem; box-shadow: var(--shadow); cursor: pointer; }
+    .icon-btn.small { width: 48px; height: 48px; font-size: 1.3rem; }
+    .fun-bar { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .fun-stat, .goal { background: #fff; border-radius: 16px; box-shadow: var(--shadow); padding: 8px 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; color: var(--text); text-align: center; line-height: 1.2; }
+    .fun-stat b { font-size: 1.4rem; color: var(--accent); }
+    .goal-ring { width: 52px; height: 52px; flex-shrink: 0; }
+    .goal-ring .bg { fill: none; stroke: #dfe6e9; stroke-width: 7; }
+    .goal-ring .fg { fill: none; stroke: var(--green); stroke-width: 7; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.6s ease; }
+    .goal-ring text { font-size: 15px; font-weight: 900; fill: var(--text); }
+    .goal small { display: block; font-size: 0.8rem; color: var(--muted); }
+    .fun-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .fun-btn { border: none; border-radius: 16px; min-height: 60px; font-size: 1.25rem; font-weight: 900; color: #fff; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.15); }
+    .fun-btn.stickers { background: linear-gradient(135deg, #fd79a8, #fdcb6e); }
+    .fun-btn.badges { background: linear-gradient(135deg, #0984e3, #00cec9); }
+    .game-chip { font-size: 1rem; }
+
+    .buddy { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; min-height: 56px; }
+    .buddy-face { font-size: 2.6rem; line-height: 1; flex-shrink: 0; display: inline-block; filter: drop-shadow(0 3px 4px rgba(0,0,0,0.2)); }
+    .buddy-face.big { font-size: 4rem; }
+    .bubble { position: relative; background: #fff; border-radius: 16px; padding: 8px 14px; font-weight: 800; font-size: 1.05rem; color: var(--text); box-shadow: var(--shadow); line-height: 1.25; }
+    .bubble::before { content: ""; position: absolute; left: -8px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-left: 0; border-right-color: #fff; }
+    .buddy-face.happy { animation: bHappy 0.7s ease; }
+    .buddy-face.sad { animation: bSad 0.8s ease; }
+    .buddy-face.excited { animation: bExcited 0.9s ease; }
+    .buddy-face.celebrate { animation: bDance 1.2s ease 2; }
+    @keyframes bHappy { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-12px) scale(1.1); } }
+    @keyframes bSad { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-12deg); } 60% { transform: rotate(8deg); } }
+    @keyframes bExcited { 0% { transform: scale(1) rotate(0); } 50% { transform: scale(1.3) rotate(360deg); } 100% { transform: scale(1) rotate(360deg); } }
+    @keyframes bDance { 0%,100% { transform: rotate(0) translateY(0); } 25% { transform: rotate(-15deg) translateY(-8px); } 75% { transform: rotate(15deg) translateY(-8px); } }
+
+    .boss-panel { display: flex; align-items: center; gap: 12px; background: #2d3436; color: #fff; border-radius: 16px; padding: 10px 14px; margin-bottom: 12px; box-shadow: var(--shadow); }
+    .boss-face { font-size: 3rem; line-height: 1; display: inline-block; }
+    .boss-face.hit { animation: bossHit 0.5s ease; }
+    .boss-info { flex: 1; min-width: 0; }
+    .boss-name { font-weight: 900; font-size: 1.05rem; margin-bottom: 4px; }
+    .hp-bar { height: 16px; background: #636e72; border-radius: 999px; overflow: hidden; }
+    .hp-fill { height: 100%; background: linear-gradient(90deg, #d63031, #ff7675); border-radius: 999px; transition: width 0.4s ease; }
+    .hearts { font-size: 1.3rem; margin-top: 4px; letter-spacing: 2px; }
+    .shake { animation: shake 0.45s ease; }
+    @keyframes bossHit { 0%,100% { transform: translateX(0) scale(1); } 20% { transform: translateX(-8px) scale(0.9); filter: brightness(2); } 60% { transform: translateX(8px) scale(1.05); } }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+    .sum-buddy { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+    .stars-earned { text-align: center; margin: 6px 0 4px; }
+    .star-slot { display: inline-block; font-size: 2.8rem; margin: 0 4px; }
+    .star-slot.on { animation: starPop 0.6s ease both; }
+    .star-slot.off { filter: grayscale(1); opacity: 0.3; }
+    @keyframes starPop { 0% { transform: scale(0) rotate(-90deg); } 70% { transform: scale(1.3) rotate(10deg); } 100% { transform: scale(1) rotate(0); } }
+    .stars-text { text-align: center; font-weight: 900; font-size: 1.15rem; color: #d4a017; margin-bottom: 10px; }
+    .new-badges { display: grid; gap: 8px; margin-bottom: 12px; }
+    .badge-pop { display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #ffeaa7, #fab1a0); border-radius: 14px; padding: 10px 14px; font-weight: 900; animation: bounceIn 0.8s ease; }
+    .badge-pop .bi { font-size: 2rem; }
+    .daily-line { display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; margin-bottom: 12px; }
+    .fun-cta { width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #fd79a8, #fdcb6e); color: #fff; font-size: 1.2rem; }
+
+    .screen-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .screen-title { font-size: 1.5rem; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .book-info { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 800; margin-bottom: 12px; }
+    .sticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; }
+    .sticker { border-radius: 16px; border: 3px solid #dfe6e9; background: #fff; text-align: center; padding: 8px 4px; min-height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .sticker .se { font-size: 2.4rem; line-height: 1.1; }
+    .sticker .sn { font-size: 0.8rem; font-weight: 800; color: var(--muted); margin-top: 4px; }
+    .sticker.locked { background: #f1f2f6; }
+    .sticker.locked .se { filter: grayscale(1) brightness(0.4); opacity: 0.35; }
+    .sticker.r2 { border-color: #74b9ff; background: #eaf4ff; }
+    .sticker.r3 { border-color: #fdcb6e; background: #fff8e1; box-shadow: 0 0 0 3px rgba(253,203,110,0.35); }
+    .rar { display: inline-block; font-size: 0.75rem; font-weight: 900; padding: 2px 8px; border-radius: 999px; background: #dfe6e9; color: #2d3436; }
+    .rar.r2 { background: #74b9ff; color: #fff; }
+    .rar.r3 { background: linear-gradient(135deg, #fdcb6e, #e17055); color: #fff; }
+    .egg-btn { width: 100%; margin-bottom: 14px; background: linear-gradient(135deg, #a29bfe, #fd79a8); color: #fff; font-size: 1.25rem; min-height: 64px; }
+    .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .badge-card { border-radius: 16px; background: #fff; border: 3px solid #dfe6e9; padding: 12px 8px; text-align: center; }
+    .badge-card .bi { font-size: 2.4rem; line-height: 1.1; }
+    .badge-card .bn { font-weight: 900; margin-top: 4px; }
+    .badge-card .bh { font-size: 0.85rem; color: var(--muted); font-weight: 700; margin-top: 2px; }
+    .badge-card.earned { border-color: var(--green); background: #eafff6; }
+    .badge-card.locked .bi { filter: grayscale(1); opacity: 0.35; }
+
+    .welcome-title { font-size: 1.8rem; font-weight: 900; text-align: center; color: var(--accent); margin-bottom: 14px; }
+    .field-label { display: block; font-weight: 900; font-size: 1.15rem; margin: 10px 0 8px; }
+    .name-input { width: 100%; font-size: 1.5rem; font-weight: 800; padding: 12px 14px; border: 3px solid #dfe6e9; border-radius: 14px; outline: none; min-height: 58px; }
+    .name-input:focus { border-color: var(--accent); }
+    .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+    .avatar-btn { border: 3px solid #dfe6e9; background: #fff; border-radius: 16px; min-height: 76px; font-size: 2.4rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .avatar-btn small { font-size: 0.75rem; font-weight: 800; color: var(--muted); }
+    .avatar-btn.selected { border-color: var(--accent); background: #f3efff; transform: scale(1.04); }
+    .big-go { width: 100%; font-size: 1.4rem; min-height: 64px; }
+
+    .reveal { position: fixed; inset: 0; background: rgba(45,52,54,0.7); display: flex; align-items: center; justify-content: center; z-index: 60; padding: 20px; }
+    .reveal-card { background: #fff; border-radius: 24px; padding: 24px; text-align: center; width: 100%; max-width: 360px; box-shadow: var(--shadow); }
+    .reveal-egg { font-size: 6rem; line-height: 1.1; display: inline-block; animation: eggShake 0.35s ease-in-out infinite; }
+    .reveal-sticker { font-size: 7rem; line-height: 1.1; display: inline-block; animation: bounceIn 0.9s ease; }
+    .reveal-name { font-size: 1.6rem; font-weight: 900; margin: 6px 0; }
+    @keyframes eggShake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-14deg); } 75% { transform: rotate(14deg); } }
+    .toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top)); transform: translateX(-50%); background: #2d3436; color: #fff; font-weight: 800; padding: 12px 18px; border-radius: 16px; z-index: 70; box-shadow: var(--shadow); max-width: 90vw; text-align: center; }
+
+    @media (min-width: 700px) {
+      .buddy-face { font-size: 3.2rem; }
+      .bubble { font-size: 1.25rem; }
+      .fun-stat b { font-size: 1.7rem; }
+      .avatar-btn { min-height: 96px; font-size: 3rem; }
+      .sticker-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+      .sticker .se { font-size: 3rem; }
+    }
+    @media (max-height: 600px) {
+      .buddy { min-height: 44px; margin-bottom: 6px; }
+      .buddy-face { font-size: 2rem; }
+      .bubble { font-size: 0.95rem; padding: 6px 10px; }
+    }
+    @media (max-width: 380px) {
+      .fun-bar { grid-template-columns: 1fr 1fr; }
+      .fun-bar .goal { grid-column: 1 / -1; }
+    }
   </style>
 </head>
 <body>
   <div class="app">
-    <div id="home-screen">
+    <div id="welcome-screen" class="hidden">
+      <div class="card">
+        <div class="welcome-title" id="welcome-title">👋 Hi there!</div>
+        <label class="field-label" for="name-input">What is your name?</label>
+        <input id="name-input" class="name-input" type="text" maxlength="14" autocomplete="off" autocorrect="off"
+               autocapitalize="words" spellcheck="false" placeholder="Your name" enterkeyhint="done" />
+        <div class="field-label">Pick your buddy:</div>
+        <div class="avatar-grid" id="avatar-grid"></div>
+        <button class="action-btn next-btn big-go" id="welcome-go" type="button">Let's go! 🚀</button>
+        <div class="btn-row"><button class="action-btn back-btn hidden" id="welcome-cancel" type="button">Cancel</button></div>
+      </div>
+    </div>
+
+    <div id="home-screen" class="hidden">
+      <div class="home-top">
+        <div class="hello"><span class="hello-avatar" id="hello-avatar">🐶</span><span class="hello-text" id="hello-text">Hi!</span></div>
+        <div class="top-icons">
+          <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off">🔊</button>
+          <button class="icon-btn" id="settings-btn" type="button" aria-label="Change name and buddy">⚙️</button>
+        </div>
+      </div>
       <h1>⭐ Math Practice</h1>
       <p class="subtitle" id="subtitle">2nd Grade · Level up and beat your best score!</p>
+
+      <div class="fun-bar">
+        <div class="goal" id="goal-box" aria-label="Daily goal">
+          <svg class="goal-ring" viewBox="0 0 60 60"><circle class="bg" cx="30" cy="30" r="24"/><circle class="fg" id="goal-ring-fg" cx="30" cy="30" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/><text x="30" y="35" text-anchor="middle" id="goal-ring-text">0/3</text></svg>
+          <div>🎯 Today<small id="goal-text">Play 3 rounds</small></div>
+        </div>
+        <div class="fun-stat" aria-label="Stars">⭐ <b id="home-stars">0</b></div>
+        <div class="fun-stat" aria-label="Days in a row">🔥 <b id="home-days">0</b><small>days</small></div>
+      </div>
+      <div class="fun-buttons">
+        <button class="fun-btn stickers" id="stickers-btn" type="button">📒 Stickers</button>
+        <button class="fun-btn badges" id="badges-btn" type="button">🏅 Badges</button>
+      </div>
+
+      <div class="settings-row" id="game-settings" role="group" aria-label="Game type">
+        <label>🎮 Game:</label>
+        <button type="button" class="time-chip game-chip active" data-game="practice">🎯 Practice</button>
+        <button type="button" class="time-chip game-chip" data-game="clock">⏱️ Beat the Clock</button>
+        <button type="button" class="time-chip game-chip" data-game="boss">👾 Boss</button>
+      </div>
 
       <div class="settings-row" id="grade-settings" role="group" aria-label="Grade">
         <label>🎒 Grade:</label>
@@ -634,12 +794,13 @@
       <div class="card">
         <div class="mode-grid" id="mode-grid"><!-- tiles are built from the GRADES registry --></div>
       </div>
-      <p class="footer-note">10 questions per round · Fast answers earn bonus points!</p>
+      <p class="footer-note" id="footer-note">10 questions per round · Fast answers earn bonus points!</p>
     </div>
 
     <div id="practice-screen" class="hidden">
       <div class="top-bar">
         <button class="back-btn" id="back-btn" type="button">← Home</button>
+        <button class="icon-btn small sound-toggle" type="button" aria-label="Sound on or off">🔊</button>
         <div class="score-pill" id="score-pill">⭐ 0 pts</div>
       </div>
 
@@ -649,9 +810,12 @@
         <span class="stat-chip level-badge" id="level-badge">Level 1<span class="arrow"></span></span>
       </div>
 
+      <!-- Buddy sits in the normal page flow, so it can never cover the question or the keyboard -->
+      <div class="buddy" id="buddy" aria-hidden="true"><span class="buddy-face" id="buddy-face">🐶</span><span class="bubble" id="buddy-bubble">Let's go!</span></div>
+
       <div class="timer-wrap" aria-live="polite">
         <div class="timer-meta">
-          <span class="timer-label">Time left</span>
+          <span class="timer-label" id="timer-label">Time left</span>
           <span class="timer-digits" id="timer-digits">25</span>
         </div>
         <div class="timer-bar">
@@ -659,7 +823,16 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="boss-panel hidden" id="boss-panel">
+        <span class="boss-face" id="boss-face">👾</span>
+        <div class="boss-info">
+          <div class="boss-name" id="boss-name">Blip</div>
+          <div class="hp-bar"><div class="hp-fill" id="hp-fill" style="width:100%"></div></div>
+          <div class="hearts" id="hearts" aria-label="Hearts">❤️❤️❤️</div>
+        </div>
+      </div>
+
+      <div class="card" id="question-card">
         <div class="mode-title" id="mode-title">Practice</div>
         <div class="question-box" id="question-box"></div>
         <div class="answer-area" id="answer-area">
@@ -680,23 +853,67 @@
 
     <div id="summary-screen" class="hidden">
       <div class="card">
+        <div class="sum-buddy"><span class="buddy-face big" id="sum-buddy-face">🐶</span><span class="bubble" id="sum-buddy-bubble">You did it!</span></div>
         <div class="summary-title" id="summary-title">🏁 Round complete!</div>
         <div class="summary-sub" id="summary-sub"></div>
+        <div class="stars-earned" id="stars-earned"></div>
+        <div class="stars-text" id="stars-text"></div>
         <div class="new-best hidden" id="new-best">🎉 New best score! 🎉</div>
+        <div class="new-badges hidden" id="new-badges"></div>
         <div class="summary-grid">
-          <div class="summary-stat wide"><span class="num" id="sum-score">0</span><span class="lbl">Points this round</span></div>
+          <div class="summary-stat wide"><span class="num" id="sum-score">0</span><span class="lbl" id="sum-score-lbl">Points this round</span></div>
           <div class="summary-stat"><span class="num" id="sum-accuracy">0%</span><span class="lbl" id="sum-correct">0 of 10 correct</span></div>
           <div class="summary-stat"><span class="num" id="sum-level">1</span><span class="lbl">Highest level</span></div>
           <div class="summary-stat"><span class="num" id="sum-streak">0</span><span class="lbl">Best streak 🔥</span></div>
-          <div class="summary-stat"><span class="num" id="sum-best">0</span><span class="lbl">Best score 🏆</span></div>
+          <div class="summary-stat"><span class="num" id="sum-best">0</span><span class="lbl" id="sum-best-lbl">Best score 🏆</span></div>
         </div>
+        <div class="daily-line" id="sum-daily"></div>
+        <button class="action-btn fun-cta hidden" id="sum-stickers-btn" type="button">🥚 Open a sticker egg!</button>
         <div class="btn-row">
           <button class="action-btn back-btn" id="summary-home-btn" type="button">🏠 Home</button>
           <button class="action-btn next-btn" id="play-again-btn" type="button">Play again 🔁</button>
         </div>
       </div>
     </div>
+
+    <div id="stickers-screen" class="hidden">
+      <div class="screen-head">
+        <button class="back-btn screen-back" type="button">← Home</button>
+        <div class="screen-title">📒 Sticker Book</div>
+      </div>
+      <div class="card">
+        <div class="book-info"><span id="book-count">0 / 36 stickers</span><span>⭐ <b id="book-stars">0</b> stars</span></div>
+        <button class="action-btn egg-btn" id="egg-btn" type="button">🥚 Open a surprise egg (3 ⭐)</button>
+        <div class="book-info"><span class="rar">Common</span><span class="rar r2">Rare</span><span class="rar r3">Super Rare</span></div>
+        <div class="sticker-grid" id="sticker-grid"></div>
+      </div>
+    </div>
+
+    <div id="badges-screen" class="hidden">
+      <div class="screen-head">
+        <button class="back-btn screen-back" type="button">← Home</button>
+        <div class="screen-title">🏅 Badges</div>
+      </div>
+      <div class="card">
+        <div class="book-info"><span id="badge-count">0 badges</span><span id="badge-days">🔥 0 days in a row</span></div>
+        <div class="badge-grid" id="badge-grid"></div>
+      </div>
+    </div>
+
+    <div class="reveal hidden" id="reveal" role="dialog" aria-label="New sticker">
+      <div class="reveal-card">
+        <div id="reveal-egg-wrap"><div class="reveal-egg">🥚</div><div class="reveal-name">Opening…</div></div>
+        <div id="reveal-result" class="hidden">
+          <div class="reveal-sticker" id="reveal-sticker">🦄</div>
+          <div class="reveal-name" id="reveal-name">Unicorn</div>
+          <div><span class="rar" id="reveal-rarity">Common</span></div>
+          <button class="action-btn next-btn big-go" id="reveal-close" type="button" style="margin-top:16px">Yay! 🎉</button>
+        </div>
+      </div>
+    </div>
+    <div class="toast hidden" id="toast" role="status"></div>
   </div>
+
 
   <script>
 (function () {
@@ -709,7 +926,7 @@
   var BASE_POINTS = 10;       // points = BASE_POINTS * level (+ speed bonus) * streak multiplier
   var MAX_SPEED_BONUS = 20;   // full bonus when answered instantly, scaled by time left
   var MAX_TRIES = 2;          // first try + one retry
-  var APP_VERSION = "math-practice-v4-grades";
+  var APP_VERSION = "math-practice-v5-fun";
 
   /* ================= Pure game rules (exposed for testing) ================= */
   function clampLevel(n) {
@@ -2228,8 +2445,9 @@
   if (typeof document === "undefined" || !document.getElementById("home-screen")) return;
 
   var $ = function (id) { return document.getElementById(id); };
-  var homeScreen = $("home-screen"), practiceScreen = $("practice-screen"), summaryScreen = $("summary-screen");
-  var questionBox = $("question-box"), answerArea = $("answer-area"), feedbackEl = $("feedback");
+  var SCREENS = ["welcome", "home", "practice", "summary", "stickers", "badges"];
+  var practiceScreen = $("practice-screen");
+  var questionBox = $("question-box"), feedbackEl = $("feedback");
   var scorePill = $("score-pill"), modeTitleEl = $("mode-title"), levelBadge = $("level-badge");
   var qCounter = $("q-counter"), streakChip = $("streak-chip");
   var checkBtn = $("check-btn"), nextBtn = $("next-btn"), backBtn = $("back-btn");
@@ -2243,14 +2461,151 @@
   var WRONG_MSGS = ["That one was tricky! 💡", "Good effort! Let us keep going 💪", "No worries, you will get the next one! 🌈"];
   var TIMEUP_MSGS = ["⏰ Time is up!", "⏱ The clock ran out!", "🔔 Out of time!"];
 
+  /* ---------- fun layer data ---------- */
+  var AVATARS = [["🐶", "Puppy"], ["🐱", "Kitty"], ["🐰", "Bunny"], ["🐼", "Panda"], ["🦊", "Fox"], ["🐸", "Froggy"], ["🦄", "Unicorn"], ["🐨", "Koala"]];
+  // r: 1 = common, 2 = rare, 3 = super rare (rarer ones come out of eggs less often)
+  var STICKERS = [
+    ["dog", "🐶", "Puppy", 1], ["cat", "🐱", "Kitty", 1], ["bunny", "🐰", "Bunny", 1], ["bear", "🐻", "Bear", 1], ["panda", "🐼", "Panda", 1],
+    ["koala", "🐨", "Koala", 1], ["tiger", "🐯", "Tiger", 1], ["lion", "🦁", "Lion", 1], ["cow", "🐮", "Cow", 1], ["pig", "🐷", "Piggy", 1],
+    ["frog", "🐸", "Froggy", 1], ["monkey", "🐵", "Monkey", 1], ["chick", "🐤", "Chick", 1], ["penguin", "🐧", "Penguin", 1], ["duck", "🦆", "Duck", 1],
+    ["bee", "🐝", "Bee", 1], ["ladybug", "🐞", "Ladybug", 1], ["butterfly", "🦋", "Butterfly", 1], ["turtle", "🐢", "Turtle", 1], ["fish", "🐠", "Fishy", 1],
+    ["fox", "🦊", "Fox", 2], ["owl", "🦉", "Owl", 2], ["dolphin", "🐬", "Dolphin", 2], ["whale", "🐳", "Whale", 2], ["giraffe", "🦒", "Giraffe", 2],
+    ["zebra", "🦓", "Zebra", 2], ["kangaroo", "🦘", "Kangaroo", 2], ["sloth", "🦥", "Sloth", 2], ["flamingo", "🦩", "Flamingo", 2], ["hedgehog", "🦔", "Hedgehog", 2],
+    ["unicorn", "🦄", "Unicorn", 3], ["dragon", "🐲", "Dragon", 3], ["peacock", "🦚", "Peacock", 3], ["parrot", "🦜", "Parrot", 3], ["octopus", "🐙", "Octopus", 3],
+    ["dino", "🦖", "Dino", 3]
+  ].map(function (s) { return { id: s[0], e: s[1], name: s[2], r: s[3] }; });
+  var RARITY = { 1: { name: "Common", w: 6 }, 2: { name: "Rare", w: 3 }, 3: { name: "Super Rare", w: 1 } };
+  var EGG_COST = 3, DAILY_GOAL = 3, CLOCK_SECONDS = 60, BOSS_HP = 8, BOSS_HEARTS = 3, WELCOME_STARS = 3;
+  var BOSSES = [["👾", "Blip the Space Blob"], ["🐉", "Sparky the Dragon"], ["🦖", "Rexy the Dino"], ["🐙", "Inky the Octopus"], ["👻", "Boo the Ghost"]];
+  var GAME_NOTES = { practice: "10 questions per round · Fast answers earn bonus points!",
+    clock: "⏱️ 60 seconds · Answer as many as you can!", boss: "👾 Answer right to beat the boss before you lose " + BOSS_HEARTS + " hearts!" };
+
+  var LINES = {
+    start: ["Let's go, {name}!", "You can do it!", "Ready? Go!", "I believe in you!"],
+    correct: ["Yay!", "Great job!", "You got it!", "Wow!", "So smart!"],
+    fast: ["Super fast!", "Zoom zoom!", "Speedy!"],
+    retry: ["You fixed it!", "Nice try!", "Good thinking!"],
+    tryagain: ["Try again!", "Almost!", "One more try!"],
+    wrong: ["That's OK!", "Keep going!", "Next one!"],
+    timeout: ["Out of time. That's OK!", "Let's try the next one!"],
+    streak: ["{n} in a row! 🔥", "On fire! 🔥", "Hot streak!"],
+    bosshit: ["Pow! 💥", "Hit it!", "Bam!"],
+    bossattack: ["Oof! Keep going!", "We can still win!"],
+    win: ["We beat the boss! 🏆", "Hooray, {name}!"],
+    lose: ["So close! Try again!", "Next time we win!"],
+    summary: ["You did it, {name}!", "Great work, {name}!", "High five, {name}! 🙌"],
+    clockEnd: ["Time's up! Great job!", "Wow, {name}! So many!"]
+  };
+
+  function dayKey(t) { var d = new Date(t == null ? Date.now() : t); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function prevDayKey(key) { var p = key.split("-").map(Number); return dayKey(new Date(p[0], p[1] - 1, p[2] - 1, 12).getTime()); }
+
+  function cleanProfile(p) {
+    if (!p || typeof p !== "object" || typeof p.name !== "string") return null;
+    var av = AVATARS.some(function (a) { return a[0] === p.avatar; }) ? p.avatar : AVATARS[0][0];
+    return { name: p.name.slice(0, 14), avatar: av };
+  }
+  function isObj(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
+  function loadObj(key) { var v = load(key, null); return isObj(v) ? v : {}; }
+  function loadDaily() {
+    var v = loadObj("mp_daily");
+    return { date: typeof v.date === "string" ? v.date : "", rounds: Math.max(0, Number(v.rounds) || 0), questions: Math.max(0, Number(v.questions) || 0), done: v.done === true };
+  }
+  function loadDays() {
+    var v = loadObj("mp_days");
+    return { last: typeof v.last === "string" ? v.last : "", count: Math.max(0, Number(v.count) || 0), best: Math.max(0, Number(v.best) || 0) };
+  }
+  function loadStickers() {
+    var v = load("mp_stickers", []), out = [];
+    if (!Array.isArray(v)) return out;
+    v.forEach(function (id) { if (out.indexOf(id) === -1 && STICKERS.some(function (s) { return s.id === id; })) out.push(id); });
+    return out;
+  }
+  var fun = {
+    profile: cleanProfile(load("mp_profile", null)),
+    stars: Math.max(0, Number(load("mp_stars", 0)) || 0),
+    starsTotal: Math.max(0, Number(load("mp_stars_total", 0)) || 0),
+    stickers: loadStickers(),
+    badges: loadObj("mp_badges"),
+    daily: loadDaily(),
+    days: loadDays(),
+    rounds: Number(load("mp_rounds_total", 0)) || 0,
+    played: loadObj("mp_played"),
+    bossWins: Number(load("mp_boss_wins", 0)) || 0,
+    muted: load("mp_muted", false) === true
+  };
+  function saveFun() {
+    save("mp_stars", fun.stars); save("mp_stars_total", fun.starsTotal); save("mp_stickers", fun.stickers);
+    save("mp_badges", fun.badges); save("mp_daily", fun.daily); save("mp_days", fun.days); save("mp_rounds_total", fun.rounds);
+    save("mp_played", fun.played); save("mp_boss_wins", fun.bossWins);
+  }
+  function playerName() { return fun.profile && fun.profile.name ? fun.profile.name : "Friend"; }
+  function buddyEmoji() { return fun.profile ? fun.profile.avatar : AVATARS[0][0]; }
+  function fillLine(s, vars) { return s.replace("{name}", playerName()).replace("{n}", vars && vars.n != null ? vars.n : ""); }
+
+  /* ---------- sounds (Web Audio, generated; nothing to download) ----------
+     iOS only lets audio start inside a user gesture, so the AudioContext is created/resumed from the
+     first tap/click/key. Before that (and when muted) play() does nothing. */
+  var Sound = (function () {
+    var ctx = null, primed = false, log = [];
+    function unlock() {
+      try {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        if (!ctx) ctx = new AC();
+        if (ctx.state === "suspended" && ctx.resume) ctx.resume();
+        if (!primed) { var b = ctx.createBuffer(1, 1, 22050), s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(0); primed = true; }
+      } catch (e) { /* audio not available */ }
+    }
+    function tone(f, at, dur, type, vol, f2) {
+      var t = ctx.currentTime + at, o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type || "sine";
+      o.frequency.setValueAtTime(f, t);
+      if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol || 0.15, t + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t); o.stop(t + dur + 0.03);
+    }
+    var SOUNDS = {
+      tap: function () { tone(1000, 0, 0.05, "sine", 0.04); },
+      ding: function () { tone(988, 0, 0.14, "sine", 0.2); tone(1319, 0.1, 0.3, "sine", 0.18); },
+      buzz: function () { tone(210, 0, 0.25, "triangle", 0.1, 150); },
+      chime: function () { [784, 988, 1175, 1568].forEach(function (f, i) { tone(f, i * 0.07, 0.25, "sine", 0.13); }); },
+      levelup: function () { [523, 659, 784].forEach(function (f, i) { tone(f, i * 0.08, 0.2, "triangle", 0.13); }); },
+      fanfare: function () {
+        [[523, 0, 0.14], [659, 0.14, 0.14], [784, 0.28, 0.14], [1047, 0.42, 0.5]].forEach(function (n) { tone(n[0], n[1], n[2], "square", 0.06); tone(n[0] * 2, n[1], n[2], "sine", 0.05); });
+      },
+      hit: function () { tone(620, 0, 0.14, "square", 0.08, 160); },
+      attack: function () { tone(150, 0, 0.32, "sawtooth", 0.06, 70); },
+      egg: function () { [0, 0.2, 0.4].forEach(function (t) { tone(700, t, 0.07, "sine", 0.07); }); },
+      unlock: function () { for (var i = 0; i < 6; i++) tone(880 * Math.pow(1.19, i), i * 0.06, 0.22, "sine", 0.1); }
+    };
+    return {
+      unlock: unlock,
+      play: function (name) {
+        if (fun.muted || !ctx || ctx.state === "closed" || !SOUNDS[name]) return false;
+        try { SOUNDS[name](); log.push(name); if (log.length > 200) log.shift(); return true; } catch (e) { return false; }
+      },
+      log: log
+    };
+  })();
+  ["touchend", "click", "keydown"].forEach(function (ev) { document.addEventListener(ev, Sound.unlock, true); });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button") : null;
+    if (b && !b.disabled && b !== checkBtn) Sound.play("tap");
+  });
+
   migrateLegacyProgress();
   var savedGrade = load("mp_grade", DEFAULT_GRADE);
   var state = {
-    grade: GRADES[savedGrade] ? savedGrade : DEFAULT_GRADE, def: null,
+    grade: GRADES[savedGrade] ? savedGrade : DEFAULT_GRADE, def: null, game: "practice", pendingGame: "practice",
     mode: null, level: 1, secondsPerQ: load("mp_time", 25) || 25,
-    qIndex: 0, points: 0, correct: 0, streak: 0, bestStreak: 0, maxLevel: 1,
+    qIndex: 0, points: 0, correct: 0, answered: 0, fast: 0, streak: 0, bestStreak: 0, maxLevel: 1,
     current: null, tries: 0, locked: true, selectedChoice: null,
-    qStart: 0, timeLeft: 0, timerId: null, autoNextId: null, recentKeys: [], resolvedAt: 0
+    qStart: 0, timeLeft: 0, timerId: null, autoNextId: null, recentKeys: [], resolvedAt: 0,
+    clockEnd: 0, clockId: null, clockOver: false, bossHP: BOSS_HP, hearts: BOSS_HEARTS, boss: BOSSES[0], lastSummary: null
   };
 
   /* ---------- small UI helpers ---------- */
@@ -2267,9 +2622,25 @@
   function clearFeedback() { feedbackEl.className = "feedback neutral"; feedbackEl.textContent = ""; }
 
   function restartAnim(el, cls) {
-    el.classList.remove("up"); el.classList.remove("down"); el.classList.remove("pop");
+    ["up", "down", "pop", "happy", "sad", "excited", "celebrate", "hit", "shake"].forEach(function (c) { el.classList.remove(c); });
     void el.offsetWidth; // reflow so the animation replays
     if (cls) el.classList.add(cls);
+  }
+
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $("toast");
+    t.textContent = msg; t.classList.remove("hidden");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.add("hidden"); }, 3200);
+  }
+
+  // Mascot buddy: face + speech bubble. where: "play" (question screen) or "sum" (summary)
+  function say(kind, mood, vars, where) {
+    var face = $(where === "sum" ? "sum-buddy-face" : "buddy-face"), bubble = $(where === "sum" ? "sum-buddy-bubble" : "buddy-bubble");
+    face.textContent = buddyEmoji();
+    bubble.textContent = fillLine(pick(LINES[kind]), vars);
+    restartAnim(face, mood || null);
   }
 
   function renderLevel(dir) {
@@ -2281,17 +2652,33 @@
 
   function renderStats() {
     scorePill.textContent = "⭐ " + state.points + " pts";
-    qCounter.textContent = "Question " + Math.max(1, state.qIndex) + " / " + ROUND_LENGTH;
+    if (state.game === "clock") qCounter.textContent = "✅ " + state.correct + " right";
+    else if (state.game === "boss") qCounter.textContent = "Question " + Math.max(1, state.qIndex);
+    else qCounter.textContent = "Question " + Math.max(1, state.qIndex) + " / " + ROUND_LENGTH;
     var mult = streakMultiplier(state.streak);
     streakChip.textContent = "🔥 " + state.streak + (mult > 1 ? " ×" + mult : "");
     if (state.streak >= 3) streakChip.classList.add("hot"); else streakChip.classList.remove("hot");
   }
 
+  function renderBoss() {
+    $("boss-face").textContent = state.boss[0];
+    $("boss-name").textContent = state.boss[1];
+    $("hp-fill").style.width = (100 * state.bossHP / BOSS_HP) + "%";
+    var h = "";
+    for (var i = 0; i < BOSS_HEARTS; i++) h += i < state.hearts ? "❤️" : "🤍";
+    $("hearts").textContent = h;
+    $("hearts").setAttribute("aria-label", state.hearts + " hearts left");
+  }
+
+  function clockBestKey(g, m) { return "mp_btc_best_" + g + "_" + m; }
+
   function renderHomeBests() {
     var spans = document.querySelectorAll("[data-best-for]");
     for (var i = 0; i < spans.length; i++) {
-      var m = spans[i].getAttribute("data-best-for");
-      spans[i].textContent = "🏆 Best " + getBest(state.grade, m) + " · Level " + getSavedLevel(state.grade, m);
+      var m = spans[i].getAttribute("data-best-for"), lv = getSavedLevel(state.grade, m);
+      spans[i].textContent = state.pendingGame === "clock" ? "⏱️ Best " + (load(clockBestKey(state.grade, m), 0) || 0) + " · Level " + lv
+        : state.pendingGame === "boss" ? "👾 Boss · Level " + lv
+        : "🏆 Best " + getBest(state.grade, m) + " · Level " + lv;
     }
   }
 
@@ -2314,30 +2701,60 @@
     renderHomeBests();
   }
 
+  function currentDays() { var t = dayKey(); return (fun.days.last === t || fun.days.last === prevDayKey(t)) ? fun.days.count : 0; }
+  function rollDaily() { var t = dayKey(); if (fun.daily.date !== t) fun.daily = { date: t, rounds: 0, questions: 0, done: false }; }
+
+  function paintGoalRing(ringFg, ringText) {
+    rollDaily();
+    var n = Math.min(DAILY_GOAL, fun.daily.rounds), C = 150.8;
+    ringFg.setAttribute("stroke-dashoffset", String(C * (1 - n / DAILY_GOAL)));
+    ringText.textContent = n + "/" + DAILY_GOAL;
+  }
+
+  function renderHome() {
+    $("hello-avatar").textContent = buddyEmoji();
+    $("hello-text").textContent = "Hi, " + playerName() + "! 👋";
+    $("home-stars").textContent = String(fun.stars);
+    $("home-days").textContent = String(currentDays());
+    paintGoalRing($("goal-ring-fg"), $("goal-ring-text"));
+    $("goal-text").textContent = fun.daily.done ? "Goal done! 🎉" : "Play " + DAILY_GOAL + " rounds";
+    $("footer-note").textContent = GAME_NOTES[state.pendingGame];
+    renderHomeBests();
+  }
+
+  function paintSound() {
+    var btns = document.querySelectorAll(".sound-toggle");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].textContent = fun.muted ? "🔇" : "🔊";
+      btns[i].setAttribute("aria-label", fun.muted ? "Sound is off. Tap to turn on" : "Sound is on. Tap to turn off");
+      btns[i].setAttribute("aria-pressed", fun.muted ? "true" : "false");
+    }
+  }
+
   function showScreen(which) {
-    homeScreen.classList.toggle("hidden", which !== "home");
-    practiceScreen.classList.toggle("hidden", which !== "practice");
-    summaryScreen.classList.toggle("hidden", which !== "summary");
+    SCREENS.forEach(function (s) { $(s + "-screen").classList.toggle("hidden", s !== which); });
     try { window.scrollTo(0, 0); } catch (e) { /* not available */ }
   }
 
   /* ---------- timer ---------- */
   function stopTimer() { if (state.timerId) { clearInterval(state.timerId); state.timerId = null; } }
+  function stopClock() { if (state.clockId) { clearInterval(state.clockId); state.clockId = null; } }
   function clearAutoNext() { if (state.autoNextId) { clearTimeout(state.autoNextId); state.autoNextId = null; } }
 
-  function paintTimer() {
-    var left = Math.max(0, state.timeLeft);
-    var shown = Math.ceil(left);
+  function paintBar(left, total) {
+    var shown = Math.ceil(Math.max(0, left));
     timerDigits.textContent = String(shown);
-    timerFill.style.width = (state.secondsPerQ > 0 ? (left / state.secondsPerQ) * 100 : 0) + "%";
+    timerFill.style.width = (total > 0 ? (Math.max(0, left) / total) * 100 : 0) + "%";
     var cls = shown <= 5 ? "danger" : (shown <= 10 ? "warn" : "");
     timerDigits.classList.remove("warn", "danger"); timerFill.classList.remove("warn", "danger");
     if (cls) { timerDigits.classList.add(cls); timerFill.classList.add(cls); }
   }
+  function paintTimer() { paintBar(state.timeLeft, state.secondsPerQ); }
 
   function startTimer() {
     stopTimer();
     state.qStart = Date.now();
+    if (state.game === "clock") return;  // Beat the Clock uses one 60-second game clock instead
     state.timeLeft = state.secondsPerQ;
     paintTimer();
     state.timerId = setInterval(function () {
@@ -2345,6 +2762,18 @@
       state.timeLeft = state.secondsPerQ - (Date.now() - state.qStart) / 1000;
       paintTimer();
       if (state.timeLeft <= 0) { stopTimer(); resolveQuestion("timeout"); }
+    }, 200);
+  }
+
+  function startClock() {
+    stopClock();
+    state.clockEnd = Date.now() + CLOCK_SECONDS * 1000;
+    state.clockOver = false;
+    paintBar(CLOCK_SECONDS, CLOCK_SECONDS);
+    state.clockId = setInterval(function () {
+      var left = (state.clockEnd - Date.now()) / 1000;
+      paintBar(left, CLOCK_SECONDS);
+      if (left <= 0) { state.clockOver = true; stopClock(); showSummary(); }
     }, 200);
   }
 
@@ -2361,7 +2790,6 @@
     if (state.recentKeys.length > 25) state.recentKeys.shift();
     return p;
   }
-
   /* ---------- answer UI ---------- */
   function selectIn(container, cls, btn) {
     var all = container.querySelectorAll("." + cls);
@@ -2519,26 +2947,40 @@
     answerInput.readOnly = true;
   }
 
-  /* ---------- round flow ---------- */
+  /* ---------- round flow (Practice, Beat the Clock, Boss Round) ---------- */
+  function isRoundOver() {
+    if (state.game === "clock") return state.clockOver;
+    if (state.game === "boss") return state.bossHP <= 0 || state.hearts <= 0;
+    return state.qIndex >= ROUND_LENGTH;
+  }
+
   function startMode(mode) {
     var def = findMode(state.grade, mode);
     if (!def) return;
-    stopTimer(); clearAutoNext();
+    stopTimer(); stopClock(); clearAutoNext();
+    state.game = state.pendingGame;
     state.mode = mode;
     state.def = def;
     state.level = getSavedLevel(state.grade, mode);
     state.maxLevel = state.level;
-    state.qIndex = 0; state.points = 0; state.correct = 0; state.streak = 0; state.bestStreak = 0;
+    state.qIndex = 0; state.points = 0; state.correct = 0; state.answered = 0; state.fast = 0; state.streak = 0; state.bestStreak = 0;
     state.recentKeys = [];
+    state.bossHP = BOSS_HP; state.hearts = BOSS_HEARTS; state.boss = pick(BOSSES); state.clockOver = false;
+    fun.played[state.grade + ":" + mode] = 1; save("mp_played", fun.played);
     modeTitleEl.textContent = modeTitle(def);
+    $("boss-panel").classList.toggle("hidden", state.game !== "boss");
+    $("timer-label").textContent = state.game === "clock" ? "⏱️ Beat the Clock" : "Time left";
+    if (state.game === "boss") renderBoss();
     showScreen("practice");
     renderLevel(0);
+    say("start", "happy");
+    if (state.game === "clock") startClock();
     nextProblem();
   }
 
   function nextProblem() {
     stopTimer(); clearAutoNext();
-    if (state.qIndex >= ROUND_LENGTH) { showSummary(); return; }
+    if (isRoundOver()) { showSummary(); return; }
     state.qIndex += 1;
     state.tries = 0;
     state.locked = false;
@@ -2569,6 +3011,8 @@
     }
     if (state.tries < MAX_TRIES) {
       setFeedback("wrong", pick(TRY_AGAIN));
+      Sound.play("buzz");
+      say("tryagain", "sad");
       if (state.selectedChoice == null) focusAnswer();  // refocus + select the wrong answer to retype
       return;
     }
@@ -2582,7 +3026,7 @@
     state.resolvedAt = Date.now();
     stopTimer(); clearAutoNext();
 
-    var askedLevel = state.level;
+    var askedLevel = state.level, prevMax = state.maxLevel;
     var secondsLeft = Math.max(0, state.secondsPerQ - elapsedSeconds());
     var isCorrect = outcome === "fast" || outcome === "correct" || outcome === "retry";
 
@@ -2590,6 +3034,9 @@
     else state.streak = 0;
     state.bestStreak = Math.max(state.bestStreak, state.streak);
     if (isCorrect) state.correct += 1;
+    if (outcome === "fast") state.fast += 1;
+    state.answered += 1;
+    rollDaily(); fun.daily.questions += 1; save("mp_daily", fun.daily);
 
     var pts = pointsFor(outcome, askedLevel, secondsLeft, state.secondsPerQ, state.streak);
     state.points += pts.points;
@@ -2614,22 +3061,54 @@
       if (right[ri].getAttribute("data-choice") === String(state.current.answer)) right[ri].classList.add("correct-ans");
     }
 
+    var fbType, fbMsg, fbSub = levelMsg;
     if (isCorrect) {
       var head = outcome === "fast" ? pick(FAST_PRAISE) : (outcome === "retry" ? pick(RETRY_PRAISE) : pick(PRAISE));
       var detail = "+" + pts.points + " points";
       if (pts.speed > 0) detail += " (speed +" + pts.speed + ")";
       if (pts.mult > 1) detail += " ×" + pts.mult + " streak";
-      setFeedback("correct", head + " " + detail, levelMsg);
+      fbType = "correct"; fbMsg = head + " " + detail;
       restartAnim(scorePill, "pop");
+      // sounds: streak chime at 3, 5, 10…; level-up jingle for a new high level this round; else a ding
+      if (state.streak === 3 || (state.streak > 0 && state.streak % 5 === 0)) { Sound.play("chime"); say("streak", "excited", { n: state.streak }); }
+      else {
+        if (state.level > prevMax) Sound.play("levelup"); else Sound.play("ding");
+        say(outcome === "fast" ? "fast" : (outcome === "retry" ? "retry" : "correct"), "happy");
+      }
     } else if (outcome === "timeout") {
-      setFeedback("timeout", pick(TIMEUP_MSGS) + " Answer: " + state.current.displayAnswer, levelMsg);
+      fbType = "timeout"; fbMsg = pick(TIMEUP_MSGS) + " Answer: " + state.current.displayAnswer;
+      Sound.play("buzz"); say("timeout", "sad");
     } else {
-      setFeedback("wrong", pick(WRONG_MSGS) + " Answer: " + state.current.displayAnswer, levelMsg);
+      fbType = "wrong"; fbMsg = pick(WRONG_MSGS) + " Answer: " + state.current.displayAnswer;
+      Sound.play("buzz"); say("wrong", "sad");
     }
 
+    if (state.game === "boss") {
+      if (isCorrect) {
+        state.bossHP = Math.max(0, state.bossHP - (outcome === "fast" ? 2 : 1));
+        restartAnim($("boss-face"), "hit"); Sound.play("hit");
+        if (state.bossHP > 0) say("bosshit", "excited");
+      } else {
+        state.hearts = Math.max(0, state.hearts - 1);
+        restartAnim($("question-card"), "shake"); Sound.play("attack");
+        if (state.hearts > 0) say("bossattack", "sad");
+      }
+      renderBoss();
+      if (state.bossHP <= 0) { fbSub = "💥 You beat " + state.boss[1] + "!"; say("win", "celebrate"); }
+      else if (state.hearts <= 0) { fbSub = "The boss won this time."; say("lose", "sad"); }
+    }
+
+    if (state.game === "clock") {
+      // Keep moving: the next question appears right away (inside the same tap, so the keyboard stays up)
+      nextProblem();
+      if (!isRoundOver()) setFeedback(fbType, isCorrect ? "✅ " + fbMsg : fbMsg);
+      return;
+    }
+
+    setFeedback(fbType, fbMsg, fbSub);
     checkBtn.classList.add("hidden");
     nextBtn.classList.remove("hidden");
-    if (state.qIndex >= ROUND_LENGTH) nextBtn.textContent = "See results 🏁";
+    if (isRoundOver()) nextBtn.textContent = state.game === "boss" ? (state.bossHP <= 0 ? "See results 🏆" : "See results") : "See results 🏁";
 
     if (outcome === "timeout") {
       state.autoNextId = setTimeout(function () {
@@ -2659,35 +3138,225 @@
     if (document.activeElement === answerInput) { try { answerInput.blur(); } catch (e) { /* ignore */ } }
   }
 
+  /* ---------- stars, daily goal, days in a row, badges ---------- */
+  function starsForRound() {
+    if (state.game === "clock") return state.correct >= 15 ? 3 : (state.correct >= 8 ? 2 : 1);
+    if (state.game === "boss") return state.bossHP <= 0 ? (state.hearts === BOSS_HEARTS ? 3 : 2) : 1;
+    return state.correct >= 9 ? 3 : (state.correct >= 6 ? 2 : 1);
+  }
+  function bumpDays() {
+    var t = dayKey();
+    if (fun.days.last === t) return;
+    fun.days.count = fun.days.last === prevDayKey(t) ? fun.days.count + 1 : 1;
+    fun.days.last = t;
+    fun.days.best = Math.max(fun.days.best || 0, fun.days.count);
+  }
+  var BADGES = [
+    { id: "first", icon: "🎉", name: "First Round", how: "Finish a round", test: function () { return fun.rounds >= 1; } },
+    { id: "speedy", icon: "⚡", name: "Speedy", how: "5 super fast answers in one game", test: function (c) { return (c.fast || 0) >= 5; } },
+    { id: "streak5", icon: "🔥", name: "Streak 5", how: "5 right in a row", test: function (c) { return (c.bestStreak || 0) >= 5; } },
+    { id: "streak10", icon: "☄️", name: "Streak 10", how: "10 right in a row", test: function (c) { return (c.bestStreak || 0) >= 10; } },
+    { id: "perfect", icon: "💯", name: "Perfect Round", how: "All 10 right in Practice", test: function (c) { return c.game === "practice" && c.correct === ROUND_LENGTH; } }
+  ].concat(GRADE_ORDER.map(function (g) {
+    return { id: "hero_" + g, icon: "🦸", name: "Level 10 Hero · " + GRADES[g].chip, how: "Reach Level 10 in " + GRADES[g].label,
+      test: function (c) { return (c.grade === g && c.maxLevel >= MAX_LEVEL) || GRADES[g].modes.some(function (m) { return getSavedLevel(g, m.id) >= MAX_LEVEL; }); } };
+  })).concat([
+    { id: "explorer", icon: "🧭", name: "Explorer", how: "Play every mode in one grade", test: function () {
+      return GRADE_ORDER.some(function (g) { return GRADES[g].modes.every(function (m) { return fun.played[g + ":" + m.id]; }); }); } },
+    { id: "clock", icon: "⏱️", name: "Clock Champ", how: "10 right in Beat the Clock", test: function (c) { return c.game === "clock" && c.correct >= 10; } },
+    { id: "boss", icon: "👾", name: "Boss Beater", how: "Win a Boss Round", test: function () { return fun.bossWins >= 1; } },
+    { id: "boss3", icon: "🛡️", name: "Boss Master", how: "Win 3 Boss Rounds", test: function () { return fun.bossWins >= 3; } },
+    { id: "daily", icon: "🎯", name: "Daily Goal", how: "Play " + DAILY_GOAL + " rounds in one day", test: function () { return fun.daily.done; } },
+    { id: "days3", icon: "📅", name: "3 Days in a Row", how: "Play 3 days in a row", test: function () { return currentDays() >= 3; } },
+    { id: "days7", icon: "🗓️", name: "7 Days in a Row", how: "Play 7 days in a row", test: function () { return currentDays() >= 7; } },
+    { id: "stars50", icon: "🌟", name: "Star Catcher", how: "Earn 50 stars", test: function () { return fun.starsTotal >= 50; } },
+    { id: "stickers10", icon: "📒", name: "Sticker Fan", how: "Collect 10 stickers", test: function () { return fun.stickers.length >= 10; } },
+    { id: "stickersAll", icon: "👑", name: "Super Collector", how: "Collect every sticker", test: function () { return fun.stickers.length >= STICKERS.length; } }
+  ]);
+  function awardBadges(ctx) {
+    var got = [];
+    BADGES.forEach(function (b) {
+      if (!fun.badges[b.id] && b.test(ctx || {})) { fun.badges[b.id] = dayKey(); got.push(b); }
+    });
+    if (got.length) save("mp_badges", fun.badges);
+    return got;
+  }
+
   function showSummary() {
-    stopTimer(); clearAutoNext();
+    stopTimer(); stopClock(); clearAutoNext();
     state.locked = true;
     blurAnswer();
-    var prevBest = getBest(state.grade, state.mode);
-    var isNewBest = state.points > prevBest;
-    if (isNewBest) setBest(state.grade, state.mode, state.points);
-    var best = Math.max(prevBest, state.points);
-    var acc = Math.round((state.correct / ROUND_LENGTH) * 100);
+    var g = state.game, name = playerName(), isNewBest = false, best, win = false;
+    var acc = state.answered ? Math.round((state.correct / (g === "practice" ? ROUND_LENGTH : state.answered)) * 100) : 0;
 
-    $("summary-title").textContent = acc >= 90 ? "🏆 Amazing round!" : acc >= 70 ? "🌟 Great round!" : acc >= 50 ? "👍 Nice work!" : "💪 Good practice!";
+    if (g === "practice") {
+      var prevBest = getBest(state.grade, state.mode);
+      isNewBest = state.points > prevBest;
+      if (isNewBest) setBest(state.grade, state.mode, state.points);
+      best = Math.max(prevBest, state.points);
+    } else if (g === "clock") {
+      var prevC = load(clockBestKey(state.grade, state.mode), 0) || 0;
+      isNewBest = state.correct > prevC;
+      if (isNewBest) save(clockBestKey(state.grade, state.mode), state.correct);
+      best = Math.max(prevC, state.correct);
+    } else {
+      win = state.bossHP <= 0;
+      if (win) fun.bossWins += 1;
+      best = fun.bossWins;
+    }
+
+    // stars, daily goal, days in a row
+    var stars = starsForRound();
+    fun.stars += stars; fun.starsTotal += stars; fun.rounds += 1;
+    rollDaily(); fun.daily.rounds += 1;
+    var goalJustDone = false;
+    if (!fun.daily.done && fun.daily.rounds >= DAILY_GOAL) { fun.daily.done = true; goalJustDone = true; }
+    bumpDays();
+    saveFun();
+    var newBadges = awardBadges({ game: g, correct: state.correct, fast: state.fast, bestStreak: state.bestStreak, grade: state.grade, maxLevel: state.maxLevel, win: win });
+    state.lastSummary = { stars: stars, badges: newBadges.map(function (b) { return b.id; }), newBest: isNewBest, win: win };
+
+    var title;
+    if (g === "clock") title = "⏱️ Time's up, " + name + "!";
+    else if (g === "boss") title = win ? "🏆 You beat " + state.boss[1].split(" ")[0] + ", " + name + "!" : "💪 " + state.boss[1].split(" ")[0] + " won this time!";
+    else title = (acc >= 90 ? "🏆 Amazing round, " : acc >= 70 ? "🌟 Great round, " : acc >= 50 ? "👍 Nice work, " : "💪 Good practice, ") + name + "!";
+    $("summary-title").textContent = title;
     $("summary-sub").textContent = GRADES[state.grade].label + " · " + modeTitle(state.def) + " · next round starts at Level " + state.level;
-    $("sum-score").textContent = String(state.points);
+
+    var sh = "";
+    for (var i = 0; i < 3; i++) sh += '<span class="star-slot ' + (i < stars ? "on" : "off") + '" style="animation-delay:' + (0.25 + i * 0.35) + 's">⭐</span>';
+    $("stars-earned").innerHTML = sh;
+    $("stars-earned").setAttribute("aria-label", stars + " of 3 stars");
+    $("stars-text").textContent = "+" + stars + (stars === 1 ? " star" : " stars") + " · You have " + fun.stars + " ⭐";
+
+    $("sum-score").textContent = String(g === "clock" ? state.correct : state.points);
+    $("sum-score-lbl").textContent = g === "clock" ? "Right answers in " + CLOCK_SECONDS + " seconds" : "Points this round";
     $("sum-accuracy").textContent = acc + "%";
-    $("sum-correct").textContent = state.correct + " of " + ROUND_LENGTH + " correct";
+    $("sum-correct").textContent = state.correct + " of " + (g === "practice" ? ROUND_LENGTH : state.answered) + " correct";
     $("sum-level").textContent = String(state.maxLevel);
     $("sum-streak").textContent = String(state.bestStreak);
     $("sum-best").textContent = String(best);
+    $("sum-best-lbl").textContent = g === "clock" ? "Best in 60s 🏆" : (g === "boss" ? "Bosses beaten 👾" : "Best score 🏆");
+    $("new-best").textContent = g === "clock" ? "🎉 New Beat the Clock best! 🎉" : "🎉 New best score! 🎉";
     $("new-best").classList.toggle("hidden", !isNewBest);
 
+    var nb = $("new-badges");
+    nb.innerHTML = newBadges.map(function (b) { return '<div class="badge-pop"><span class="bi">' + b.icon + "</span><span>New badge: " + esc(b.name) + "!</span></div>"; }).join("");
+    nb.classList.toggle("hidden", !newBadges.length);
+
+    $("sum-daily").innerHTML = '<svg class="goal-ring" viewBox="0 0 60 60"><circle class="bg" cx="30" cy="30" r="24"/><circle class="fg" id="sum-ring-fg" cx="30" cy="30" r="24" stroke-dasharray="150.8"/><text x="30" y="35" text-anchor="middle" id="sum-ring-text"></text></svg>' +
+      "<span>" + (fun.daily.done ? (goalJustDone ? "🎯 Daily goal done! 🎉" : "🎯 Daily goal done!") : "🎯 Today: " + fun.daily.rounds + " of " + DAILY_GOAL + " rounds") +
+      " · 🔥 " + currentDays() + (currentDays() === 1 ? " day" : " days") + "</span>";
+    paintGoalRing($("sum-ring-fg"), $("sum-ring-text"));
+    $("sum-stickers-btn").classList.toggle("hidden", !(fun.stars >= EGG_COST && fun.stickers.length < STICKERS.length));
+    $("sum-stickers-btn").textContent = "🥚 Open a sticker egg! (" + EGG_COST + " ⭐)";
+
     showScreen("summary");
-    if (isNewBest && state.points > 0) celebrate();
+    say(g === "clock" ? "clockEnd" : (g === "boss" ? (win ? "win" : "lose") : "summary"), (g === "boss" && !win) ? "happy" : "celebrate", null, "sum");
+    if (isNewBest || win || newBadges.length || goalJustDone) Sound.play("fanfare"); else Sound.play("chime");
+    if ((isNewBest && (state.points > 0 || state.correct > 0)) || win || (g === "practice" && state.correct === ROUND_LENGTH)) celebrate();
   }
 
   function goHome() {
-    stopTimer(); clearAutoNext();
+    stopTimer(); stopClock(); clearAutoNext();
     state.locked = true;
     blurAnswer();
-    renderHomeBests();
+    renderHome();
+    showScreen("home");
+  }
+
+  /* ---------- sticker book ---------- */
+  function renderStickers() {
+    var owned = {};
+    fun.stickers.forEach(function (id) { owned[id] = true; });
+    $("sticker-grid").innerHTML = STICKERS.map(function (s) {
+      var has = owned[s.id];
+      return '<div class="sticker r' + s.r + (has ? "" : " locked") + '" data-sticker="' + s.id + '" title="' + (has ? esc(s.name) : "Locked") + '">' +
+        '<span class="se">' + (has ? s.e : "❓") + '</span><span class="sn">' + (has ? esc(s.name) : RARITY[s.r].name) + "</span></div>";
+    }).join("");
+    $("book-count").textContent = fun.stickers.length + " / " + STICKERS.length + " stickers";
+    $("book-stars").textContent = String(fun.stars);
+    var egg = $("egg-btn"), all = fun.stickers.length >= STICKERS.length;
+    egg.disabled = all || fun.stars < EGG_COST;
+    egg.textContent = all ? "👑 You have every sticker!" : (fun.stars < EGG_COST ? "🥚 Need " + EGG_COST + " ⭐ for an egg (you have " + fun.stars + ")" : "🥚 Open a surprise egg (" + EGG_COST + " ⭐)");
+  }
+  function pickSticker() {
+    var left = STICKERS.filter(function (s) { return fun.stickers.indexOf(s.id) === -1; });
+    if (!left.length) return null;
+    var total = left.reduce(function (a, s) { return a + RARITY[s.r].w; }, 0), r = Math.random() * total;
+    for (var i = 0; i < left.length; i++) { r -= RARITY[left[i].r].w; if (r < 0) return left[i]; }
+    return left[left.length - 1];
+  }
+  var revealTimer = null;
+  function openEgg() {
+    if (fun.stars < EGG_COST) return;
+    var s = pickSticker();
+    if (!s) return;
+    fun.stars -= EGG_COST;
+    fun.stickers.push(s.id);
+    saveFun();
+    var badges = awardBadges({});
+    renderStickers();
+    $("reveal-egg-wrap").classList.remove("hidden");
+    $("reveal-result").classList.add("hidden");
+    $("reveal").classList.remove("hidden");
+    Sound.play("egg");
+    if (revealTimer) clearTimeout(revealTimer);
+    revealTimer = setTimeout(function () {
+      revealTimer = null;
+      $("reveal-sticker").textContent = s.e;
+      $("reveal-name").textContent = s.name + "!";
+      $("reveal-rarity").textContent = RARITY[s.r].name;
+      $("reveal-rarity").className = "rar r" + s.r;
+      $("reveal-egg-wrap").classList.add("hidden");
+      $("reveal-result").classList.remove("hidden");
+      Sound.play(s.r === 3 ? "fanfare" : "unlock");
+      if (s.r >= 2) celebrate();
+      if (badges.length) toast("🏅 New badge: " + badges.map(function (b) { return b.name; }).join(", ") + "!");
+    }, 1200);
+    return s.id;
+  }
+  function closeReveal() { if (revealTimer) return; $("reveal").classList.add("hidden"); renderStickers(); }
+
+  /* ---------- badges screen ---------- */
+  function renderBadges() {
+    var n = 0;
+    $("badge-grid").innerHTML = BADGES.map(function (b) {
+      var has = !!fun.badges[b.id]; if (has) n++;
+      return '<div class="badge-card ' + (has ? "earned" : "locked") + '" data-badge="' + b.id + '"><div class="bi">' + b.icon + '</div><div class="bn">' + esc(b.name) +
+        '</div><div class="bh">' + (has ? "✅ Earned!" : esc(b.how)) + "</div></div>";
+    }).join("");
+    $("badge-count").textContent = n + " of " + BADGES.length + " badges";
+    $("badge-days").textContent = "🔥 " + currentDays() + " days in a row";
+  }
+
+  /* ---------- name + buddy (first launch and settings) ---------- */
+  var chosenAvatar = AVATARS[0][0];
+  function openProfile(editing) {
+    chosenAvatar = fun.profile ? fun.profile.avatar : AVATARS[0][0];
+    $("name-input").value = fun.profile ? fun.profile.name : "";
+    $("welcome-title").textContent = editing ? "✏️ Change name & buddy" : "👋 Hi there! Welcome!";
+    $("welcome-go").textContent = editing ? "Save ✓" : "Let's go! 🚀";
+    $("welcome-cancel").classList.toggle("hidden", !editing);
+    paintAvatars();
+    showScreen("welcome");
+  }
+  function paintAvatars() {
+    $("avatar-grid").innerHTML = AVATARS.map(function (a) {
+      return '<button type="button" class="avatar-btn' + (a[0] === chosenAvatar ? " selected" : "") + '" data-avatar="' + a[0] + '" aria-label="' + a[1] + '">' + a[0] + "<small>" + a[1] + "</small></button>";
+    }).join("");
+  }
+  function saveProfile() {
+    var first = !fun.profile;
+    var nm = $("name-input").value.replace(/[<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 14);
+    fun.profile = { name: nm || "Friend", avatar: chosenAvatar };
+    save("mp_profile", fun.profile);
+    try { $("name-input").blur(); } catch (e) { /* ignore */ }
+    if (first && fun.starsTotal === 0 && fun.stars === 0 && fun.stickers.length === 0) {
+      fun.stars = WELCOME_STARS; save("mp_stars", fun.stars);
+      setTimeout(function () { toast("🎁 " + WELCOME_STARS + " free stars! Open a sticker egg!"); }, 50);
+    }
+    renderHome();
     showScreen("home");
   }
 
@@ -2718,7 +3387,43 @@
   nextBtn.addEventListener("click", nextProblem);
   backBtn.addEventListener("click", goHome);
   $("summary-home-btn").addEventListener("click", goHome);
-  $("play-again-btn").addEventListener("click", function () { startMode(state.mode); });
+  $("play-again-btn").addEventListener("click", function () { state.pendingGame = state.game; startMode(state.mode); });
+  $("sum-stickers-btn").addEventListener("click", function () { renderStickers(); showScreen("stickers"); });
+  $("stickers-btn").addEventListener("click", function () { renderStickers(); showScreen("stickers"); });
+  $("badges-btn").addEventListener("click", function () { renderBadges(); showScreen("badges"); });
+  var backs = document.querySelectorAll(".screen-back");
+  for (var bi = 0; bi < backs.length; bi++) backs[bi].addEventListener("click", goHome);
+  $("egg-btn").addEventListener("click", openEgg);
+  $("reveal-close").addEventListener("click", closeReveal);
+  $("settings-btn").addEventListener("click", function () { openProfile(true); });
+  $("welcome-go").addEventListener("click", saveProfile);
+  $("welcome-cancel").addEventListener("click", goHome);
+  $("name-input").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); try { e.target.blur(); } catch (x) { /* ignore */ } } });
+  $("avatar-grid").addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".avatar-btn") : null;
+    if (!b) return;
+    chosenAvatar = b.getAttribute("data-avatar");
+    paintAvatars();
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".sound-toggle") : null;
+    if (!b) return;
+    fun.muted = !fun.muted; save("mp_muted", fun.muted); paintSound();
+    if (!fun.muted) Sound.play("ding");
+  });
+
+  // Game type chips (Practice is the default each time the app opens)
+  var gameSettings = $("game-settings");
+  function paintGameChips() {
+    var chips = gameSettings.querySelectorAll(".game-chip");
+    for (var i = 0; i < chips.length; i++) chips[i].classList.toggle("active", chips[i].getAttribute("data-game") === state.pendingGame);
+  }
+  gameSettings.addEventListener("click", function (e) {
+    var el = e.target.closest ? e.target.closest(".game-chip") : null;
+    if (!el) return;
+    state.pendingGame = el.getAttribute("data-game");
+    paintGameChips(); renderHome();
+  });
 
   // Home tiles: delegation on the grid (clicks on child spans still work) + direct backup handlers
   var modeGrid = $("mode-grid");
@@ -2787,13 +3492,25 @@
       streak: state.streak, locked: state.locked, answer: state.current ? state.current.answer : null,
       inputType: state.current ? state.current.inputType : null, grade: state.grade,
       choices: state.current && state.current.inputType === "compare" ? ["<", ">", "="] :
-        state.current && state.current.choices ? state.current.choices.map(function (c) { return typeof c === "object" ? c.v : String(c); }) : null };
+        state.current && state.current.choices ? state.current.choices.map(function (c) { return typeof c === "object" ? c.v : String(c); }) : null,
+      game: state.game, correct: state.correct, answered: state.answered, bossHP: state.bossHP, hearts: state.hearts,
+      clockLeft: state.game === "clock" ? Math.max(0, (state.clockEnd - Date.now()) / 1000) : null,
+      stars: fun.stars, starsTotal: fun.starsTotal, stickers: fun.stickers.slice(), badges: Object.keys(fun.badges),
+      daily: JSON.parse(JSON.stringify(fun.daily)), days: currentDays(), muted: fun.muted, sounds: Sound.log.slice(),
+      profile: fun.profile ? { name: fun.profile.name, avatar: fun.profile.avatar } : null,
+      lastSummary: state.lastSummary ? JSON.parse(JSON.stringify(state.lastSummary)) : null, today: dayKey() };
   };
+  window.MathPractice.stickers = STICKERS.map(function (s) { return { id: s.id, e: s.e, name: s.name, r: s.r }; });
+  window.MathPractice.badges = BADGES.map(function (b) { return { id: b.id, name: b.name }; });
 
   if ([15, 25, 30, 45].indexOf(state.secondsPerQ) === -1) state.secondsPerQ = 25;
   paintChips();
   paintGradeChips();
+  paintGameChips();
+  paintSound();
   renderModeTiles();
+  awardBadges({});  // e.g. Level 10 Hero for progress saved by earlier versions (quietly)
+  if (fun.profile) { renderHome(); showScreen("home"); } else openProfile(false);
 })();
   </script>
   <script>

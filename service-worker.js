@@ -1,5 +1,5 @@
 /* Math Practice service worker — cache-first, versioned. Bump CACHE_VERSION when files change. */
-var CACHE_VERSION = "math-practice-v4";
+var CACHE_VERSION = "math-practice-v5";
 var APP_FILES = [
   "./",
   "./index.html",
