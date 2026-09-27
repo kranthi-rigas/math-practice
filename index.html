@@ -1122,7 +1122,7 @@
 <li>The app does not use the camera, microphone, contacts, photos or location.</li>
 </ul>
 <h3>Information stored only on your device</h3>
-<p>To remember progress, the app saves a few things <b>only on your device</b> (in the app's local storage): each child's first name or nickname and avatar, grade, scores, stars, stickers, badges, practice history, questions to review, settings, and the parent PIN. This information never leaves the device and is not sent to us or anyone else. You can delete a child's profile in the parent dashboard at any time, and uninstalling the app (or clearing this website's data in your browser) removes everything.</p>
+<p>To remember progress, the app saves a few things <b>only on your device</b> (in the app's local storage): each child's first name or nickname and avatar, grade, scores, stars, stickers, badges, practice history, questions to review, settings, and the parent PIN. The app never sends this information to us or to anyone else. (If you have turned on your device's own backup, such as iCloud or Google backup, it may be included in that private backup, which you control.) You can delete a child's profile in the parent dashboard at any time, and uninstalling the app (or clearing this website's data in your browser) removes everything.</p>
 <h3>Read-aloud</h3>
 <p>The optional read-aloud feature uses the text-to-speech engine that is built into your device. The app only hands the text of the math question to that system speech engine; the app itself does not record or send anything.</p>
 <h3>Internet</h3>
@@ -3518,9 +3518,10 @@
     var st = [], p = a * b, sk = [];
     if (a > 12 || b > 12) return { hint: "Break the bigger number into tens and ones.", steps: multSteps(Math.max(a, b), Math.min(a, b)) };
     for (var i = 1; i <= Math.min(a, b); i++) sk.push(Math.max(a, b) * i);
-    st.push(a + " × " + b + " means " + a + " groups of " + b + ".");
-    st.push("Skip count by " + Math.max(a, b) + ", " + Math.min(a, b) + " times: " + sk.join(", ") + ".");
-    if (a * b <= 40 && a <= 6 && b <= 8) st.push(emojiRows(a * b, "🟣", b));
+    st.push(a + " × " + b + " means " + a + (a === 1 ? " group of " : " groups of ") + b + ".");
+    if (Math.min(a, b) === 0) st.push(a === 0 ? "0 groups means there is nothing at all, so the answer is 0." : "Every group is empty (0 in each), so there is nothing at all: 0.");
+    else st.push("Skip count by " + Math.max(a, b) + ", " + (Math.min(a, b) === 1 ? "just once" : Math.min(a, b) + " times") + ": " + sk.join(", ") + ".");
+    if (a * b > 0 && a * b <= 40 && a <= 6 && b <= 8) st.push(emojiRows(a * b, "🟣", b));
     st.push("So " + a + " × " + b + " = <b>" + p + "</b>.");
     return { hint: a === 0 || b === 0 ? "Anything times 0 is 0." : (Math.min(a, b) === 1 ? "Anything times 1 stays the same." : "Skip count by " + Math.max(a, b) + ", " + Math.min(a, b) + " times."), steps: st };
   }

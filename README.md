@@ -197,7 +197,7 @@ After the first visit, the app works with no internet.
 > iOS note: Safari only opens the keyboard when focus comes from a tap. If the keyboard is closed and a question auto-advances after time runs out, tap the answer box (on Android/desktop it focuses and opens automatically).
 
 
-When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v7`) so devices pick up the new version (it takes effect on the next launch after an online visit).
+When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v7.1`) so devices pick up the new version (it takes effect on the next launch after an online visit).
 
 ## Privacy (v7)
 
