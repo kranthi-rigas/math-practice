@@ -1,12 +1,42 @@
-# Math Practice (K–3rd Grade) — Installable PWA
+# Math Practice (K–5th Grade) — Installable PWA
 
-A colorful, kid-friendly **intelligent** math practice app for Kindergarten through 3rd grade. No login. Works fully offline after the first load, and can be installed to the home screen on iPad, iPhone, and Android.
+A colorful, kid-friendly **intelligent** math practice and learning app for Kindergarten through 5th grade. No login. Works fully offline after the first load, and can be installed to the home screen on iPad, iPhone, and Android.
 
-- **Grade picker** on the home screen (K · 1st · 2nd · 3rd), remembered on the device. Defaults to **2nd grade**
+- **Grade picker** on the home screen (K · 1st · 2nd · 3rd · 4th · 5th), remembered per kid. Defaults to **2nd grade**
 - Every question is **generated randomly** (no fixed quiz list), avoiding recent repeats
 - **Countdown timer** on each question (15 / 25 / 30 / 45s, set on the home screen and remembered)
 - **Pictures where they help**: emoji groups, ten-frames, base-ten blocks, analog clocks (SVG), coins and bills, rulers, fraction bars and circles, number lines, rectangles and L-shapes
 - **Answer box is focused automatically** on every typed question (round start, next question, retry, after time-up), with the text selected for easy retyping. Number answers show a **number pad** (`inputmode="numeric"`); expanded-form answers get the normal keyboard (they need `+`). **Enter** checks the answer, and Enter again goes to the next question. Picture/clock/fraction questions use big **tap buttons** instead.
+
+## Learning features (v6)
+
+- **📘 Learn mode**: pick the 📘 Learn game type on home, then tap any topic. Each of the 42 topics has a short picture lesson (3–5 screens), such as base-ten blocks for regrouping, fraction bars, clock hands, area models, long-division steps, bar models for word problems, or the coordinate grid. After the lesson come 3 guided "your turn" questions (levels 1, 2, 3). They have no timer, the hint shows right away, and every answer gets a worked explanation. Guided questions never change her saved level. Finishing a lesson the first time earns 1 ⭐, and home shows "Lesson done ✓" on the tile.
+- **💡 Hint button** on Practice, Boss and review questions: a nudge that fits the question (e.g. "Line up the ones. 7 + 8 is more than 9, so regroup"). Using a hint is gentle. The question is worth half points, and a hinted answer can't count as "super fast" (+1 level instead of +2). It doesn't break the streak. Beat the Clock has no hints.
+- **📖 Step-by-step explanations**: after a miss or a time-up, the card shows "How to solve it" steps built for *that* question. Examples: column addition with the carried 1, counting on, reading the hour and minute hands, making equal denominators, the long-division steps, or place-value tables. On a time-up the question still moves on by itself after 2.5 s like before, unless she taps **✋ Wait, I'm reading** (or the 🔈 on the steps).
+- **🔁 Mistake review (spaced repetition)**: every missed question is saved for that kid (grade, mode, level, and the full question). The rules:
+  - It comes back **1 day later**.
+  - Right once: it comes back **3 days later** (or **7 days** if she missed it again during review).
+  - Right **twice**: it's cleared (🔧 "Fixed for good!").
+  - Missed during review: it comes back the next day.
+
+  Due questions are mixed into Practice rounds of the same grade and mode (as question 4 and question 8, marked "🔁 One to fix from before!"). A **🔁 Fix my mistakes (N)** button appears on home whenever any are due, for an untimed review round (up to 10) that doesn't change levels. Up to 60 mistakes are kept per kid.
+- **🗣️ Read-aloud**: a 🔈 button on each question, lesson page, and explanation reads it with the device voice (Web Speech API `speechSynthesis`). Math is spoken naturally: "plus", "minus", "times", "divided by", "is greater than", "3 fourths", "2 and 1 half", "7 tens", 3:45 as "three forty-five", $4.25 as "4 dollars and 25 cents", and "what number" for a blank. **Auto-read** is on for K and 1st by default (the parent can set Always / K & 1st / Never). Speech only starts after her first tap, as iOS requires. If the device has no speech support, the speaker buttons are hidden and nothing else changes.
+- **👥 Kid profiles**: several children on one device, each with their own name, buddy, grade, levels, bests, stars, stickers, badges, daily goal and streak, mistakes, settings and stats.
+  - When 2+ kids exist, a **"Who is playing?" picker** opens at launch. Tap the name chip on home to switch or **➕ Add a kid**; ⚙️ edits the current kid.
+  - Deleting a kid is done in the parent dashboard, so it needs the PIN, and it asks for a second tap to confirm.
+- **👪 Parent dashboard** (👪 on home, or "Grown-ups" on the picker), behind a **4-digit PIN**:
+  - The PIN is created on first open and typed twice. It's saved as a hash, not in plain text.
+  - **Forgot the PIN?** Answer a grown-up math question (like 47 × 23 + 518), then choose a new PIN.
+  - Per kid, the dashboard shows:
+    - time spent, rounds, questions answered, accuracy
+    - stars and mistakes waiting
+    - a **last-7-days chart** (questions per day with the right-answer share and minutes)
+    - **strong topics** (≥ 85%) and **needs practice** (< 70%), using topics with 5+ questions
+    - an **accuracy + level + best table** for each grade and topic
+    - the **most-missed question types**
+    - badges and stickers
+  - **Settings per kid**: daily goal (1–5 rounds), default timer, allowed grades (the others are hidden from the grade picker), sounds on/off, read-aloud on/off, and auto-read.
+  - **🖨️ Weekly summary**: a print-friendly page (totals, day by day, topics this week with levels, strengths, most-missed types, new badges). Print or "Save as PDF" from it.
 
 ## Fun stuff (v5)
 
@@ -23,8 +53,8 @@ A colorful, kid-friendly **intelligent** math practice app for Kindergarten thro
 - **Sticker book**: 36 emoji animal stickers (20 Common, 10 Rare, 6 Super Rare). Opening a surprise egg costs 3 ⭐. The egg shakes, then reveals a sticker she doesn't have yet. Rare ones come up less often.
 - **Buddy mascot** on the question screen. It sits above the timer, so it never covers the question or the keyboard. It cheers right answers, encourages after misses, gets excited on streaks, and celebrates on the summary.
 - **Sounds**: made with the Web Audio API, so there are no sound files and they work offline. Ding (right), soft buzz (miss), chime (streaks), jingle (level up), fanfare (new best, boss win, new badge), a soft click on taps, plus boss hit/attack and egg sounds. Audio only starts after the first tap, as iOS requires. The 🔊/🔇 button (home and question screens) is remembered on the device.
-- **Badges** (🏅 screen): First Round, Speedy, Streak 5, Streak 10, Perfect Round, Level 10 Hero (one per grade), Explorer (every mode in a grade), Clock Champ, Boss Beater, Boss Master, Daily Goal, 3 and 7 Days in a Row, Star Catcher, Sticker Fan, Super Collector.
-- **Daily goal**: 3 rounds a day, shown with a progress ring. There's also a 🔥 **days-in-a-row** counter. Both use the device's local date.
+- **Badges** (🏅 screen): First Round, Speedy, Streak 5, Streak 10, Perfect Round, Level 10 Hero (one per grade), Explorer (every mode in a grade), Clock Champ, Boss Beater, Boss Master, Daily Goal, 3 and 7 Days in a Row, Star Catcher, Sticker Fan, Super Collector, plus v6's Learner (a lesson), Scholar (10 lessons) and Mistake Fixer (5 mistakes fixed for good).
+- **Daily goal**: 3 rounds a day (the parent can change it), shown with a progress ring. There's also a 🔥 **days-in-a-row** counter. Both use the device's local date.
 
 ## Grades and modes (levels 1–10 each)
 
@@ -57,6 +87,27 @@ A colorful, kid-friendly **intelligent** math practice app for Kindergarten thro
 - **Time & Elapsed Time:** L1–3 read clocks to 5 minutes then to the minute → L4 pick the clock → L5 elapsed minutes within an hour → L6 end time → L7 elapsed across the hour → L8 start time → L9 elapsed between two clocks → L10 mixed incl. over an hour
 - **Area & Perimeter:** L1–2 count unit squares → L3 area from side lengths → L4–5 perimeter (grid, then labels) → L6 area or perimeter → L7–8 missing side from area/perimeter → L9 L-shaped area → L10 mixed
 - **Word Problems:** L1–4 equal groups, sharing, arrays, teams → L5 3-digit stories → L6 money × ÷ → L7–9 two-step → L10 mixed
+
+**4th grade**
+- **Multiplication:** L1–2 2-digit × 1-digit → L3 hundreds × 1-digit → L4–5 3- and 4-digit × 1-digit → L6 × multiples of 10 → L7–8 2-digit × 2-digit (area model / partial products in the explanation) → L9 missing factor → L10 mixed
+- **Long Division:** L1–2 facts and 2-digit ÷ 1-digit → L3–4 with remainders (tap "q R r") → L5 3-digit → L6 4-digit with remainder → L7–8 zeros in the quotient, 4-digit → L9 remainders → L10 "how many vans?" (round the answer up)
+- **Fractions:** L1–2 equivalent fractions (picture, missing number) → L3 compare → L4–5 add/subtract like denominators → L6 improper → mixed number → L7 equivalent with bigger numbers → L8 add mixed numbers → L9 whole × fraction → L10 stories
+- **Decimals:** L1–2 tenths/hundredths from a shaded grid → L3–4 fraction ↔ decimal → L5 compare → L6 digit places → L7 tenths + hundredths → L8 greatest decimal → L9 money as decimals → L10 0.70 = 0.7
+- **Place Value & Rounding:** L1 digit values to 100,000s → L2 expanded form → L3 number names → L4–7 round to ten … hundred thousand → L8 compare 6-digit numbers → L9 10,000 more/less → L10 mixed
+- **Factors & Primes:** multiples, factors, next multiple, prime or composite, number of factors, "not a factor", factor pairs, least common multiple
+- **Angles & Measurement:** angle types (acute/right/obtuse/straight, tap) → feet/inches, hours/minutes, km/m, pounds/ounces → missing angle in a right or straight angle → adjacent angles → mixed units (6 lb 11 oz) → area in a story
+- **Word Problems:** "times as many" (both ways) → equal groups → leftovers → two-step stories → buses needed (round up) → money → multi-step sharing
+
+**5th grade**
+- **Multiplication:** 2- and 3-digit × 1- and 2-digit → 4-digit × 2-digit → multiples of 10 → best estimate (tap) → missing factor
+- **Division:** 3-digit ÷ 1-digit → ÷ multiples of 10 → 2-digit divisors, with and without remainders → estimate quotients (tap) → missing dividend → "cartons needed" stories
+- **Fractions:** common denominators → add/subtract unlike denominators (answers as fractions or mixed numbers; any equivalent form accepted, e.g. 2/4 for 1/2) → mixed numbers → multiply fractions → division as a fraction (5 pizzas ÷ 8 friends) → stories
+- **Decimal Operations:** add/subtract tenths and hundredths → decimal × whole → decimal × decimal → ÷ whole → ÷ decimal → rounding → money (answers accepted with or without trailing zeros: 2.50 = 2.5)
+- **Powers of 10:** 10² … 10⁴, zeros in a power of 10, × and ÷ by 10/100/1,000 (moving the decimal point), missing power, × 10ⁿ
+- **Order of Operations:** × before + → parentheses → ÷ → two operations with ( ) → brackets [ ] → four operations → match words to an expression (tap)
+- **Volume:** count unit cubes in a picture → l × w × h → base area × height → missing edge → two-box shapes → cubes
+- **Coordinate Plane (tap):** find the point at (x, y), read a point's coordinates, distance along a line, x-coordinate, patterns, the 4th corner of a rectangle, moving a point
+- **Word Problems:** multi-digit × and ÷, money with decimals, fraction sums, change from $20, volume, "how many full boxes", fraction of a group, sharing a bill
 
 ## Levels (1–10 per mode)
 
@@ -99,15 +150,23 @@ v5 adds these keys and never changes the v4 ones:
 
 Existing v4 players keep all their levels and bests. They see the name/buddy screen once, get 3 welcome stars, and get any Level 10 Hero badge they already earned.
 
-## Adding a grade (4th, 5th…)
+**v6 (profiles).** The first kid (profile `p1`) keeps using exactly the keys above. So all v1–v5 progress (name, buddy, levels, bests, stars, stickers, badges, streak, daily goal) simply *is* the first profile. Nothing is copied, renamed, or lost, and an older cached version would still see it. Other kids get the same keys with their id inside, e.g. `mp_p2_stars` or `mp_p2_level_4_mult`. New per-kid keys:
+- `mp_settings` {goal, timer, grades, sound, readAloud, autoRead}
+- `mp_stats` {secs, rounds, qs, correct, modes, days, types}
+- `mp_mistakes` (saved questions with due date, wins, lapses)
+- `mp_lessons`, `mp_fixed`
 
-In `index.html`: write one generator per mode (`function genG4Something(level) { … return problem; }` for levels 1–10), then add an entry to `GRADES` and its key to `GRADE_ORDER`. The grade chip, tiles, saving, levels, and scoring all come from the registry. A problem is an object like
-`{ html, answer, displayAnswer, inputType: "number" | "text" | "choice" | "compare", choices?, key }` (helpers: `numQ`, `choiceQ`, `compareQ`, plus the SVG helpers for clocks, coins, fractions, rulers, rectangles).
+Device-wide keys: `mp_profiles` (list of kid ids), `mp_active`, `mp_parent` (PIN hash), `mp_migrated_v6`. On first v6 launch the dashboard's round count starts from the old `mp_rounds_total`. Time, accuracy and per-topic history start from v6.
+
+## Adding a grade or mode
+
+In `index.html`: write one generator per mode (`function genG6Something(level) { … return problem; }` for levels 1–10), add an entry to `GRADES` and its key to `GRADE_ORDER`, and add a lesson to `LESSONS` (`"6:something": function () { return [LS(title, html), …]; }`). The grade chip, tiles, saving, levels, scoring, review, and stats all come from the registry. A problem is an object like
+`{ html, answer, displayAnswer, inputType: "number" | "text" | "choice" | "compare", choices?, key, hint?, steps? }` (helpers: `numQ`, `choiceQ`, `compareQ`, `decQ`, `fracQ`, plus the SVG helpers for clocks, coins, fractions, rulers, rectangles, angles, grids, cubes and the coordinate plane). If `hint`/`steps` are missing, `explainProblem()` builds them from the question.
 
 ## Files
 
 ```
-index.html              app (HTML + CSS + JS, self-contained)
+index.html              app (HTML + CSS + JS, self-contained: generators, lessons, explanations, profiles, dashboard)
 manifest.webmanifest    PWA manifest (name, icons, colors, standalone)
 service-worker.js       offline cache (cache-first, versioned)
 icons/                  192, 512, maskable 512, 180 apple-touch, 32 favicon
@@ -138,4 +197,4 @@ After the first visit, the app works with no internet.
 > iOS note: Safari only opens the keyboard when focus comes from a tap. If the keyboard is closed and a question auto-advances after time runs out, tap the answer box (on Android/desktop it focuses and opens automatically).
 
 
-When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v5`) so devices pick up the new version (it takes effect on the next launch after an online visit).
+When you change any file, bump `CACHE_VERSION` in `service-worker.js` (currently `math-practice-v6`) so devices pick up the new version (it takes effect on the next launch after an online visit).

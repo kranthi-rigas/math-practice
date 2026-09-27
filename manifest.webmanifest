@@ -1,7 +1,7 @@
 {
   "name": "Math Practice",
   "short_name": "Math",
-  "description": "Fun K-3rd grade math practice: counting, adding & subtracting, place value, money, time, multiplication, fractions, and more, with stars, stickers, badges, Beat the Clock and Boss Rounds. Works offline.",
+  "description": "Fun K-5th grade math practice and learning: picture lessons, hints, step-by-step explanations, mistake review, read-aloud, kid profiles and a parent dashboard. Counting, place value, money, time, multiplication, long division, fractions, decimals, volume, the coordinate plane and more, with stars, stickers and badges. Works offline.",
   "start_url": "./",
   "scope": "./",
   "id": "./",
