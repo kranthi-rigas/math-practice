@@ -426,6 +426,102 @@
       font-weight: 600;
     }
 
+    /* ===== v2: competitive UI ===== */
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .stat-chip {
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-weight: 800;
+      font-size: 1rem;
+      box-shadow: var(--shadow);
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .streak-chip.hot { background: linear-gradient(135deg, #fdcb6e, #e17055); color: #fff; }
+    .level-badge { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; }
+    .level-badge .arrow { display: inline-block; margin-left: 4px; min-width: 1ch; }
+    .level-badge.up { animation: lvlUp 0.9s ease; }
+    .level-badge.down { animation: lvlDown 0.9s ease; }
+    @keyframes lvlUp {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,184,148,0.8); }
+      35% { transform: scale(1.25) translateY(-4px); box-shadow: 0 0 0 10px rgba(0,184,148,0.25); }
+      100% { transform: scale(1); box-shadow: var(--shadow); }
+    }
+    @keyframes lvlDown {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(225,112,85,0.8); }
+      35% { transform: scale(0.9) translateY(3px); box-shadow: 0 0 0 10px rgba(225,112,85,0.25); }
+      100% { transform: scale(1); box-shadow: var(--shadow); }
+    }
+    .score-pill.pop { animation: pop 0.6s ease; }
+    @keyframes pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.3); background: #fdcb6e; color: #2d3436; }
+      100% { transform: scale(1); }
+    }
+    .feedback .pts { display: block; font-size: 0.95rem; font-weight: 700; margin-top: 4px; opacity: 0.9; }
+    .feedback { flex-direction: column; }
+
+    .mode-btn .best-line {
+      display: block;
+      width: fit-content;
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-top: 6px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.28);
+    }
+
+    .summary-title { text-align: center; font-size: 1.7rem; font-weight: 900; color: var(--accent); margin-bottom: 6px; }
+    .summary-sub { text-align: center; font-size: 1.05rem; font-weight: 700; color: var(--muted); margin-bottom: 16px; }
+    .new-best {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(135deg, #fdcb6e, #e17055);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 14px;
+      animation: bounceIn 0.9s ease;
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      55% { transform: scale(1.12); opacity: 1; }
+      75% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .summary-stat { background: #f8f1ff; border-radius: 14px; padding: 14px 8px; text-align: center; }
+    .summary-stat .num { display: block; font-size: 2rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .summary-stat .lbl { display: block; font-size: 0.9rem; font-weight: 700; color: var(--muted); margin-top: 4px; }
+    .summary-stat.wide { grid-column: 1 / -1; }
+
+    .confetti-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 50; }
+    .confetti-layer span {
+      position: absolute;
+      top: -10%;
+      font-size: 1.8rem;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(120vh) rotate(540deg); opacity: 0.9; }
+    }
+
+    @media (min-width: 700px) {
+      .stat-chip { font-size: 1.2rem; padding: 10px 18px; }
+      .summary-stat .num { font-size: 2.6rem; }
+      .mode-btn .best-line { margin-left: auto; margin-right: auto; font-size: 0.95rem; }
+    }
+
     /* Tablets (iPad portrait & landscape) */
     @media (min-width: 700px) {
       .app { max-width: 680px; }
@@ -469,7 +565,7 @@
   <div class="app">
     <div id="home-screen">
       <h1>⭐ Math Practice</h1>
-      <p class="subtitle">2nd Grade · Fresh questions every time!</p>
+      <p class="subtitle">2nd Grade · Level up and beat your best score!</p>
 
       <div class="settings-row" id="time-settings" role="group" aria-label="Seconds per question">
         <label>⏱ Time:</label>
@@ -483,36 +579,46 @@
           <button class="mode-btn m-add" data-mode="addsub" type="button">
             <span class="icon">➕</span>
             <span class="label">Addition &amp; Subtraction
-              <span class="hint">Numbers within 100 · adapts to you</span>
+              <span class="hint">From 5 + 3 up to 3-digit numbers</span>
+              <span class="best-line" data-best-for="addsub"></span>
             </span>
           </button>
           <button class="mode-btn m-place" data-mode="place" type="button">
             <span class="icon">🔢</span>
             <span class="label">Place Value
-              <span class="hint">Ones, tens, hundreds…</span>
+              <span class="hint">Tens &amp; ones up to thousands</span>
+              <span class="best-line" data-best-for="place"></span>
             </span>
           </button>
           <button class="mode-btn m-compare" data-mode="compare" type="button">
             <span class="icon">⚖️</span>
             <span class="label">Number Comparison
               <span class="hint">Less, greater, or equal</span>
+              <span class="best-line" data-best-for="compare"></span>
             </span>
           </button>
           <button class="mode-btn m-word" data-mode="word" type="button">
             <span class="icon">📖</span>
             <span class="label">Word Problems
-              <span class="hint">New stories each round</span>
+              <span class="hint">One-step up to two-step stories</span>
+              <span class="best-line" data-best-for="word"></span>
             </span>
           </button>
         </div>
       </div>
-      <p class="footer-note">Every question is randomly generated. Beat the clock!</p>
+      <p class="footer-note">10 questions per round · Fast answers earn bonus points!</p>
     </div>
 
     <div id="practice-screen" class="hidden">
       <div class="top-bar">
         <button class="back-btn" id="back-btn" type="button">← Home</button>
-        <div class="score-pill" id="score-pill">⭐ 0 / 0</div>
+        <div class="score-pill" id="score-pill">⭐ 0 pts</div>
+      </div>
+
+      <div class="stats-row">
+        <span class="stat-chip" id="q-counter">Question 1 / 10</span>
+        <span class="stat-chip streak-chip" id="streak-chip">🔥 0</span>
+        <span class="stat-chip level-badge" id="level-badge">Level 1<span class="arrow"></span></span>
       </div>
 
       <div class="timer-wrap" aria-live="polite">
@@ -527,7 +633,6 @@
 
       <div class="card">
         <div class="mode-title" id="mode-title">Practice</div>
-        <div class="level-pill" id="level-pill">Level ★</div>
         <div class="question-box" id="question-box"></div>
         <div class="answer-area" id="answer-area"></div>
         <div class="feedback neutral" id="feedback" aria-live="polite"></div>
@@ -537,26 +642,39 @@
         </div>
       </div>
     </div>
+
+    <div id="summary-screen" class="hidden">
+      <div class="card">
+        <div class="summary-title" id="summary-title">🏁 Round complete!</div>
+        <div class="summary-sub" id="summary-sub"></div>
+        <div class="new-best hidden" id="new-best">🎉 New best score! 🎉</div>
+        <div class="summary-grid">
+          <div class="summary-stat wide"><span class="num" id="sum-score">0</span><span class="lbl">Points this round</span></div>
+          <div class="summary-stat"><span class="num" id="sum-accuracy">0%</span><span class="lbl" id="sum-correct">0 of 10 correct</span></div>
+          <div class="summary-stat"><span class="num" id="sum-level">1</span><span class="lbl">Highest level</span></div>
+          <div class="summary-stat"><span class="num" id="sum-streak">0</span><span class="lbl">Best streak 🔥</span></div>
+          <div class="summary-stat"><span class="num" id="sum-best">0</span><span class="lbl">Best score 🏆</span></div>
+        </div>
+        <div class="btn-row">
+          <button class="action-btn back-btn" id="summary-home-btn" type="button">🏠 Home</button>
+          <button class="action-btn next-btn" id="play-again-btn" type="button">Play again 🔁</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
 (function () {
   "use strict";
 
-  /* ---- DOM ---- */
-  var homeScreen = document.getElementById("home-screen");
-  var practiceScreen = document.getElementById("practice-screen");
-  var questionBox = document.getElementById("question-box");
-  var answerArea = document.getElementById("answer-area");
-  var feedbackEl = document.getElementById("feedback");
-  var scorePill = document.getElementById("score-pill");
-  var modeTitle = document.getElementById("mode-title");
-  var levelPill = document.getElementById("level-pill");
-  var checkBtn = document.getElementById("check-btn");
-  var nextBtn = document.getElementById("next-btn");
-  var backBtn = document.getElementById("back-btn");
-  var timerDigits = document.getElementById("timer-digits");
-  var timerFill = document.getElementById("timer-fill");
+  /* ================= Config ================= */
+  var MIN_LEVEL = 1;
+  var MAX_LEVEL = 10;
+  var ROUND_LENGTH = 10;
+  var BASE_POINTS = 10;       // points = BASE_POINTS * level (+ speed bonus) * streak multiplier
+  var MAX_SPEED_BONUS = 20;   // full bonus when answered instantly, scaled by time left
+  var MAX_TRIES = 2;          // first try + one retry
+  var APP_VERSION = "math-practice-v2-levels";
 
   var MODE_TITLES = {
     addsub: "➕ Addition & Subtraction",
@@ -565,519 +683,641 @@
     word: "📖 Word Problems"
   };
 
-  var LEVEL_LABELS = ["Easy ★", "Getting warmer ★★", "Challenge ★★★"];
-
-  var PRAISE = [
-    "🎉 Correct! Super star!",
-    "🌟 Awesome work!",
-    "👏 You got it!",
-    "💪 Brilliant!",
-    "✨ Fantastic!",
-    "🏆 Yes! Keep going!"
-  ];
-
-  var TRY_AGAIN = [
-    "Not quite — try again! 💪",
-    "Almost! Give it another go 🌟",
-    "Hmm, think again! You can do it 💡",
-    "Close! Check your work ✏️"
-  ];
-
-  var TIME_UP_MSGS = [
-    "⏰ Time's up! The answer was ",
-    "⏱ Oops — time ran out. Answer: ",
-    "🔔 Clock ran out! Correct answer: "
-  ];
-
-  /* ---- State ---- */
-  var state = {
-    mode: null,
-    correct: 0,
-    attempted: 0,
-    streak: 0,
-    level: 0,           // 0 easy, 1 medium, 2 hard
-    current: null,
-    locked: false,
-    selectedChoice: null,
-    secondsPerQ: 25,
-    timeLeft: 25,
-    timerId: null,
-    autoNextId: null,
-    recentKeys: [],     // avoid immediate repeats
-    lastTemplateId: null
-  };
-
-  /* ---- Utils ---- */
-  function randInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  /* ================= Pure game rules (exposed for testing) ================= */
+  function clampLevel(n) {
+    return Math.max(MIN_LEVEL, Math.min(MAX_LEVEL, n));
   }
 
-  function pick(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+  // outcome: "fast" | "correct" | "retry" | "wrong" | "timeout"
+  function nextLevel(level, outcome) {
+    var delta = 0;
+    if (outcome === "fast") delta = 2;
+    else if (outcome === "correct") delta = 1;
+    else if (outcome === "retry") delta = 0;
+    else if (outcome === "wrong" || outcome === "timeout") delta = -1;
+    return clampLevel(level + delta);
   }
 
+  // A first-try correct answer is "fast" when it took less than a third of the time limit.
+  function classifyCorrect(tries, elapsedSec, limitSec) {
+    if (tries > 1) return "retry";
+    return elapsedSec < limitSec / 3 ? "fast" : "correct";
+  }
+
+  function streakMultiplier(streak) {
+    if (streak >= 5) return 2;
+    if (streak >= 3) return 1.5;
+    return 1;
+  }
+
+  // streakAfter = streak count including this answer (for first-try correct answers)
+  function pointsFor(outcome, level, secondsLeft, limitSec, streakAfter) {
+    if (outcome === "wrong" || outcome === "timeout") {
+      return { points: 0, base: 0, speed: 0, mult: 1 };
+    }
+    var base = BASE_POINTS * level;
+    if (outcome === "retry") {
+      return { points: Math.round(base / 2), base: Math.round(base / 2), speed: 0, mult: 1 };
+    }
+    var frac = limitSec > 0 ? Math.max(0, Math.min(1, secondsLeft / limitSec)) : 0;
+    var speed = Math.round(MAX_SPEED_BONUS * frac);
+    var mult = streakMultiplier(streakAfter);
+    return { points: Math.round((base + speed) * mult), base: base, speed: speed, mult: mult };
+  }
+
+  /* ================= Storage (safe) ================= */
+  function load(key, fallback) {
+    try {
+      var v = window.localStorage.getItem(key);
+      return v == null ? fallback : JSON.parse(v);
+    } catch (e) { return fallback; }
+  }
+  function save(key, value) {
+    try { window.localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* private mode */ }
+  }
+  function getBest(mode) { return load("mp_best_" + mode, 0) || 0; }
+  function setBest(mode, v) { save("mp_best_" + mode, v); }
+  function getSavedLevel(mode) { return clampLevel(load("mp_level_" + mode, 1) || 1); }
+  function setSavedLevel(mode, lv) { save("mp_level_" + mode, lv); }
+
+  /* ================= Random helpers ================= */
+  function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function chance(p) { return Math.random() < p; }
   function shuffle(arr) {
     var a = arr.slice();
     for (var i = a.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
-      var t = a[i];
-      a[i] = a[j];
-      a[j] = t;
+      var t = a[i]; a[i] = a[j]; a[j] = t;
     }
     return a;
   }
+  var MINUS = "−";
 
-  function rememberKey(key) {
-    state.recentKeys.push(key);
-    if (state.recentKeys.length > 12) state.recentKeys.shift();
+  function hasRegroup(a, b, op) {
+    var x = a, y = b;
+    while (x > 0 || y > 0) {
+      var da = x % 10, db = y % 10;
+      if (op === "+" && da + db >= 10) return true;
+      if (op === "-" && da < db) return true;
+      x = Math.floor(x / 10); y = Math.floor(y / 10);
+    }
+    return false;
   }
 
-  function wasRecent(key) {
-    return state.recentKeys.indexOf(key) !== -1;
-  }
-
-  function updateScore() {
-    scorePill.textContent = "⭐ " + state.correct + " / " + state.attempted;
-  }
-
-  function updateLevelPill() {
-    levelPill.textContent = "Difficulty: " + LEVEL_LABELS[state.level];
-  }
-
-  function setFeedback(type, msg) {
-    feedbackEl.className = "feedback " + type;
-    feedbackEl.textContent = msg;
-  }
-
-  function clearFeedback() {
-    setFeedback("neutral", "");
-  }
-
-  function bumpDifficulty(success) {
-    if (success) {
-      state.streak += 1;
-      if (state.streak >= 3 && state.level < 2) {
-        state.level += 1;
-        state.streak = 0;
+  // Sample a +/- pair that fits the range and regroup rule. rg: "no" | "yes" | "any"
+  function samplePair(cfg, op) {
+    var a, b, ok;
+    for (var t = 0; t < 400; t++) {
+      var x = randInt(cfg.a[0], cfg.a[1]);
+      var y = randInt(cfg.b[0], cfg.b[1]);
+      if (op === "+") {
+        a = x; b = y;
+        ok = a + b <= cfg.max;
+      } else {
+        a = Math.max(x, y); b = Math.min(x, y);
+        ok = a - b > 0 && a <= cfg.max;
       }
-    } else {
-      state.streak = 0;
-      if (state.level > 0 && Math.random() < 0.65) {
-        state.level -= 1;
-      }
+      if (!ok) continue;
+      if (cfg.rg === "yes" && !hasRegroup(a, b, op)) continue;
+      if (cfg.rg === "no" && hasRegroup(a, b, op)) continue;
+      return { a: a, b: b };
     }
-    updateLevelPill();
+    // Fallback: ignore the regroup rule
+    a = randInt(cfg.a[0], cfg.a[1]);
+    b = randInt(1, Math.max(1, Math.min(cfg.b[1], op === "+" ? cfg.max - a : a - 1)));
+    return { a: a, b: b };
   }
 
-  /* ---- Timer ---- */
-  function stopTimer() {
-    if (state.timerId) {
-      clearInterval(state.timerId);
-      state.timerId = null;
-    }
-  }
-
-  function clearAutoNext() {
-    if (state.autoNextId) {
-      clearTimeout(state.autoNextId);
-      state.autoNextId = null;
-    }
-  }
-
-  function paintTimer() {
-    var total = state.secondsPerQ;
-    var left = Math.max(0, state.timeLeft);
-    timerDigits.textContent = String(left);
-    var pct = total > 0 ? (left / total) * 100 : 0;
-    timerFill.style.width = pct + "%";
-
-    timerDigits.classList.remove("warn", "danger");
-    timerFill.classList.remove("warn", "danger");
-    if (left <= 5) {
-      timerDigits.classList.add("danger");
-      timerFill.classList.add("danger");
-    } else if (left <= 10) {
-      timerDigits.classList.add("warn");
-      timerFill.classList.add("warn");
-    }
-  }
-
-  function startTimer() {
-    stopTimer();
-    state.timeLeft = state.secondsPerQ;
-    paintTimer();
-    state.timerId = setInterval(function () {
-      if (state.locked) return;
-      state.timeLeft -= 1;
-      paintTimer();
-      if (state.timeLeft <= 0) {
-        stopTimer();
-        onTimeout();
-      }
-    }, 1000);
-  }
-
-  function onTimeout() {
-    if (state.locked) return;
-    state.locked = true;
-    state.attempted += 1;
-    bumpDifficulty(false);
-    updateScore();
-
-    var ans = state.current ? state.current.displayAnswer : "?";
-    setFeedback("timeout", pick(TIME_UP_MSGS) + ans);
-
-    var els = answerArea.querySelectorAll("button, input");
-    for (var i = 0; i < els.length; i++) els[i].disabled = true;
-
-    checkBtn.classList.add("hidden");
-    nextBtn.classList.remove("hidden");
-
-    clearAutoNext();
-    state.autoNextId = setTimeout(function () {
-      state.autoNextId = null;
-      if (!practiceScreen.classList.contains("hidden")) nextProblem();
-    }, 2200);
-  }
-
-  /* ============================================================
-     PROCEDURAL GENERATORS — all use Math.random every call
-     ============================================================ */
+  /* ================= Mode 1: Addition & subtraction (levels 1-10) ================= */
+  var ADDSUB_LEVELS = [
+    null,
+    { a: [1, 9],     b: [1, 9],    max: 10,   rg: "no",  desc: "within 10" },
+    { a: [5, 19],    b: [1, 9],    max: 20,   rg: "no",  desc: "within 20" },
+    { a: [3, 19],    b: [2, 9],    max: 20,   rg: "yes", desc: "within 20, crossing 10" },
+    { a: [10, 49],   b: [2, 20],   max: 60,   rg: "no",  desc: "2-digit, no regrouping" },
+    { a: [10, 99],   b: [10, 89],  max: 99,   rg: "no",  desc: "2-digit + 2-digit" },
+    { a: [10, 99],   b: [10, 89],  max: 100,  rg: "yes", desc: "2-digit with regrouping" },
+    { a: [20, 99],   b: [11, 89],  max: 100,  rg: "yes", desc: "regrouping + missing numbers", missing: true },
+    { a: [100, 999], b: [10, 99],  max: 999,  rg: "no",  desc: "3-digit, no regrouping" },
+    { a: [100, 999], b: [10, 99],  max: 999,  rg: "yes", desc: "3-digit with regrouping" },
+    { a: [100, 999], b: [100, 899], max: 1000, rg: "yes", desc: "3-digit + 3-digit", missing: true }
+  ];
 
   function genAddSub(level) {
-    var isAdd = Math.random() < 0.5;
-    var a, b, onesA, onesB, tensA, tensB;
-    var forceRegroup = level >= 1 ? Math.random() < (0.35 + level * 0.2) : Math.random() < 0.2;
-    var maxSum = level === 0 ? 50 : (level === 1 ? 80 : 100);
+    var cfg = ADDSUB_LEVELS[level];
+    var op = chance(0.5) ? "+" : "-";
+    var p = samplePair(cfg, op);
+    var a = p.a, b = p.b;
+    var c = op === "+" ? a + b : a - b;
+    var sign = op === "+" ? "+" : MINUS;
 
-    if (isAdd) {
-      if (forceRegroup) {
-        onesA = randInt(5, 9);
-        onesB = randInt(10 - onesA, 9);
-        tensA = randInt(1, level === 2 ? 8 : 5);
-        tensB = randInt(0, Math.max(0, Math.floor(maxSum / 10) - tensA - 1));
-        a = tensA * 10 + onesA;
-        b = tensB * 10 + onesB;
-        if (a + b > maxSum) {
-          b = Math.max(1, maxSum - a);
-          if ((a % 10) + (b % 10) < 10 && Math.random() < 0.7) {
-            b = Math.min(maxSum - a, (10 - (a % 10)) + randInt(0, 5));
-          }
-        }
-      } else {
-        a = randInt(level === 0 ? 5 : 10, Math.floor(maxSum * 0.7));
-        b = randInt(1, Math.max(1, maxSum - a));
-      }
-      if (a + b > 100) b = 100 - a;
-      return makeMathProblem(a, "+", b, a + b);
-    }
-
-    // subtraction
-    if (forceRegroup) {
-      onesA = randInt(0, 4);
-      onesB = randInt(onesA + 1, 9);
-      tensA = randInt(level === 0 ? 2 : 3, level === 2 ? 9 : 7);
-      a = tensA * 10 + onesA;
-      b = randInt(1, tensA - 1) * 10 + onesB;
-      if (b >= a) b = onesB;
-    } else {
-      a = randInt(level === 0 ? 15 : 20, level === 0 ? 50 : 99);
-      b = randInt(1, a);
-    }
-    return makeMathProblem(a, "−", b, a - b);
-  }
-
-  function makeMathProblem(a, op, b, answer) {
-    var key = "as:" + a + op + b;
-    var prompts = [
-      '<div class="big-number">' + a + " " + op + " " + b + " = ?</div>",
-      '<div class="question-text">What is ' + a + " " + op + " " + b + "?</div>",
-      '<div class="big-number">' + a + '</div><div class="question-sub">' + op + ' ' + b + ' = ?</div>'
-    ];
-    return {
-      html: pick(prompts),
-      answer: String(answer),
-      displayAnswer: String(answer),
-      inputType: "number",
-      key: key
-    };
-  }
-
-  function genPlace(level) {
-    var kinds = level === 0
-      ? ["digitValue", "standard"]
-      : (level === 1 ? ["digitValue", "expanded", "standard"] : ["digitValue", "expanded", "standard", "digitValue"]);
-    var kind = pick(kinds);
-    var useThousands = level >= 2 ? Math.random() < 0.55 : (level === 1 ? Math.random() < 0.25 : false);
-    var n, digits, places, placeNames, idx, dig, value, s, parts, i, place, expanded, h, t, o, th;
-    var key;
-
-    if (kind === "digitValue") {
-      if (useThousands) {
-        n = randInt(1000, 9999);
-        digits = String(n).split("").map(Number);
-        places = [1000, 100, 10, 1];
-        placeNames = ["thousands", "hundreds", "tens", "ones"];
-      } else {
-        n = randInt(level === 0 ? 20 : 100, level === 0 ? 99 : 999);
-        // pad for 2-digit
-        s = String(n);
-        digits = s.split("").map(Number);
-        if (s.length === 2) {
-          places = [10, 1];
-          placeNames = ["tens", "ones"];
-        } else {
-          places = [100, 10, 1];
-          placeNames = ["hundreds", "tens", "ones"];
-        }
-      }
-      idx = randInt(0, digits.length - 1);
-      for (i = 0; i < 6 && digits[idx] === 0; i++) idx = randInt(0, digits.length - 1);
-      dig = digits[idx];
-      value = dig * places[idx];
-      key = "pv:dv:" + n + ":" + idx;
-      return {
-        html:
-          '<div class="question-text">In <span class="big-number" style="font-size:1.8rem">' + n + "</span>,</div>" +
-          '<div class="question-sub">what is the value of the digit <strong>' + dig + "</strong>?</div>" +
-          (level === 0
-            ? '<div class="question-sub" style="font-size:0.9rem;margin-top:6px">(Hint: ' + placeNames[idx] + " place)</div>"
-            : ""),
-        answer: String(value),
-        displayAnswer: String(value),
-        inputType: "number",
-        choices: makeNearbyChoices(value, places),
-        key: key
-      };
-    }
-
-    if (kind === "expanded") {
-      n = useThousands ? randInt(1100, 9999) : randInt(110, 999);
-      s = String(n);
-      parts = [];
-      for (i = 0; i < s.length; i++) {
-        dig = Number(s[i]);
-        if (dig === 0) continue;
-        place = Math.pow(10, s.length - 1 - i);
-        parts.push(String(dig * place));
-      }
-      expanded = parts.join(" + ");
-      key = "pv:exp:" + n + ":" + (Math.random() < 0.5 ? "toExp" : "toStd");
-
-      if (key.indexOf("toExp") !== -1 || Math.random() < 0.5) {
+    if (cfg.missing && chance(0.35)) {
+      // Missing-number format: ? + b = c  or  a − ? = c
+      if (op === "+") {
         return {
-          html:
-            '<div class="question-text">Write in expanded form:</div>' +
-            '<div class="big-number">' + n + "</div>",
-          answer: expanded.replace(/\s/g, ""),
-          displayAnswer: expanded,
-          normalize: function (v) {
-            return String(v).replace(/\s/g, "").replace(/−/g, "-");
-          },
-          inputType: "text",
-          placeholder: "e.g. 300+40+2",
-          key: "pv:exp:" + n + ":toExp"
+          html: '<div class="question-sub">What number is missing?</div><div class="big-number">? + ' + b + " = " + c + "</div>",
+          answer: String(a), displayAnswer: String(a), inputType: "number", key: "as:m:" + a + op + b
         };
       }
       return {
-        html:
-          '<div class="question-text">Write in standard form:</div>' +
-          '<div class="question-text" style="font-size:1.3rem;margin-top:8px">' + expanded + "</div>",
-        answer: String(n),
-        displayAnswer: String(n),
-        inputType: "number",
-        key: "pv:exp:" + n + ":toStd"
+        html: '<div class="question-sub">What number is missing?</div><div class="big-number">' + a + " " + sign + " ? = " + c + "</div>",
+        answer: String(b), displayAnswer: String(b), inputType: "number", key: "as:m:" + a + op + b
       };
     }
 
-    // standard from place description
-    if (useThousands) {
-      th = randInt(1, 9);
-      h = randInt(0, 9);
-      t = randInt(0, 9);
-      o = randInt(0, 9);
-      n = th * 1000 + h * 100 + t * 10 + o;
-      key = "pv:std:" + n;
-      return {
-        html:
-          '<div class="question-text">' + th + " thousands, " + h + " hundreds, " + t + " tens, and " + o + " ones</div>" +
-          '<div class="question-sub">What number is that?</div>',
-        answer: String(n),
-        displayAnswer: String(n),
-        inputType: "number",
-        key: key
-      };
-    }
-    h = randInt(1, 9);
-    t = randInt(0, 9);
-    o = randInt(0, 9);
-    n = h * 100 + t * 10 + o;
-    key = "pv:std:" + n;
-    return {
-      html:
-        '<div class="question-text">' + h + " hundreds, " + t + " tens, and " + o + " ones</div>" +
-        '<div class="question-sub">What number is that?</div>',
-      answer: String(n),
-      displayAnswer: String(n),
-      inputType: "number",
-      key: key
-    };
+    var layouts = [
+      '<div class="big-number">' + a + " " + sign + " " + b + " = ?</div>",
+      '<div class="question-text">What is ' + a + " " + sign + " " + b + "?</div>",
+      '<div class="big-number">' + a + '</div><div class="big-number">' + sign + " " + b + '</div><div class="question-sub">= ?</div>'
+    ];
+    return { html: pick(layouts), answer: String(c), displayAnswer: String(c), inputType: "number", key: "as:" + a + op + b };
   }
 
-  function makeNearbyChoices(correct, places) {
-    var set = {};
-    set[correct] = true;
+  /* ================= Mode 2: Place value (levels 1-10) ================= */
+  var PLACE_NAMES = ["ones", "tens", "hundreds", "thousands"];
+
+  function digitsOf(n) { return String(n).split("").map(Number); }
+
+  function numberWithDigits(d) { return randInt(Math.pow(10, d - 1), Math.pow(10, d) - 1); }
+
+  function numberWithZero(d) {
+    var ds = digitsOf(numberWithDigits(d));
+    var idx = randInt(1, ds.length - 1);
+    ds[idx] = 0;
+    return Number(ds.join(""));
+  }
+
+  function nearbyChoices(correct, places) {
+    var seen = {}; seen[correct] = true;
     var list = [correct];
-    var guard = 0;
-    while (list.length < 4 && guard < 50) {
-      guard += 1;
-      var p = places[Math.floor(Math.random() * places.length)];
-      var d = randInt(1, 9);
-      var v = d * p;
-      if (!set[v]) {
-        set[v] = true;
-        list.push(v);
-      }
+    for (var g = 0; list.length < 4 && g < 60; g++) {
+      var v = randInt(1, 9) * pick(places);
+      if (!seen[v]) { seen[v] = true; list.push(v); }
     }
     return shuffle(list);
   }
 
-  function genCompare(level) {
-    var digits = level === 0 ? 2 : (level === 1 ? (Math.random() < 0.5 ? 2 : 3) : 3);
-    var min = digits === 2 ? 10 : 100;
-    var max = digits === 2 ? 99 : 999;
-    var a = randInt(min, max);
-    var b = randInt(min, max);
-
-    // harder: close numbers
-    if (level >= 1 && Math.random() < 0.4) {
-      var delta = randInt(1, level === 2 ? 15 : 8);
-      b = a + (Math.random() < 0.5 ? delta : -delta);
-      if (b < min) b = min;
-      if (b > max) b = max;
+  function expandedParts(n) {
+    var s = String(n), parts = [];
+    for (var i = 0; i < s.length; i++) {
+      var d = Number(s[i]);
+      if (d !== 0) parts.push(d * Math.pow(10, s.length - 1 - i));
     }
-    if (Math.random() < (level === 0 ? 0.22 : 0.15)) b = a;
+    return parts;
+  }
 
-    var answer;
-    if (a < b) answer = "<";
-    else if (a > b) answer = ">";
-    else answer = "=";
+  // Accept expanded form in any order, with or without spaces, ignoring "+ 0" terms.
+  function normalizeExpanded(v) {
+    return String(v).replace(/\s/g, "").split("+").filter(function (x) { return x !== "" && Number(x) !== 0; })
+      .map(Number).sort(function (a, b) { return b - a; }).join("+");
+  }
 
-    var key = "cmp:" + a + ":" + b;
-    var layouts = [
-      '<div class="question-text">Compare the numbers</div><div class="big-number">' + a + " &nbsp;?&nbsp; " + b + "</div>",
-      '<div class="question-sub">Which sign fits?</div><div class="big-number">' + a + " &nbsp;□&nbsp; " + b + "</div>",
-      '<div class="question-text">' + a + ' &nbsp;___&nbsp; ' + b + '</div><div class="question-sub">Choose &lt; &nbsp; &gt; &nbsp; or &nbsp; =</div>'
-    ];
+  function pvDigitValue(n, withHint) {
+    var ds = digitsOf(n), len = ds.length, idx;
+    for (var t = 0; t < 8; t++) { idx = randInt(0, len - 1); if (ds[idx] !== 0) break; }
+    var pos = len - 1 - idx, d = ds[idx], value = d * Math.pow(10, pos);
+    var places = []; for (var p = 0; p < len; p++) places.push(Math.pow(10, p));
     return {
-      html: pick(layouts) + '<div class="question-sub">Choose &lt; &nbsp; &gt; &nbsp; or &nbsp; =</div>',
-      answer: answer,
-      displayAnswer: a + " " + answer + " " + b,
-      inputType: "compare",
-      key: key
+      html: '<div class="question-text">In <span class="big-number" style="font-size:1.8rem">' + n + "</span>,</div>" +
+        '<div class="question-sub">what is the value of the digit <strong>' + d + "</strong>?</div>" +
+        (withHint ? '<div class="question-sub" style="font-size:0.9rem">(Hint: ' + PLACE_NAMES[pos] + " place)</div>" : ""),
+      answer: String(value), displayAnswer: String(value), inputType: "number",
+      choices: nearbyChoices(value, places), key: "pv:dv:" + n + ":" + idx
     };
   }
 
-  /* Word problems: procedural templates — names, items, numbers all random each time */
-  var NAMES = ["Mia", "Sam", "Lila", "Ben", "Zoe", "Omar", "Ava", "Kai", "Nora", "Leo", "Emma", "Jay"];
-  var ITEMS = [
-    "stickers", "apples", "crayons", "balloons", "seashells", "marbles",
-    "books", "pencils", "blocks", "cards", "cookies", "stars"
-  ];
-  var PLACES = ["basket", "box", "jar", "bag", "shelf", "desk"];
+  function pvDigitInPlace(n) {
+    var ds = digitsOf(n), len = ds.length, pos = randInt(0, len - 1);
+    var d = ds[len - 1 - pos];
+    var opts = {}; opts[d] = true; var list = [d];
+    ds.forEach(function (x) { if (!opts[x] && list.length < 4) { opts[x] = true; list.push(x); } });
+    while (list.length < 4) { var r = randInt(0, 9); if (!opts[r]) { opts[r] = true; list.push(r); } }
+    return {
+      html: '<div class="question-text">Which digit is in the <u>' + PLACE_NAMES[pos] + '</u> place?</div><div class="big-number">' + n + "</div>",
+      answer: String(d), displayAnswer: String(d), inputType: "number", choices: shuffle(list), key: "pv:dip:" + n + ":" + pos
+    };
+  }
+
+  function pvBuild(n, scrambled) {
+    var ds = digitsOf(n), len = ds.length, parts = [];
+    for (var i = 0; i < len; i++) {
+      var pos = len - 1 - i;
+      parts.push(ds[i] + " " + PLACE_NAMES[pos]);
+    }
+    if (scrambled) parts = shuffle(parts);
+    var text = parts.length > 1 ? parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1] : parts[0];
+    return {
+      html: '<div class="question-text">' + text + '</div><div class="question-sub">What number is that?</div>',
+      answer: String(n), displayAnswer: String(n), inputType: "number", key: "pv:b:" + n + (scrambled ? "s" : "")
+    };
+  }
+
+  function pvExpanded(n, direction) {
+    var expanded = expandedParts(n).join(" + ");
+    if (direction === "toExp") {
+      return {
+        html: '<div class="question-text">Write in expanded form:</div><div class="big-number">' + n + "</div>",
+        answer: normalizeExpanded(expanded), displayAnswer: expanded, normalize: normalizeExpanded,
+        inputType: "text", placeholder: "e.g. 300+40+2", key: "pv:e:" + n
+      };
+    }
+    return {
+      html: '<div class="question-text">Write in standard form:</div><div class="question-text" style="font-size:1.35rem">' + expanded + "</div>",
+      answer: String(n), displayAnswer: String(n), inputType: "number", key: "pv:s:" + n
+    };
+  }
+
+  function pvMoreLess(n, step, allowLess) {
+    var less = allowLess && chance(0.5) && n - step > 0;
+    var ans = less ? n - step : n + step;
+    return {
+      html: '<div class="question-text">What is <strong>' + step + (less ? " less" : " more") + "</strong> than</div><div class=\"big-number\">" + n + "?</div>",
+      answer: String(ans), displayAnswer: String(ans), inputType: "number", key: "pv:ml:" + n + ":" + step + (less ? "-" : "+")
+    };
+  }
+
+  function genPlace(level) {
+    var kind;
+    switch (level) {
+      case 1: return chance(0.5) ? pvDigitValue(numberWithDigits(2), true) : pvBuild(numberWithDigits(2), false);
+      case 2:
+        kind = pick(["dv", "b", "dip"]);
+        if (kind === "dv") return pvDigitValue(numberWithDigits(2), false);
+        if (kind === "b") return pvBuild(numberWithDigits(2), false);
+        return pvDigitInPlace(numberWithDigits(2));
+      case 3: return chance(0.5) ? pvDigitValue(numberWithDigits(3), true) : pvBuild(numberWithDigits(3), false);
+      case 4:
+        kind = pick(["dv", "b", "dip"]);
+        if (kind === "dv") return pvDigitValue(numberWithDigits(3), false);
+        if (kind === "b") return pvBuild(numberWithDigits(3), false);
+        return pvDigitInPlace(numberWithDigits(3));
+      case 5:
+        kind = pick(["std", "dv", "dip"]);
+        if (kind === "std") return pvExpanded(numberWithDigits(3), "toStd");
+        if (kind === "dv") return pvDigitValue(numberWithDigits(3), false);
+        return pvDigitInPlace(numberWithDigits(3));
+      case 6:
+        kind = pick(["exp", "std", "b", "ml"]);
+        if (kind === "exp") return pvExpanded(numberWithDigits(3), "toExp");
+        if (kind === "std") return pvExpanded(numberWithDigits(3), "toStd");
+        if (kind === "b") return pvBuild(numberWithDigits(3), false);
+        return pvMoreLess(randInt(100, 889), 10, false);
+      case 7:
+        kind = pick(["exp", "std", "bs", "ml"]);
+        if (kind === "exp") return pvExpanded(numberWithZero(3), "toExp");
+        if (kind === "std") return pvExpanded(numberWithZero(3), "toStd");
+        if (kind === "bs") return pvBuild(numberWithDigits(3), true);
+        return pvMoreLess(randInt(100, 799), pick([10, 100]), false);
+      case 8:
+        kind = pick(["exp", "bs", "ml", "dv"]);
+        if (kind === "exp") return pvExpanded(numberWithZero(3), chance(0.5) ? "toExp" : "toStd");
+        if (kind === "bs") return pvBuild(numberWithZero(3), true);
+        if (kind === "ml") return pvMoreLess(randInt(110, 889), pick([10, 100]), true);
+        return pvDigitValue(numberWithZero(3), false);
+      case 9:
+        kind = pick(["dv", "b", "exp", "dip"]);
+        if (kind === "dv") return pvDigitValue(numberWithDigits(4), false);
+        if (kind === "b") return pvBuild(numberWithDigits(4), false);
+        if (kind === "exp") return pvExpanded(numberWithDigits(4), chance(0.5) ? "toExp" : "toStd");
+        return pvDigitInPlace(numberWithDigits(4));
+      default:
+        kind = pick(["exp", "bs", "ml", "dv"]);
+        if (kind === "exp") return pvExpanded(numberWithZero(4), chance(0.5) ? "toExp" : "toStd");
+        if (kind === "bs") return pvBuild(numberWithZero(4), true);
+        if (kind === "ml") return pvMoreLess(randInt(1100, 8900), pick([10, 100, 1000]), true);
+        return pvDigitValue(numberWithZero(4), false);
+    }
+  }
+
+  /* ================= Mode 3: Number comparison (levels 1-10) ================= */
+  function swapTwoDigits(n) {
+    var ds = digitsOf(n);
+    for (var t = 0; t < 10; t++) {
+      var i = randInt(0, ds.length - 2), j = randInt(i + 1, ds.length - 1);
+      if (ds[i] !== ds[j] && !(i === 0 && ds[j] === 0)) {
+        var c = ds.slice(); var tmp = c[i]; c[i] = c[j]; c[j] = tmp;
+        return Number(c.join(""));
+      }
+    }
+    return n + randInt(1, 9);
+  }
+
+  function closeTo(n, maxDelta, min, max) {
+    var d = randInt(1, maxDelta) * (chance(0.5) ? 1 : -1);
+    return Math.max(min, Math.min(max, n + d));
+  }
+
+  function genCompare(level) {
+    var a, b, leftText, rightText, left, right;
+    var equal = chance(0.15);
+
+    if (level === 1) { a = randInt(10, 99); b = randInt(10, 99); while (!equal && Math.abs(a - b) < 10) b = randInt(10, 99); }
+    else if (level === 2) { a = randInt(10, 99); b = randInt(10, 99); }
+    else if (level === 3) { a = randInt(12, 98); b = chance(0.5) ? Math.floor(a / 10) * 10 + randInt(0, 9) : swapTwoDigits(a); if (b < 10) b = a + 1; }
+    else if (level === 4) { a = randInt(100, 999); b = randInt(100, 999); while (!equal && Math.floor(a / 100) === Math.floor(b / 100)) b = randInt(100, 999); }
+    else if (level === 5) { a = randInt(100, 999); b = randInt(100, 999); }
+    else if (level === 6) { a = randInt(100, 999); b = Math.floor(a / 100) * 100 + randInt(0, 99); }
+    else if (level === 7) { a = randInt(100, 999); b = chance(0.5) ? Math.floor(a / 10) * 10 + randInt(0, 9) : swapTwoDigits(a); }
+    else if (level === 8) {
+      // Expression vs number: "40 + 5  ?  44"
+      var tens = randInt(2, 9) * 10, ones = randInt(1, 9);
+      left = tens + ones; leftText = tens + " + " + ones;
+      right = equal ? left : closeTo(left, 3, 10, 99); rightText = String(right);
+      if (chance(0.5)) { var tv = left, tt = leftText; left = right; leftText = rightText; right = tv; rightText = tt; }
+    }
+    else if (level === 9) { a = randInt(1000, 9999); b = closeTo(a, 60, 1000, 9999); }
+    else {
+      if (chance(0.5)) { a = randInt(1000, 9999); b = swapTwoDigits(a); }
+      else {
+        // Expanded form vs number
+        var n = randInt(100, 999);
+        left = n; leftText = expandedParts(n).join(" + ");
+        right = equal ? n : (chance(0.5) ? swapTwoDigits(n) : closeTo(n, 9, 100, 999)); rightText = String(right);
+        if (chance(0.5)) { var tv2 = left, tt2 = leftText; left = right; leftText = rightText; right = tv2; rightText = tt2; }
+      }
+    }
+
+    if (leftText === undefined) {
+      if (equal) b = a;
+      left = a; right = b; leftText = String(a); rightText = String(b);
+    }
+
+    var answer = left < right ? "<" : (left > right ? ">" : "=");
+    var small = leftText.length + rightText.length > 12;
+    var style = small ? ' style="font-size:1.6rem"' : "";
+    return {
+      html: '<div class="question-sub">Which sign fits?</div>' +
+        '<div class="big-number"' + style + ">" + leftText + " &nbsp;□&nbsp; " + rightText + "</div>" +
+        '<div class="question-sub">Tap &lt; &nbsp; &gt; &nbsp; or &nbsp; =</div>',
+      answer: answer, displayAnswer: leftText + " " + answer + " " + rightText,
+      inputType: "compare", key: "cmp:" + leftText + ":" + rightText
+    };
+  }
+
+  /* ================= Mode 4: Word problems (levels 1-10) ================= */
+  var NAMES = ["Mia", "Sam", "Lila", "Ben", "Zoe", "Omar", "Ava", "Kai", "Nora", "Leo", "Emma", "Jay", "Priya", "Luis"];
+  var ITEMS = ["stickers", "apples", "crayons", "balloons", "seashells", "marbles", "books", "pencils", "blocks", "cards", "cookies", "shells"];
+  var PLACES = ["basket", "box", "jar", "bag", "bin"];
+
+  function twoNames() {
+    var a = pick(NAMES), b = pick(NAMES);
+    while (b === a) b = pick(NAMES);
+    return [a, b];
+  }
+
+  function wpAdd(p, max, rg) {
+    var pr = samplePair({ a: [Math.min(2, max - 1), max - 1], b: [1, max - 1], max: max, rg: rg }, "+");
+    var n = twoNames(), item = pick(ITEMS);
+    var text = pick([
+      n[0] + " has " + pr.a + " " + item + ". " + n[0] + " gets " + pr.b + " more. How many " + item + " does " + n[0] + " have now?",
+      n[0] + " found " + pr.a + " " + item + ". " + n[1] + " found " + pr.b + ". How many " + item + " did they find in all?",
+      "There are " + pr.a + " " + item + " in a " + pick(PLACES) + ". Someone puts in " + pr.b + " more. How many are there now?"
+    ]);
+    return { text: text, answer: pr.a + pr.b, key: "wp:add:" + pr.a + ":" + pr.b };
+  }
+
+  function wpSub(p, max, rg) {
+    var pr = samplePair({ a: [2, max], b: [1, max - 1], max: max, rg: rg }, "-");
+    var n = pick(NAMES), item = pick(ITEMS);
+    var text = pick([
+      n + " had " + pr.a + " " + item + ". " + n + " gave away " + pr.b + ". How many " + item + " are left?",
+      "There were " + pr.a + " " + item + " in a " + pick(PLACES) + ". " + pr.b + " were taken out. How many are left?",
+      "A store had " + pr.a + " " + item + ". It sold " + pr.b + ". How many " + item + " does the store have now?"
+    ]);
+    return { text: text, answer: pr.a - pr.b, key: "wp:sub:" + pr.a + ":" + pr.b };
+  }
+
+  function wpCompare(max, rg) {
+    var pr = samplePair({ a: [10, max], b: [5, max - 1], max: max, rg: rg }, "-");
+    var n = twoNames(), item = pick(ITEMS);
+    var fewer = chance(0.5);
+    var text = fewer
+      ? n[0] + " has " + pr.a + " " + item + ". " + n[1] + " has " + pr.b + ". How many fewer " + item + " does " + n[1] + " have?"
+      : n[0] + " has " + pr.a + " " + item + ". " + n[1] + " has " + pr.b + ". How many more " + item + " does " + n[0] + " have?";
+    return { text: text, answer: pr.a - pr.b, key: "wp:cmp:" + pr.a + ":" + pr.b };
+  }
+
+  function wpUnknown(max) {
+    var pr = samplePair({ a: [10, max - 10], b: [5, 40], max: max, rg: "any" }, "+");
+    var n = pick(NAMES), item = pick(ITEMS), total = pr.a + pr.b;
+    if (chance(0.5)) {
+      return {
+        text: n + " had " + pr.a + " " + item + ". Then " + n + " got some more. Now " + n + " has " + total + ". How many " + item + " did " + n + " get?",
+        answer: pr.b, key: "wp:chg:" + pr.a + ":" + total
+      };
+    }
+    return {
+      text: n + " had some " + item + ". Then " + n + " got " + pr.b + " more. Now " + n + " has " + total + ". How many " + item + " did " + n + " have at first?",
+      answer: pr.a, key: "wp:start:" + pr.b + ":" + total
+    };
+  }
+
+  function wpTwoStep(max) {
+    var n = pick(NAMES), item = pick(ITEMS);
+    for (var t = 0; t < 200; t++) {
+      var start = randInt(10, max - 5), add = randInt(3, Math.floor(max / 3)), sub = randInt(3, Math.floor(max / 3));
+      var type = pick(["addsub", "subadd", "addadd"]);
+      var mid, ans, text;
+      if (type === "addsub") {
+        mid = start + add; ans = mid - sub;
+        if (mid > max || ans <= 0) continue;
+        text = n + " had " + start + " " + item + ". " + n + " got " + add + " more, then gave " + sub + " away. How many " + item + " does " + n + " have now?";
+      } else if (type === "subadd") {
+        mid = start - sub; ans = mid + add;
+        if (mid <= 0 || ans > max) continue;
+        text = "There were " + start + " " + item + " in a " + pick(PLACES) + ". " + sub + " were taken out, then " + add + " were put back in. How many are there now?";
+      } else {
+        ans = start + add + sub;
+        if (ans > max) continue;
+        text = n + " read " + start + " pages on Monday, " + add + " pages on Tuesday, and " + sub + " pages on Wednesday. How many pages in all?";
+      }
+      return { text: text, answer: ans, key: "wp:2:" + type + ":" + start + ":" + add + ":" + sub };
+    }
+    return wpAdd(null, max, "any");
+  }
+
+  function wpBig() {
+    var place = pick(["school library", "farm", "toy store", "bakery"]);
+    var item = { "school library": "books", "farm": "chickens", "toy store": "toys", "bakery": "muffins" }[place];
+    if (chance(0.5)) {
+      var p = samplePair(ADDSUB_LEVELS[9], "+");
+      return { text: "The " + place + " has " + p.a + " " + item + ". It gets " + p.b + " more. How many " + item + " does it have now?", answer: p.a + p.b, key: "wp:big+:" + p.a + ":" + p.b };
+    }
+    var q = samplePair(ADDSUB_LEVELS[9], "-");
+    return { text: "The " + place + " had " + q.a + " " + item + ". " + q.b + " are gone now. How many " + item + " are left?", answer: q.a - q.b, key: "wp:big-:" + q.a + ":" + q.b };
+  }
 
   function genWord(level) {
-    var name = pick(NAMES);
-    var name2 = pick(NAMES);
-    if (name2 === name) name2 = pick(NAMES);
-    var item = pick(ITEMS);
-    var place = pick(PLACES);
-    var a, b, answer, text, kind;
-
-    var kinds = level === 0
-      ? ["addGet", "subLeft"]
-      : (level === 1 ? ["addGet", "subLeft", "addTogether", "subTaken"] : ["addGet", "subLeft", "addTogether", "subTaken", "addTwoDays", "subFlew"]);
-
-    // avoid same template id twice in a row
-    kind = pick(kinds);
-    var tries = 0;
-    while (kind === state.lastTemplateId && tries < 5) {
-      kind = pick(kinds);
-      tries += 1;
+    var w;
+    switch (level) {
+      case 1: w = wpAdd(null, 10, "no"); break;
+      case 2: w = wpSub(null, 20, "no"); break;
+      case 3: w = chance(0.5) ? wpAdd(null, 20, "any") : wpSub(null, 20, "any"); break;
+      case 4: w = chance(0.5) ? wpAdd(null, 50, "no") : wpSub(null, 50, "no"); break;
+      case 5: w = pick([function () { return wpAdd(null, 99, "no"); }, function () { return wpSub(null, 99, "no"); }, function () { return wpCompare(60, "no"); }])(); break;
+      case 6: w = pick([function () { return wpAdd(null, 100, "yes"); }, function () { return wpSub(null, 99, "yes"); }, function () { return wpCompare(99, "yes"); }])(); break;
+      case 7: w = chance(0.7) ? wpUnknown(100) : wpCompare(99, "yes"); break;
+      case 8: w = wpTwoStep(50); break;
+      case 9: w = chance(0.75) ? wpTwoStep(100) : wpUnknown(100); break;
+      default: w = chance(0.5) ? wpTwoStep(100) : wpBig(); break;
     }
-    state.lastTemplateId = kind;
-
-    var maxN = level === 0 ? 40 : (level === 1 ? 70 : 99);
-
-    if (kind === "addGet") {
-      a = randInt(8, Math.floor(maxN * 0.6));
-      b = randInt(3, Math.max(3, maxN - a));
-      answer = a + b;
-      text = name + " has " + a + " " + item + ". " +
-        pick(["She", "He", name]) + " gets " + b + " more. How many " + item + " does " + name + " have now?";
-      // fix pronoun clumsiness — regenerate cleanly
-      text = name + " has " + a + " " + item + ". Then " + name + " gets " + b + " more. How many " + item + " now?";
-    } else if (kind === "subLeft") {
-      a = randInt(15, maxN);
-      b = randInt(3, a - 2);
-      answer = a - b;
-      text = "There are " + a + " " + item + " in a " + place + ". " + b + " are taken away. How many are left?";
-    } else if (kind === "addTogether") {
-      a = randInt(5, Math.floor(maxN * 0.5));
-      b = randInt(5, Math.floor(maxN * 0.5));
-      if (a + b > 100) b = 100 - a;
-      answer = a + b;
-      text = name + " found " + a + " " + item + ". " + name2 + " found " + b + ". How many " + item + " do they have together?";
-    } else if (kind === "subTaken") {
-      a = randInt(20, maxN);
-      b = randInt(4, a - 5);
-      answer = a - b;
-      text = "A store had " + a + " " + item + ". They sold " + b + ". How many " + item + " are left?";
-    } else if (kind === "addTwoDays") {
-      a = randInt(5, Math.floor(maxN * 0.45));
-      b = randInt(5, Math.floor(maxN * 0.45));
-      if (a + b > 100) b = 100 - a;
-      answer = a + b;
-      text = name + " read " + a + " pages on Monday and " + b + " pages on Tuesday. How many pages in all?";
-    } else {
-      // subFlew / remaining
-      a = randInt(18, maxN);
-      b = randInt(3, Math.min(30, a - 3));
-      answer = a - b;
-      text = "There were " + a + " birds on a tree. " + b + " flew away. How many birds are still there?";
-    }
-
-    var key = "wp:" + kind + ":" + a + ":" + b + ":" + item;
     return {
-      html: '<div class="question-text" style="font-size:1.2rem">' + text + "</div>",
-      answer: String(answer),
-      displayAnswer: String(answer),
-      inputType: "number",
-      key: key
+      html: '<div class="question-text" style="font-size:1.25rem">' + w.text + "</div>",
+      answer: String(w.answer), displayAnswer: String(w.answer), inputType: "number", key: w.key
     };
   }
 
-  var GENERATORS = {
-    addsub: genAddSub,
-    place: genPlace,
-    compare: genCompare,
-    word: genWord
-  };
+  var GENERATORS = { addsub: genAddSub, place: genPlace, compare: genCompare, word: genWord };
 
-  /* ---- Fresh problem with anti-repeat ---- */
-  function generateFresh() {
-    var gen = GENERATORS[state.mode];
-    var problem = null;
-    var attempts = 0;
-    do {
-      problem = gen(state.level);
-      attempts += 1;
-    } while (problem && wasRecent(problem.key) && attempts < 14);
-    if (problem && problem.key) rememberKey(problem.key);
-    return problem;
+  // Expose pure rules + generators for testing / debugging (harmless in production)
+  if (typeof window !== "undefined") {
+    window.MathPractice = {
+      version: APP_VERSION,
+      nextLevel: nextLevel,
+      classifyCorrect: classifyCorrect,
+      pointsFor: pointsFor,
+      streakMultiplier: streakMultiplier,
+      generators: GENERATORS
+    };
   }
 
-  /* ---- Answer UI ---- */
+  /* ================= DOM ================= */
+  if (typeof document === "undefined" || !document.getElementById("home-screen")) return;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var homeScreen = $("home-screen"), practiceScreen = $("practice-screen"), summaryScreen = $("summary-screen");
+  var questionBox = $("question-box"), answerArea = $("answer-area"), feedbackEl = $("feedback");
+  var scorePill = $("score-pill"), modeTitle = $("mode-title"), levelBadge = $("level-badge");
+  var qCounter = $("q-counter"), streakChip = $("streak-chip");
+  var checkBtn = $("check-btn"), nextBtn = $("next-btn"), backBtn = $("back-btn");
+  var timerDigits = $("timer-digits"), timerFill = $("timer-fill");
+
+  var PRAISE = ["🎉 Correct!", "🌟 Awesome!", "👏 You got it!", "💪 Brilliant!", "✨ Fantastic!", "🏆 Great job!"];
+  var FAST_PRAISE = ["🚀 Super fast!", "⚡ Lightning quick!", "🏎️ Speedy star!"];
+  var RETRY_PRAISE = ["👍 You fixed it!", "🙌 Nice second try!", "😊 Got it that time!"];
+  var TRY_AGAIN = ["Not quite. Try once more! 💪", "Almost! One more try 🌟", "Hmm, check your work and try again ✏️"];
+  var WRONG_MSGS = ["That one was tricky! 💡", "Good effort! Let us keep going 💪", "No worries, you will get the next one! 🌈"];
+  var TIMEUP_MSGS = ["⏰ Time is up!", "⏱ The clock ran out!", "🔔 Out of time!"];
+
+  var state = {
+    mode: null, level: 1, secondsPerQ: load("mp_time", 25) || 25,
+    qIndex: 0, points: 0, correct: 0, streak: 0, bestStreak: 0, maxLevel: 1,
+    current: null, tries: 0, locked: true, selectedChoice: null,
+    qStart: 0, timeLeft: 0, timerId: null, autoNextId: null, recentKeys: []
+  };
+
+  /* ---------- small UI helpers ---------- */
+  function setFeedback(type, msg, sub) {
+    feedbackEl.className = "feedback " + type;
+    feedbackEl.textContent = msg;
+    if (sub) {
+      var s = document.createElement("span");
+      s.className = "pts";
+      s.textContent = sub;
+      feedbackEl.appendChild(s);
+    }
+  }
+  function clearFeedback() { feedbackEl.className = "feedback neutral"; feedbackEl.textContent = ""; }
+
+  function restartAnim(el, cls) {
+    el.classList.remove("up"); el.classList.remove("down"); el.classList.remove("pop");
+    void el.offsetWidth; // reflow so the animation replays
+    if (cls) el.classList.add(cls);
+  }
+
+  function renderLevel(dir) {
+    var arrow = dir > 0 ? " ▲" : (dir < 0 ? " ▼" : "");
+    levelBadge.innerHTML = "Level " + state.level + '<span class="arrow">' + arrow + "</span>";
+    levelBadge.setAttribute("aria-label", "Level " + state.level + " of 10");
+    restartAnim(levelBadge, dir > 0 ? "up" : (dir < 0 ? "down" : null));
+  }
+
+  function renderStats() {
+    scorePill.textContent = "⭐ " + state.points + " pts";
+    qCounter.textContent = "Question " + Math.max(1, state.qIndex) + " / " + ROUND_LENGTH;
+    var mult = streakMultiplier(state.streak);
+    streakChip.textContent = "🔥 " + state.streak + (mult > 1 ? " ×" + mult : "");
+    if (state.streak >= 3) streakChip.classList.add("hot"); else streakChip.classList.remove("hot");
+  }
+
+  function renderHomeBests() {
+    var spans = document.querySelectorAll("[data-best-for]");
+    for (var i = 0; i < spans.length; i++) {
+      var m = spans[i].getAttribute("data-best-for");
+      spans[i].textContent = "🏆 Best " + getBest(m) + " · Level " + getSavedLevel(m);
+    }
+  }
+
+  function showScreen(which) {
+    homeScreen.classList.toggle("hidden", which !== "home");
+    practiceScreen.classList.toggle("hidden", which !== "practice");
+    summaryScreen.classList.toggle("hidden", which !== "summary");
+    try { window.scrollTo(0, 0); } catch (e) { /* not available */ }
+  }
+
+  /* ---------- timer ---------- */
+  function stopTimer() { if (state.timerId) { clearInterval(state.timerId); state.timerId = null; } }
+  function clearAutoNext() { if (state.autoNextId) { clearTimeout(state.autoNextId); state.autoNextId = null; } }
+
+  function paintTimer() {
+    var left = Math.max(0, state.timeLeft);
+    var shown = Math.ceil(left);
+    timerDigits.textContent = String(shown);
+    timerFill.style.width = (state.secondsPerQ > 0 ? (left / state.secondsPerQ) * 100 : 0) + "%";
+    var cls = shown <= 5 ? "danger" : (shown <= 10 ? "warn" : "");
+    timerDigits.classList.remove("warn", "danger"); timerFill.classList.remove("warn", "danger");
+    if (cls) { timerDigits.classList.add(cls); timerFill.classList.add(cls); }
+  }
+
+  function startTimer() {
+    stopTimer();
+    state.qStart = Date.now();
+    state.timeLeft = state.secondsPerQ;
+    paintTimer();
+    state.timerId = setInterval(function () {
+      if (state.locked) return;
+      state.timeLeft = state.secondsPerQ - (Date.now() - state.qStart) / 1000;
+      paintTimer();
+      if (state.timeLeft <= 0) { stopTimer(); resolveQuestion("timeout"); }
+    }, 200);
+  }
+
+  function elapsedSeconds() { return (Date.now() - state.qStart) / 1000; }
+
+  /* ---------- problem generation with anti-repeat ---------- */
+  function generateFresh() {
+    var gen = GENERATORS[state.mode], p = null;
+    for (var i = 0; i < 20; i++) {
+      p = gen(state.level);
+      if (state.recentKeys.indexOf(p.key) === -1) break;
+    }
+    state.recentKeys.push(p.key);
+    if (state.recentKeys.length > 25) state.recentKeys.shift();
+    return p;
+  }
+
+  /* ---------- answer UI ---------- */
+  function selectIn(container, cls, btn) {
+    var all = container.querySelectorAll("." + cls);
+    for (var i = 0; i < all.length; i++) all[i].classList.remove("selected");
+    btn.classList.add("selected");
+  }
+
+  function makeNumericInput(placeholder) {
+    var input = document.createElement("input");
+    input.className = "answer-input";
+    input.id = "answer-input";
+    input.type = "text";
+    input.inputMode = "numeric";
+    input.setAttribute("pattern", "[0-9]*");
+    input.setAttribute("enterkeyhint", "done");
+    input.setAttribute("autocomplete", "off");
+    input.placeholder = placeholder;
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") checkAnswer(); });
+    return input;
+  }
+
   function renderAnswerUI(problem) {
     answerArea.innerHTML = "";
     state.selectedChoice = null;
@@ -1087,17 +1327,15 @@
       row.className = "choice-row";
       ["<", ">", "="].forEach(function (sym) {
         var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "choice-btn";
-        btn.textContent = sym;
-        btn.addEventListener("click", function () {
-          if (state.locked) return;
-          var buttons = row.querySelectorAll(".choice-btn");
-          for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
-          btn.classList.add("selected");
-          state.selectedChoice = sym;
-        });
+        btn.type = "button"; btn.className = "choice-btn"; btn.textContent = sym;
+        btn.setAttribute("data-choice", sym);
         row.appendChild(btn);
+      });
+      row.addEventListener("click", function (e) {
+        var btn = e.target.closest ? e.target.closest(".choice-btn") : e.target;
+        if (!btn || state.locked || btn.disabled) return;
+        selectIn(row, "choice-btn", btn);
+        state.selectedChoice = btn.getAttribute("data-choice");
       });
       answerArea.appendChild(row);
       return;
@@ -1108,225 +1346,286 @@
       grid.className = "tap-choices cols-2";
       problem.choices.forEach(function (c) {
         var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "tap-btn";
-        btn.textContent = String(c);
-        btn.addEventListener("click", function () {
-          if (state.locked) return;
-          var buttons = grid.querySelectorAll(".tap-btn");
-          for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
-          btn.classList.add("selected");
-          state.selectedChoice = String(c);
-          var inp = document.getElementById("answer-input");
-          if (inp) inp.value = "";
-        });
+        btn.type = "button"; btn.className = "tap-btn"; btn.textContent = String(c);
+        btn.setAttribute("data-choice", String(c));
         grid.appendChild(btn);
       });
-      answerArea.appendChild(grid);
-
-      var input = document.createElement("input");
-      input.className = "answer-input";
-      input.type = "text";
-      input.inputMode = "numeric";
-      input.setAttribute("pattern", "[0-9]*");
-      input.setAttribute("enterkeyhint", "done");
-      input.placeholder = "or type here";
-      input.id = "answer-input";
-      input.setAttribute("autocomplete", "off");
-      input.addEventListener("input", function () {
+      var typed = makeNumericInput("or type here");
+      grid.addEventListener("click", function (e) {
+        var btn = e.target.closest ? e.target.closest(".tap-btn") : e.target;
+        if (!btn || state.locked || btn.disabled) return;
+        selectIn(grid, "tap-btn", btn);
+        state.selectedChoice = btn.getAttribute("data-choice");
+        typed.value = "";
+      });
+      typed.addEventListener("input", function () {
         state.selectedChoice = null;
-        var buttons = grid.querySelectorAll(".tap-btn");
-        for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
+        var all = grid.querySelectorAll(".tap-btn");
+        for (var i = 0; i < all.length; i++) all[i].classList.remove("selected");
       });
-      input.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") checkAnswer();
-      });
-      answerArea.appendChild(input);
+      answerArea.appendChild(grid);
+      answerArea.appendChild(typed);
       return;
     }
 
-    var textInput = document.createElement("input");
-    textInput.className = "answer-input";
-    textInput.id = "answer-input";
-    textInput.setAttribute("autocomplete", "off");
+    var input;
     if (problem.inputType === "number") {
-      textInput.type = "text";
-      textInput.inputMode = "numeric";
-      textInput.setAttribute("pattern", "[0-9]*");
-      textInput.setAttribute("enterkeyhint", "done");
-      textInput.placeholder = "?";
+      input = makeNumericInput("?");
     } else {
-      textInput.type = "text";
-      textInput.placeholder = problem.placeholder || "Type your answer";
+      input = document.createElement("input");
+      input.className = "answer-input"; input.id = "answer-input"; input.type = "text";
+      input.setAttribute("autocomplete", "off"); input.setAttribute("enterkeyhint", "done");
+      input.placeholder = problem.placeholder || "Type your answer";
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") checkAnswer(); });
     }
-    textInput.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") checkAnswer();
-    });
-    answerArea.appendChild(textInput);
-    setTimeout(function () { textInput.focus(); }, 40);
+    answerArea.appendChild(input);
+    setTimeout(function () { try { input.focus(); } catch (e) { /* ignore */ } }, 40);
   }
 
   function getUserAnswer(problem) {
     if (problem.inputType === "compare") return state.selectedChoice;
     if (state.selectedChoice != null) return state.selectedChoice;
     var input = document.getElementById("answer-input");
-    if (!input) return null;
-    return input.value.trim();
+    return input ? input.value.trim() : null;
   }
 
-  function answersMatch(problem, userRaw) {
-    if (userRaw == null || userRaw === "") return false;
-    var user = String(userRaw).trim();
-    var expected = String(problem.answer).trim();
-
-    if (problem.normalize) {
-      user = problem.normalize(user);
-      expected = problem.normalize(expected);
-    } else if (problem.inputType === "number") {
-      user = user.replace(/,/g, "").replace(/^0+(?=\d)/, "");
+  function answersMatch(problem, raw) {
+    if (raw == null || raw === "") return false;
+    var user = String(raw).trim(), expected = String(problem.answer).trim();
+    if (problem.normalize) return problem.normalize(user) === problem.normalize(expected);
+    if (problem.inputType === "number") {
+      user = user.replace(/[,\s]/g, "").replace(/^0+(?=\d)/, "");
       expected = expected.replace(/^0+(?=\d)/, "");
-    } else if (problem.inputType === "text") {
-      user = user.replace(/\s/g, "").replace(/−/g, "-");
-      expected = expected.replace(/\s/g, "");
     }
     return user === expected;
   }
 
-  /* ---- Flow ---- */
-  function showHome() {
-    stopTimer();
-    clearAutoNext();
-    practiceScreen.classList.add("hidden");
-    homeScreen.classList.remove("hidden");
-    state.mode = null;
+  function lockInputs() {
+    var els = answerArea.querySelectorAll("button, input");
+    for (var i = 0; i < els.length; i++) els[i].disabled = true;
   }
 
+  /* ---------- round flow ---------- */
   function startMode(mode) {
-    stopTimer();
-    clearAutoNext();
+    if (!GENERATORS[mode]) return;
+    stopTimer(); clearAutoNext();
     state.mode = mode;
-    state.correct = 0;
-    state.attempted = 0;
-    state.streak = 0;
-    state.level = 0;
-    state.locked = false;
+    state.level = getSavedLevel(mode);
+    state.maxLevel = state.level;
+    state.qIndex = 0; state.points = 0; state.correct = 0; state.streak = 0; state.bestStreak = 0;
     state.recentKeys = [];
-    state.lastTemplateId = null;
-    updateScore();
-    updateLevelPill();
     modeTitle.textContent = MODE_TITLES[mode];
-    homeScreen.classList.add("hidden");
-    practiceScreen.classList.remove("hidden");
+    showScreen("practice");
+    renderLevel(0);
     nextProblem();
   }
 
   function nextProblem() {
-    stopTimer();
-    clearAutoNext();
+    stopTimer(); clearAutoNext();
+    if (state.qIndex >= ROUND_LENGTH) { showSummary(); return; }
+    state.qIndex += 1;
+    state.tries = 0;
     state.locked = false;
     state.selectedChoice = null;
     clearFeedback();
     checkBtn.classList.remove("hidden");
     nextBtn.classList.add("hidden");
+    nextBtn.textContent = "Next →";
+    renderStats();
+    renderLevel(0);
 
-    var problem = generateFresh();
-    state.current = problem;
-    questionBox.innerHTML = problem.html;
-    renderAnswerUI(problem);
+    state.current = generateFresh();
+    questionBox.innerHTML = state.current.html;
+    renderAnswerUI(state.current);
     startTimer();
   }
 
   function checkAnswer() {
-    if (state.locked) return;
-    var problem = state.current;
-    if (!problem) return;
+    if (state.locked || !state.current) return;
+    var user = getUserAnswer(state.current);
+    if (user == null || user === "") { setFeedback("wrong", "Type or tap an answer first!"); return; }
 
-    var user = getUserAnswer(problem);
-    if (user == null || user === "") {
-      setFeedback("wrong", "Type or tap an answer first!");
+    state.tries += 1;
+    if (answersMatch(state.current, user)) {
+      resolveQuestion(classifyCorrect(state.tries, elapsedSeconds(), state.secondsPerQ));
       return;
     }
-
-    state.attempted += 1;
-
-    if (answersMatch(problem, user)) {
-      state.locked = true;
-      stopTimer();
-      clearAutoNext();
-      state.correct += 1;
-      bumpDifficulty(true);
-      setFeedback("correct", pick(PRAISE));
-      checkBtn.classList.add("hidden");
-      nextBtn.classList.remove("hidden");
-      var els = answerArea.querySelectorAll("button, input");
-      for (var i = 0; i < els.length; i++) els[i].disabled = true;
-    } else {
-      bumpDifficulty(false);
+    if (state.tries < MAX_TRIES) {
       setFeedback("wrong", pick(TRY_AGAIN));
       var input = document.getElementById("answer-input");
-      if (input) input.select();
+      if (input && !input.disabled) { try { input.select(); } catch (e) { /* ignore */ } }
+      return;
     }
-    updateScore();
+    resolveQuestion("wrong");
   }
 
-  /* ---- Events (delegation for home tiles + chips) ---- */
+  // Final outcome for the current question decides the NEXT question's level.
+  function resolveQuestion(outcome) {
+    if (state.locked) return;
+    state.locked = true;
+    stopTimer(); clearAutoNext();
+
+    var askedLevel = state.level;
+    var secondsLeft = Math.max(0, state.secondsPerQ - elapsedSeconds());
+    var isCorrect = outcome === "fast" || outcome === "correct" || outcome === "retry";
+
+    if (outcome === "fast" || outcome === "correct") state.streak += 1;
+    else state.streak = 0;
+    state.bestStreak = Math.max(state.bestStreak, state.streak);
+    if (isCorrect) state.correct += 1;
+
+    var pts = pointsFor(outcome, askedLevel, secondsLeft, state.secondsPerQ, state.streak);
+    state.points += pts.points;
+
+    state.level = nextLevel(askedLevel, outcome);
+    state.maxLevel = Math.max(state.maxLevel, state.level);
+    setSavedLevel(state.mode, state.level);
+    var dir = state.level - askedLevel;
+
+    var levelMsg = dir >= 2 ? "Up 2 levels to Level " + state.level + "! 🚀"
+      : dir === 1 ? "Level up! Now Level " + state.level + " ⬆️"
+      : dir < 0 ? "Next one is a bit easier (Level " + state.level + ")"
+      : (askedLevel === MAX_LEVEL && isCorrect && outcome !== "retry") ? "You are at the top level! 👑"
+      : "Staying at Level " + state.level;
+
+    lockInputs();
+    renderStats();
+    renderLevel(dir);
+
+    if (isCorrect) {
+      var head = outcome === "fast" ? pick(FAST_PRAISE) : (outcome === "retry" ? pick(RETRY_PRAISE) : pick(PRAISE));
+      var detail = "+" + pts.points + " points";
+      if (pts.speed > 0) detail += " (speed +" + pts.speed + ")";
+      if (pts.mult > 1) detail += " ×" + pts.mult + " streak";
+      setFeedback("correct", head + " " + detail, levelMsg);
+      restartAnim(scorePill, "pop");
+    } else if (outcome === "timeout") {
+      setFeedback("timeout", pick(TIMEUP_MSGS) + " Answer: " + state.current.displayAnswer, levelMsg);
+    } else {
+      setFeedback("wrong", pick(WRONG_MSGS) + " Answer: " + state.current.displayAnswer, levelMsg);
+    }
+
+    checkBtn.classList.add("hidden");
+    nextBtn.classList.remove("hidden");
+    if (state.qIndex >= ROUND_LENGTH) nextBtn.textContent = "See results 🏁";
+
+    if (outcome === "timeout") {
+      state.autoNextId = setTimeout(function () {
+        state.autoNextId = null;
+        if (!practiceScreen.classList.contains("hidden")) nextProblem();
+      }, 2500);
+    }
+  }
+
+  function celebrate() {
+    var layer = document.createElement("div");
+    layer.className = "confetti-layer";
+    var emojis = ["🎉", "⭐", "🌟", "🎊", "🏆", "✨"];
+    for (var i = 0; i < 28; i++) {
+      var s = document.createElement("span");
+      s.textContent = pick(emojis);
+      s.style.left = randInt(0, 95) + "%";
+      s.style.animationDuration = (1.8 + Math.random() * 1.6).toFixed(2) + "s";
+      s.style.animationDelay = (Math.random() * 0.6).toFixed(2) + "s";
+      layer.appendChild(s);
+    }
+    document.body.appendChild(layer);
+    setTimeout(function () { if (layer.parentNode) layer.parentNode.removeChild(layer); }, 4200);
+  }
+
+  function showSummary() {
+    stopTimer(); clearAutoNext();
+    state.locked = true;
+    var prevBest = getBest(state.mode);
+    var isNewBest = state.points > prevBest;
+    if (isNewBest) setBest(state.mode, state.points);
+    var best = Math.max(prevBest, state.points);
+    var acc = Math.round((state.correct / ROUND_LENGTH) * 100);
+
+    $("summary-title").textContent = acc >= 90 ? "🏆 Amazing round!" : acc >= 70 ? "🌟 Great round!" : acc >= 50 ? "👍 Nice work!" : "💪 Good practice!";
+    $("summary-sub").textContent = MODE_TITLES[state.mode] + " · next round starts at Level " + state.level;
+    $("sum-score").textContent = String(state.points);
+    $("sum-accuracy").textContent = acc + "%";
+    $("sum-correct").textContent = state.correct + " of " + ROUND_LENGTH + " correct";
+    $("sum-level").textContent = String(state.maxLevel);
+    $("sum-streak").textContent = String(state.bestStreak);
+    $("sum-best").textContent = String(best);
+    $("new-best").classList.toggle("hidden", !isNewBest);
+
+    showScreen("summary");
+    if (isNewBest && state.points > 0) celebrate();
+  }
+
+  function goHome() {
+    stopTimer(); clearAutoNext();
+    state.locked = true;
+    renderHomeBests();
+    showScreen("home");
+  }
+
+  /* ---------- events ---------- */
   checkBtn.addEventListener("click", checkAnswer);
   nextBtn.addEventListener("click", nextProblem);
-  backBtn.addEventListener("click", showHome);
+  backBtn.addEventListener("click", goHome);
+  $("summary-home-btn").addEventListener("click", goHome);
+  $("play-again-btn").addEventListener("click", function () { startMode(state.mode); });
 
-  // Robust: click anywhere on a mode tile (including child spans) starts that mode
+  // Home tiles: delegation on the grid (clicks on child spans still work) + direct backup handlers
   var modeGrid = document.querySelector(".mode-grid");
+  function modeFromEvent(e) {
+    var el = e.target;
+    while (el && el !== modeGrid) {
+      if (el.classList && el.classList.contains("mode-btn")) return el.getAttribute("data-mode");
+      el = el.parentNode;
+    }
+    return null;
+  }
+  var lastStart = 0;
+  function startFromTile(mode) {
+    var now = Date.now();
+    if (now - lastStart < 400) return; // avoid double start from delegation + backup handler
+    lastStart = now;
+    startMode(mode);
+  }
   if (modeGrid) {
     modeGrid.addEventListener("click", function (e) {
-      var btn = e.target.closest ? e.target.closest(".mode-btn") : null;
-      if (!btn && e.target.classList && e.target.classList.contains("mode-btn")) btn = e.target;
-      // fallback walk-up for older engines without closest
-      if (!btn) {
-        var el = e.target;
-        while (el && el !== modeGrid) {
-          if (el.classList && el.classList.contains("mode-btn")) { btn = el; break; }
-          el = el.parentNode;
-        }
-      }
-      if (!btn) return;
-      var mode = btn.getAttribute("data-mode");
-      if (mode && GENERATORS[mode]) startMode(mode);
+      var mode = modeFromEvent(e);
+      if (mode) startFromTile(mode);
     });
   }
-
-  var timeSettings = document.getElementById("time-settings");
-  if (timeSettings) {
-    timeSettings.addEventListener("click", function (e) {
-      var chip = e.target.closest ? e.target.closest(".time-chip") : null;
-      if (!chip) {
-        var el = e.target;
-        while (el && el !== timeSettings) {
-          if (el.classList && el.classList.contains("time-chip")) { chip = el; break; }
-          el = el.parentNode;
-        }
-      }
-      if (!chip) return;
-      var chips = timeSettings.querySelectorAll(".time-chip");
-      for (var i = 0; i < chips.length; i++) chips[i].classList.remove("active");
-      chip.classList.add("active");
-      var secs = parseInt(chip.getAttribute("data-seconds"), 10);
-      if (!isNaN(secs) && secs > 0) state.secondsPerQ = secs;
-    });
-  }
-
-  // Also wire inline-safe direct handlers as backup
   var modeButtons = document.querySelectorAll(".mode-btn");
   for (var m = 0; m < modeButtons.length; m++) {
     modeButtons[m].onclick = (function (btn) {
-      return function (ev) {
-        ev.preventDefault();
-        var mode = btn.getAttribute("data-mode");
-        if (mode && GENERATORS[mode]) startMode(mode);
-      };
+      return function () { startFromTile(btn.getAttribute("data-mode")); };
     })(modeButtons[m]);
   }
 
-  state.secondsPerQ = 25;
+  // Time setting chips (remembered on this device)
+  var timeSettings = $("time-settings");
+  function paintChips() {
+    var chips = timeSettings.querySelectorAll(".time-chip");
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.toggle("active", parseInt(chips[i].getAttribute("data-seconds"), 10) === state.secondsPerQ);
+    }
+  }
+  timeSettings.addEventListener("click", function (e) {
+    var el = e.target;
+    while (el && el !== timeSettings && !(el.classList && el.classList.contains("time-chip"))) el = el.parentNode;
+    if (!el || el === timeSettings) return;
+    var secs = parseInt(el.getAttribute("data-seconds"), 10);
+    if (!isNaN(secs) && secs > 0) { state.secondsPerQ = secs; save("mp_time", secs); paintChips(); }
+  });
+
+  // Read-only snapshot for automated tests / debugging
+  window.MathPractice.debug = function () {
+    return { mode: state.mode, level: state.level, qIndex: state.qIndex, points: state.points,
+      streak: state.streak, locked: state.locked, answer: state.current ? state.current.answer : null,
+      inputType: state.current ? state.current.inputType : null };
+  };
+
+  if ([15, 25, 30].indexOf(state.secondsPerQ) === -1) state.secondsPerQ = 25;
+  paintChips();
+  renderHomeBests();
 })();
   </script>
   <script>
